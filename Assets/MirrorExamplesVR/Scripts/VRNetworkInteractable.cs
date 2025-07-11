@@ -133,7 +133,7 @@ public class VRNetworkInteractable : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             EventPickup();
-            //vrNetworkPlayerScript = vrNetworkPlayerScript.GetComponent<VRNetworkPlayerScript>();
+            //vrNetworkPlayerScript = vrNetworkPlayerScript.GetComponent<XRNetworkPlayerScript>();
            // vrNetworkPlayerScript.rightHandObject = this.netIdentity;
         }
         else if (Input.GetKeyDown(KeyCode.D))

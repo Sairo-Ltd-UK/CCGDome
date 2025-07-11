@@ -1,0 +1,31 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     #DATE#
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : MonoBehaviour
+{
+	// Start is called before the first frame update
+	private void Start()
+	{
+		#NOTRIM#
+	}
+
+	// Update is called once per frame
+	private void Update()
+	{
+		#NOTRIM#
+	}
+}
+#ROOTNAMESPACEEND#
+

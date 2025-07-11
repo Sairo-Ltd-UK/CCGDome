@@ -274,7 +274,7 @@ public class VRNetworkManager : NetworkManager
     public override void OnStartHost()
     {
         //UnityEngine.Debug.Log("OnStartHost");
-        //vrCanvasHUD.SetupInfoText("Started Hosting.");
+        //xrCanvasHUD.SetupInfoText("Started Hosting.");
     }
 
     /// <summary>
@@ -302,7 +302,7 @@ public class VRNetworkManager : NetworkManager
     public override void OnStopHost()
     {
         //UnityEngine.Debug.Log("OnStopHost");
-        // vrCanvasHUD.SetupInfoText("Started Hosting.");
+        // xrCanvasHUD.SetupInfoText("Started Hosting.");
     }
 
     /// <summary>
