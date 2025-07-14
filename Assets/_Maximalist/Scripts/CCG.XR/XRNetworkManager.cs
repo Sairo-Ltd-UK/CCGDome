@@ -8,27 +8,18 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Mirror;
 using System.Linq;
 
 namespace CCG.XR
 {
-
-	/*
-		Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
-		API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkManager.html
-	*/
-
 	public class XRNetworkManager : NetworkManager
 	{
 		// Overrides the base singleton so we don't
 		// have to cast to this type everywhere.
 		public static new XRNetworkManager singleton { get; private set; }
 
-		public XRCanvasHUD xrCanvasHUD;
 		private NetworkIdentity[] copyOfOwnedObjects;
 
 		/// <summary>
@@ -55,8 +46,6 @@ namespace CCG.XR
 		public override void Start()
 		{
 			base.Start();
-			if (xrCanvasHUD == null)
-			{ xrCanvasHUD = FindObjectOfType<XRCanvasHUD>(); }
 		}
 
 		/// <summary>
@@ -120,7 +109,6 @@ namespace CCG.XR
 		/// <param name="newSceneName">Name of the scene that's about to be loaded</param>
 		public override void OnServerChangeScene(string newSceneName)
 		{
-			//UnityEngine.Debug.Log("OnServerChangeScene");
 		}
 
 		/// <summary>
@@ -129,7 +117,6 @@ namespace CCG.XR
 		/// <param name="sceneName">The name of the new scene.</param>
 		public override void OnServerSceneChanged(string sceneName)
 		{
-			//UnityEngine.Debug.Log("OnServerSceneChanged");
 		}
 
 		/// <summary>
@@ -141,7 +128,6 @@ namespace CCG.XR
 		/// <param name="customHandling">true to indicate that scene loading will be handled through overrides</param>
 		public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling)
 		{
-			//UnityEngine.Debug.Log("OnClientChangeScene");
 		}
 
 		/// <summary>
@@ -151,7 +137,6 @@ namespace CCG.XR
 		public override void OnClientSceneChanged()
 		{
 			base.OnClientSceneChanged();
-			// UnityEngine.Debug.Log("OnClientSceneChanged");
 		}
 
 		#endregion
@@ -165,8 +150,7 @@ namespace CCG.XR
 		/// <param name="conn">Connection from client.</param>
 		public override void OnServerConnect(NetworkConnectionToClient conn)
 		{
-			//UnityEngine.Debug.Log("OnServerConnect");
-			xrCanvasHUD.SetupInfoText("A client connected.");
+
 		}
 
 		/// <summary>
@@ -177,7 +161,6 @@ namespace CCG.XR
 		public override void OnServerReady(NetworkConnectionToClient conn)
 		{
 			base.OnServerReady(conn);
-			//UnityEngine.Debug.Log("OnServerReady");
 		}
 
 		/// <summary>
@@ -188,7 +171,6 @@ namespace CCG.XR
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
-			//UnityEngine.Debug.Log("OnServerAddPlayer");
 		}
 
 		/// <summary>
@@ -210,8 +192,6 @@ namespace CCG.XR
 			}
 
 			base.OnServerDisconnect(conn);
-			//UnityEngine.Debug.Log("OnServerDisconnect");
-			xrCanvasHUD.SetupInfoText("A client disconnected.");
 		}
 
 		/// <summary>
@@ -224,7 +204,6 @@ namespace CCG.XR
 		public override void OnServerError(NetworkConnectionToClient conn, TransportError transportError, string message)
 		{
 			Debug.Log("OnServerError");
-			xrCanvasHUD.SetupInfoText("OnServerError: " + message);
 		}
 
 		#endregion
@@ -238,8 +217,6 @@ namespace CCG.XR
 		public override void OnClientConnect()
 		{
 			base.OnClientConnect();
-			//UnityEngine.Debug.Log("OnClientConnect");
-			xrCanvasHUD.SetupInfoText("Connected to server.");
 		}
 
 		/// <summary>
@@ -248,8 +225,7 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnClientDisconnect()
 		{
-			//UnityEngine.Debug.Log("OnClientDisconnect");
-			xrCanvasHUD.SetupInfoText("Disconnected from server.");
+
 		}
 
 		/// <summary>
@@ -258,7 +234,7 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnClientNotReady()
 		{
-			//UnityEngine.Debug.Log("OnClientNotReady");
+
 		}
 
 		/// <summary>
@@ -268,8 +244,7 @@ namespace CCG.XR
 		/// <param name="message">String message of the error.</param>
 		public override void OnClientError(TransportError transportError, string message)
 		{
-			Debug.Log("OnClientError");
-			xrCanvasHUD.SetupInfoText("OnClientError: " + message);
+
 		}
 
 		#endregion
@@ -286,8 +261,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStartHost()
 		{
-
-			xrCanvasHUD.SetupInfoText("Started Hosting.");
 		}
 
 		/// <summary>
@@ -296,8 +269,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStartServer()
 		{
-			//UnityEngine.Debug.Log("OnStartServer");
-			xrCanvasHUD.SetupInfoText("Started server.");
 		}
 
 		/// <summary>
@@ -305,8 +276,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStartClient()
 		{
-			//UnityEngine.Debug.Log("OnStartClient");
-			xrCanvasHUD.SetupInfoText("Client started.");
 		}
 
 		/// <summary>
@@ -314,8 +283,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStopHost()
 		{
-			//UnityEngine.Debug.Log("OnStopHost");
-			// vrCanvasHUD.SetupInfoText("Started Hosting.");
 		}
 
 		/// <summary>
@@ -323,8 +290,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStopServer()
 		{
-			//UnityEngine.Debug.Log("OnStopServer");
-			xrCanvasHUD.SetupInfoText("Server stopped.");
 		}
 
 		/// <summary>
@@ -332,8 +297,6 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStopClient()
 		{
-			//UnityEngine.Debug.Log("OnStopClient");
-			xrCanvasHUD.SetupInfoText("Client stopped.");
 		}
 
 		#endregion
