@@ -1,0 +1,58 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     13/06/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
+using CCG.CustomInput;
+using Mirror;
+using UnityEngine;
+
+namespace CCG.MiniGames
+{
+	public class GenericMiniGameInteractor : NetworkBehaviour
+	{
+		[SerializeField] private LayerMask interactableLayer;
+		[SerializeField] private MiniGameInteractable interactableObject;
+		[SerializeField] private CustomInputActionData fireRayAction;
+
+		public override void OnStartLocalPlayer()
+		{
+			base.OnStartLocalPlayer();
+
+			if (fireRayAction != null)
+			{
+				fireRayAction.AddToInputActionReference(RequestRaycast);
+			}
+		}
+
+		private void RequestRaycast()
+		{
+			if (isLocalPlayer == false)
+				return;
+
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			CmdRequestRaycast(ray.origin, ray.direction);
+		}
+
+		[Command]
+		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
+		{
+			//CW Placeholder, will later replace with a selector system. This will do for now.
+			if(interactableObject == null)
+				interactableObject = FindObjectOfType<MiniGameInteractable>();
+
+			if (RayCastHitProvider.ProvideRaycastHit(out RaycastHit hit, interactableLayer, 500))
+			{
+				if (interactableObject != null)
+				{
+					interactableObject.OnReciveRaycastHit(hit);
+				}
+			}
+		}
+	}
+}

@@ -21,5 +21,12 @@ namespace CCG.CustomInput
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			return Physics.Raycast(ray, out hit, distance, layerMask);
 		}
+
+		public static bool ProvideRaycastHit(Vector3 origin, Vector3 direction, out RaycastHit hit, LayerMask layerMask, float distance)
+		{
+			DebugLogger.Log("[RCHP] VR Casting Ray");
+			Ray ray = new Ray(origin, direction);
+			return Physics.Raycast(ray, out hit, distance, layerMask);
+		}
 	}
 }

@@ -1,150 +1,106 @@
-﻿//------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Project:     CCG Dome
 //  Author:      Corrin Wilson
 //  Company:     Maximalist Ltd
 //  Created:     13/06/2025
-
+//
 //  Copyright © 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using CCG.CustomInput;
-using CCG.Core.Debuging;
 using Mirror;
 using UnityEngine;
 
 namespace CCG.MiniGames.Chess
 {
-	public class ChessGameMirrorWrapper : NetworkBehaviour
+	public class ChessGameMirrorWrapper : MiniGameInteractable
 	{
 		[SerializeField] private ChessGame game;
-		[SerializeField] private CustomInputActionData mainPointerAction;
-
-		public bool WhiteTurn => game.WhiteTurn;
-
-		private void OnEnable()
-		{
-			mainPointerAction.AddToInputActionReference(TryMovePiece);
-		}
-
-		private void OnDisable()
-		{
-			mainPointerAction.RemoveFromInputActionReference(TryMovePiece);
-		}
 
 		public override void OnStartServer()
 		{
-			base.OnStartServer();
 			game.LoadListsToDictionarys();
 			game.Setup(transform.localScale.y);
 		}
 
-		private void Start()
+		[Server]
+		public override void OnReciveRaycastHit(RaycastHit hit)
 		{
-			if (isServer)
-			{
-				game.LoadListsToDictionarys();
-				game.Setup(transform.localScale.y);
-			}
+			TryMovePeice(hit);
 		}
 
-		public void TryMovePiece()
+		[Server]
+		private void TryMovePeice(RaycastHit hit)
 		{
-			if (RayCastHitProvider.ProvideRaycastHit(out RaycastHit hit, game.ChessTileLayer, 50f))
+			if(hit.collider == null) 
+				return;
+
+			Debug.Log($"NAME: {hit.collider.name}");
+
+			var tile = hit.collider.GetComponent<SingleTile>();
+
+			if (tile == null)
+				return;
+
+			Debug.Log($"Tile: {tile.name}");
+
+			int posX = tile.posX;
+			int posY = tile.posY;
+
+			if (game.selectedPiece == null)
 			{
-				DebugLogger.Log($"[CGMW] has hit {hit.collider}");
+				game.selectedX = posX;
+				game.selectedY = posY;
 
-				var singleTile = hit.collider.GetComponent<SingleTile>();
-				if (singleTile == null) return;
+				var selected = game.boardPieceTwoDArrays[posX, posY];
+				if (selected == null) return;
 
-				if (game.selectedPiece == null)
+				game.selectedPiece = selected;
+				game.possibleMoves = selected.GetComponent<ChessPiece>().PossibleMoves(game, posX, posY);
+
+				if (game.WhiteTurn != selected.GetComponent<ChessPiece>().IsWhitePiece)
 				{
-					game.selectedX = singleTile.posX;
-					game.selectedY = singleTile.posY;
-
-					var selected = game.boardPieceTwoDArrays[game.selectedX, game.selectedY];
-					if (selected == null) return;
-
-					game.selectedPiece = selected;
-					game.possibleMoves = selected.GetComponent<ChessPiece>().PossibleMoves(game, game.selectedX, game.selectedY);
-					game.SetSelectedPiece(1);
-
-					if (game.WhiteTurn != selected.GetComponent<ChessPiece>().IsWhitePiece)
-						game.SetSelectedPiece(0);
+					game.SetSelectedPiece(0);
+					return;
 				}
-				else
+
+				game.SetSelectedPiece(1);
+			}
+			else
+			{
+				game.currentX = posX;
+				game.currentY = posY;
+
+				if (!game.possibleMoves[posX, posY]) return;
+
+				var targetPiece = game.boardPieceTwoDArrays[posX, posY];
+
+				if (targetPiece != null)
 				{
-					game.currentX = singleTile.posX;
-					game.currentY = singleTile.posY;
+					bool isWhite = game.selectedPiece.GetComponent<ChessPiece>().IsWhitePiece;
+					bool isKing = targetPiece.GetComponent<ChessPiece>().IsKing;
 
-					if (game.possibleMoves[game.currentX, game.currentY])
+					if (isKing)
 					{
-						var targetPiece = game.boardPieceTwoDArrays[game.currentX, game.currentY];
-						bool isWhite = game.selectedPiece.GetComponent<ChessPiece>().IsWhitePiece;
-
-						if (targetPiece != null)
-						{
-							if (targetPiece.GetComponent<ChessPiece>().IsKing)
-							{
-								CmdSomeoneWonGame(!isWhite);
-								CmdResetChessGame();
-								return;
-							}
-							else
-							{
-								if (isWhite)
-									ChessGameUIManager.p1PieceCount--;
-								else
-									ChessGameUIManager.p2PieceCount--;
-							}
-
-							CmdRemovePiece(game.currentX, game.currentY);
-						}
-
-						CmdSetBoardPiece(game.selectedX, game.selectedY, game.currentX, game.currentY);
-						CmdSwitchTurns();
+						RpcSomeoneWonGame(!isWhite);
+						RpcResetGame();
+						return;
+					}
+					else
+					{
+						if (isWhite) ChessGameUIManager.p1PieceCount--;
+						else ChessGameUIManager.p2PieceCount--;
 					}
 
-					game.SetSelectedPiece(0);
+					RpcRemovePiece(posX, posY);
 				}
+
+				RpcSetBoardPiece(game.selectedX, game.selectedY, posX, posY);
+				RpcSwitchTurns();
+
+				game.SetSelectedPiece(0);
 			}
 		}
-
-		#region Commands (Run on Server)
-
-		[Command]
-		private void CmdSetBoardPiece(int fromX, int fromY, int toX, int toY)
-		{
-			RpcSetBoardPiece(fromX, fromY, toX, toY);
-		}
-
-		[Command]
-		private void CmdRemovePiece(int x, int y)
-		{
-			RpcRemovePiece(x, y);
-		}
-
-		[Command]
-		private void CmdSwitchTurns()
-		{
-			RpcSwitchTurns();
-		}
-
-		[Command]
-		private void CmdResetChessGame()
-		{
-			RpcResetChessGame();
-		}
-
-		[Command]
-		private void CmdSomeoneWonGame(bool whiteWon)
-		{
-			RpcSomeoneWonGame(whiteWon);
-		}
-
-		#endregion
-
-		#region ClientRpc (Run on All Clients)
 
 		[ClientRpc]
 		private void RpcSetBoardPiece(int fromX, int fromY, int toX, int toY)
@@ -165,7 +121,7 @@ namespace CCG.MiniGames.Chess
 		}
 
 		[ClientRpc]
-		private void RpcResetChessGame()
+		private void RpcResetGame()
 		{
 			game.ResetChessGame();
 		}
@@ -176,6 +132,5 @@ namespace CCG.MiniGames.Chess
 			game.SomeoneWonGame(whiteWon);
 		}
 
-		#endregion
 	}
 }

@@ -286,8 +286,8 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnStartHost()
 		{
-			//UnityEngine.Debug.Log("OnStartHost");
-			//vrCanvasHUD.SetupInfoText("Started Hosting.");
+
+			xrCanvasHUD.SetupInfoText("Started Hosting.");
 		}
 
 		/// <summary>

@@ -35,8 +35,6 @@ namespace CCG.MiniGames.Chess
 		[SerializeField] private RookBehaviourSO rookBehaviour;
 		[SerializeField] private PawnBehaviourSO pawnBehaviour;
 		[Space]
-		[SerializeField] private LayerMask chessTileLayer = ~0;
-		[Space]
 		[SerializeField] private GameObject[] tiles; // Unity-serializable backing fields
 		[SerializeField] private GameObject[] boardPieces; // Unity-serializable backing fields
 		[Space]
@@ -62,7 +60,6 @@ namespace CCG.MiniGames.Chess
 		[HideInInspector] public float localScaleY;
 
 		public bool WhiteTurn { get => whiteTurn; set => whiteTurn = value; }
-		public LayerMask ChessTileLayer { get => chessTileLayer; set => chessTileLayer = value; }
 
 		public Vector3 OriginOffset { get => originOffset * localScaleY; }
 		public float IndividualTileLength { get => individualTileLength * localScaleY; }
