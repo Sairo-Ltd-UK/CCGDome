@@ -23,8 +23,14 @@ namespace CCG.XR
 		public GameObject headModel;
 		public GameObject rHandModel;
 		public GameObject lHandModel;
-
+		[Space]
 		public XRPlayerRig xrPlayerRig;
+
+		[SyncVar(hook = nameof(OnRightObjectChangedHook))]
+		public NetworkIdentity rightHandObject;
+
+		[SyncVar(hook = nameof(OnLeftObjectChangedHook))]
+		public NetworkIdentity leftHandObject;
 
 		public override void OnStartLocalPlayer()
 		{
@@ -36,16 +42,7 @@ namespace CCG.XR
 			headModel.SetActive(false);
 			rHandModel.SetActive(false);
 			lHandModel.SetActive(false);
-
-			// if no customisation is set, create one.
-			if (XRStaticVariables.playerName == "")
-			{
-				CmdSetupPlayer("Player: " + netId);
-			}
-			else
-			{
-				CmdSetupPlayer(XRStaticVariables.playerName);
-			}
+			CmdSetupPlayer();
 		}
 
 		// a static global list of players that can be used for a variery of features, one being enemies
@@ -61,25 +58,12 @@ namespace CCG.XR
 			playersList.Remove(this);
 		}
 
-		[SyncVar(hook = nameof(OnNameChangedHook))]
-		public string playerName = "";
-		public TMP_Text textPlayerName;
-
-		void OnNameChangedHook(string _old, string _new)
-		{
-			//Debug.Log("OnNameChangedHook: " + playerName);
-			textPlayerName.text = playerName;
-		}
-
 		[Command]
-		public void CmdSetupPlayer(string _name)
+		public void CmdSetupPlayer()
 		{
 			//player info sent to server, then server updates sync vars which handles it on all clients
-			playerName = _name; //+ connectionToClient.connectionId;
-		}
 
-		[SyncVar(hook = nameof(OnRightObjectChangedHook))]
-		public NetworkIdentity rightHandObject;
+		}
 
 		void OnRightObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
 		{
@@ -93,9 +77,6 @@ namespace CCG.XR
 			}
 		}
 
-		[SyncVar(hook = nameof(OnLeftObjectChangedHook))]
-		public NetworkIdentity leftHandObject;
-
 		void OnLeftObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
 		{
 			if (leftHandObject)
@@ -108,43 +89,5 @@ namespace CCG.XR
 			}
 		}
 
-		// switch to Late/Fixed Update if weirdness happens
-		//private void Update()
-		//{
-		//    if (rightHandObject)
-		//    {
-		//         rightHandObject.transform.position = rHandTransform.position;
-		//    }
-		//}
-
-		public void Fire(int _hand)
-		{
-
-		}
-
-
-		[Command]
-		private void CmdFire(int _hand)
-		{
-			// 0 both, 1 right, 2 left
-			//Debug.Log("Mirror CmdFire");
-			RpcOnFire(_hand);
-			if (isServerOnly)
-			{
-				OnFire(_hand);
-			}
-		}
-
-		[ClientRpc]
-		private void RpcOnFire(int _hand)
-		{
-			//Debug.Log("Mirror RpcOnFire");
-			OnFire(_hand);
-		}
-
-		private void OnFire(int _hand)
-		{
-
-		}
 	}
 }

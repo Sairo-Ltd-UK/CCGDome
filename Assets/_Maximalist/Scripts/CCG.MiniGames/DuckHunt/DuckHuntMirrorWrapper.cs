@@ -8,41 +8,21 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using CCG.CustomInput;
 using UnityEngine;
 
 namespace CCG.MiniGames.Duckhunt
 {
-	public class DuckShooterSpatialWrapper : MonoBehaviour
+	public class DuckHuntMirrorWrapper : MiniGameInteractable
 	{
 		[SerializeField] private float shootCooldown = 0.25f;
-		[SerializeField] private CustomInputActionData mainPointerAction;
 		[SerializeField] private LayerMask duckLayer;
 
-		private void OnEnable()
+		public override void OnReciveRaycastHit(RaycastHit hit)
 		{
-			mainPointerAction.AddToInputActionReference(TryShoot);
-		}
+			var duck = hit.collider.GetComponent<Duck>();
 
-		private void OnDisable()
-		{
-			mainPointerAction.RemoveFromInputActionReference(TryShoot);
-		}
-
-
-		private void TryShoot()
-		{
-			RaycastHit hit;
-
-			if (RayCastHitProvider.ProvideRaycastHit(out hit, duckLayer, 100))
-			{
-				var duck = 
-					hit.collider.GetComponent<Duck>();
-
-				if (duck != null) 
-					duck.OnHit();
-			}
+			if (duck != null)
+				duck.OnHit();
 		}
 	}
 }
-

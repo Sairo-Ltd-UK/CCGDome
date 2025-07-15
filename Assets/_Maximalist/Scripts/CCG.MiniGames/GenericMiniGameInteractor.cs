@@ -16,9 +16,12 @@ namespace CCG.MiniGames
 {
 	public class GenericMiniGameInteractor : NetworkBehaviour
 	{
+		[Header("Generic MiniGame Interactor")]
 		[SerializeField] private LayerMask interactableLayer;
-		[SerializeField] private MiniGameInteractable interactableObject;
 		[SerializeField] private CustomInputActionData fireRayAction;
+		[Space]
+		[Tooltip("Only needs setting client side on the local player")]
+		[SerializeField] private MiniGameInteractable currentMiniGame;
 
 		public override void OnStartLocalPlayer()
 		{
@@ -43,14 +46,14 @@ namespace CCG.MiniGames
 		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
 		{
 			//CW Placeholder, will later replace with a selector system. This will do for now.
-			if(interactableObject == null)
-				interactableObject = FindObjectOfType<MiniGameInteractable>();
+			if(currentMiniGame == null)
+				currentMiniGame = FindObjectOfType<MiniGameInteractable>();
 
 			if (RayCastHitProvider.ProvideRaycastHit(out RaycastHit hit, interactableLayer, 500))
 			{
-				if (interactableObject != null)
+				if (currentMiniGame != null)
 				{
-					interactableObject.OnReciveRaycastHit(hit);
+					currentMiniGame.OnReciveRaycastHit(hit);
 				}
 			}
 		}

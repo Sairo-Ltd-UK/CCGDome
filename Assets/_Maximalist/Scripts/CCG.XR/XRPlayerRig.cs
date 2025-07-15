@@ -8,11 +8,7 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace CCG.XR
 {
@@ -24,11 +20,7 @@ namespace CCG.XR
 
 		public Transform canvasUIPosition;
 
-		public GameObject damageTriggerR;
-		public GameObject damageTriggerL;
-
 		public XRNetworkPlayerScript localVRNetworkPlayerScript;
-		public AudioSource audioCue;
 
 		// switch to Late/Fixed Update if weirdness happens
 		private void Update()
@@ -50,7 +42,6 @@ namespace CCG.XR
 		private void FixedUpdate()
 		{
 			HandleMovement();
-			HandleInput();
 		}
 
 		private void HandleMovement()
@@ -61,53 +52,6 @@ namespace CCG.XR
 			transform.Rotate(0, moveX, 0);
 			transform.Translate(0, 0, moveZ);
 		}
-
-		private void HandleInput()
-		{
-			// take input from focused window only
-			if (!Application.isFocused)
-				return;
-
-			// input for local player
-			if (localVRNetworkPlayerScript && localVRNetworkPlayerScript.isLocalPlayer)
-			{
-				if (Input.GetKeyDown(KeyCode.Space))
-				{
-					// audioCue.Play();
-					localVRNetworkPlayerScript.Fire(0);
-				}
-			}
-
-
-			if (localVRNetworkPlayerScript && localVRNetworkPlayerScript.isLocalPlayer)
-			{
-
-				if (rightHand.GetComponent<ActionBasedController>().activateAction.action.ReadValue<float>() > 0.5f)
-				{
-					localVRNetworkPlayerScript.Fire(1);
-				}
-				if (leftHand.GetComponent<ActionBasedController>().activateAction.action.ReadValue<float>() > 0.5f)
-				{
-					localVRNetworkPlayerScript.Fire(2);
-				}
-			}
-		}
-		public XRBaseController rightHand;
-		public XRBaseController leftHand;
-		public InputHelpers.Button buttonR;
-		public InputHelpers.Button buttonL;
-
-		public InputActionReference shootButtonRightHand;
-		public InputActionReference shootButtonLeftHand;
-
-
-
-		public InputActionReference testReference = null;
-
-
-
-
-
 
 	}
 }

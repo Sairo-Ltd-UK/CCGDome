@@ -33,7 +33,7 @@ namespace CCG.XR
 		public Button buttonHost, buttonServer, buttonClient, buttonStop, buttonAuto;
 		public Text infoText;
 		// legacy inputfield interaction does not auto bring up a keyboard on headset builds, use tmp.
-		public TMP_InputField inputFieldAddress, inputFieldPlayerName;
+		public TMP_InputField inputFieldAddress;
 
 		private void Start()
 		{
@@ -49,7 +49,6 @@ namespace CCG.XR
 
 			//Adds a listener to the input field and invokes a method when the value changes.
 			inputFieldAddress.onValueChanged.AddListener(delegate { OnValueChangedAddress(); });
-			inputFieldPlayerName.onValueChanged.AddListener(delegate { OnValueChangedName(); });
 
 			if (networkDiscovery == null)
 			{ networkDiscovery = FindObjectOfType<XRNetworkDiscovery>(); }
@@ -219,18 +218,9 @@ namespace CCG.XR
 				{
 					inputFieldAddress.text = keyboard.text;
 				}
-				else if (keyboardStatus == 2)
-				{
-					inputFieldPlayerName.text = keyboard.text;
-					XRStaticVariables.playerName = inputFieldPlayerName.text;
-				}
 			}
 		}
 
-		// Invoked when the value of the text field changes.
-		public void OnValueChangedName()
-		{
-			XRStaticVariables.playerName = inputFieldPlayerName.text;
-		}
+
 	}
 }
