@@ -3,16 +3,15 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
 using Mirror.Discovery;
-using CCG.XR;
 
 
 
 [DisallowMultipleComponent]
     [AddComponentMenu("Network/Network Discovery")]
-    public class XRNetworkDiscovery : NetworkDiscoveryBase<ServerRequest, ServerResponse>
+    public class VRNetworkDiscovery : NetworkDiscoveryBase<ServerRequest, ServerResponse>
     {
         #region Server
-        public XRCanvasHUD xrCanvasHUD;
+        public VRCanvasHUD xrCanvasHUD;
 
         /// <summary>
         /// Process the request from a client

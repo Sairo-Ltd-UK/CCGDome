@@ -11,7 +11,7 @@ public class VRCanvasHUD : MonoBehaviour
 {
     // this will check for games to join, if non, start host.
     public bool alwaysAutoStart = false;
-    public XRNetworkDiscovery networkDiscovery;
+    public VRNetworkDiscovery networkDiscovery;
     readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
     private TouchScreenKeyboard keyboard;
     private int keyboardStatus = 0;
@@ -40,10 +40,10 @@ public class VRCanvasHUD : MonoBehaviour
         inputFieldPlayerName.onValueChanged.AddListener(delegate { OnValueChangedName(); });
 
         if (networkDiscovery == null)
-        { networkDiscovery = GameObject.FindObjectOfType<XRNetworkDiscovery>(); }
+        { networkDiscovery = GameObject.FindObjectOfType<VRNetworkDiscovery>(); }
 
         if (networkDiscovery == null)
-        { networkDiscovery = GameObject.FindObjectOfType<XRNetworkDiscovery>(); }
+        { networkDiscovery = GameObject.FindObjectOfType<VRNetworkDiscovery>(); }
 
         // skips waiting for users to press ui button
         if (alwaysAutoStart)
