@@ -11,7 +11,7 @@ using Mirror.Discovery;
     public class VRNetworkDiscovery : NetworkDiscoveryBase<ServerRequest, ServerResponse>
     {
         #region Server
-        public VRCanvasHUD xrCanvasHUD;
+        public VRCanvasHUD vrCanvasHUD;
 
         /// <summary>
         /// Process the request from a client
@@ -85,9 +85,9 @@ using Mirror.Discovery;
             response.uri = realUri.Uri;
 
             //OnServerFound.Invoke(response);
-            if (xrCanvasHUD == null)
-            { xrCanvasHUD = GameObject.FindObjectOfType<XRCanvasHUD>(); }
-            xrCanvasHUD.OnDiscoveredServer(response);
+            if (vrCanvasHUD == null)
+            { vrCanvasHUD = GameObject.FindObjectOfType<VRCanvasHUD>(); }
+            vrCanvasHUD.OnDiscoveredServer(response);
         }
 
         #endregion
