@@ -8,14 +8,15 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace CCG.MiniGames.Duckhunt
 {
 	public class Duck : MonoBehaviour
 	{
+		public static event Action OnDuckDied;
+		
 		public float speed = 2f;
 		public bool isHit = false;
 
@@ -30,7 +31,10 @@ namespace CCG.MiniGames.Duckhunt
 			Die();
 		}
 
-		private void Die() { /* animation + notify game manager */ }
+		private void Die()
+		{
+			OnDuckDied?.Invoke(); /* animation + notify game manager */
+		}
 	}
 
 }

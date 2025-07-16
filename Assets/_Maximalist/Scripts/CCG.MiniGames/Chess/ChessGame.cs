@@ -4,7 +4,7 @@
 //  Company:     Maximalist Ltd
 //  Created:     13/06/2025
 //
-//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  Copyright ï¿½ 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ using UnityEngine;
 namespace CCG.MiniGames.Chess
 {
 	[System.Serializable]
-	public class ChessGame: MonoBehaviour
+	public class ChessGame: MiniGameBase
 	{
 		private const int width = 8;
 		private const int height = 8;
