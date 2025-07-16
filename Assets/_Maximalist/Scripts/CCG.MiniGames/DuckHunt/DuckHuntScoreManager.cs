@@ -8,18 +8,32 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+using System;
 using UnityEngine;
 
 namespace CCG.MiniGames.Duckhunt
 {
 	public class DuckHuntScoreManager : MonoBehaviour
 	{
+		public static event Action<int> OnScoreChanged;
+		
 		public int currentScore;
 
+		public void ResetScore()
+		{
+			const int zeroPoints = 3;
+			UpdateScore(zeroPoints);
+		}
+		
 		public void AddScore(int points)
 		{
-			currentScore += points;
-			// update UI or network sync
+			UpdateScore(currentScore + points);
+		}
+
+		private void UpdateScore(int points)
+		{
+			currentScore = points;
+			OnScoreChanged?.Invoke(currentScore);
 		}
 	}
 }
