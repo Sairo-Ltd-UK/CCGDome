@@ -1,10 +1,10 @@
-// ------------------------------------------------------------------------------
+ï»¿// ------------------------------------------------------------------------------
 //  Project:     CCG Dome
 //  Author:      Corrin Wilson
 //  Company:     Maximalist Ltd
 //  Created:     13/06/2025
 //
-//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  Copyright ï¿½ 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
@@ -31,6 +31,7 @@ namespace CCG.MiniGames
 			{
 				fireRayAction.AddToInputActionReference(RequestRaycast);
 			}
+			Debug.Log("Generic MiniGame Interactor");
 		}
 
 		private void RequestRaycast()
@@ -40,6 +41,7 @@ namespace CCG.MiniGames
 
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			CmdRequestRaycast(ray.origin, ray.direction);
+			Debug.Log("Generic MiniGame Interactor");
 		}
 
 		[Command]
@@ -56,6 +58,22 @@ namespace CCG.MiniGames
 					currentMiniGame.OnReciveRaycastHit(hit);
 				}
 			}
+			Debug.Log("Generic MiniGame Interactor");
 		}
+
+		public void SetCurrentMiniGame(MiniGameInteractable newMiniGame)
+		{
+			if (newMiniGame != null)
+			{
+				currentMiniGame = newMiniGame;
+			}
+		}
+		public void ClearCurrentMiniGame(MiniGameInteractable newMiniGame)
+		{
+			if (currentMiniGame == newMiniGame)
+			{
+				currentMiniGame = null;
+			}
+		} 
 	}
 }
