@@ -8,219 +8,47 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 using UnityEngine.UI;
-using Mirror.Discovery;
-using TMPro;
-using UnityEngine.SceneManagement;
 
 namespace CCG.XR
 {
 	public class XRCanvasHUD : MonoBehaviour
 	{
-		// this will check for games to join, if non, start host.
-		public bool alwaysAutoStart = false;
-		public XRNetworkDiscovery networkDiscovery;
-		readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
-		private TouchScreenKeyboard keyboard;
-		private int keyboardStatus = 0;
+		private const string ipToConnectTo = "145.190.54.4";
 
-		// UI
-		public GameObject PanelStart, PanelStop;
-		public Button buttonHost, buttonServer, buttonClient, buttonStop, buttonAuto;
-		public Text infoText;
-		// legacy inputfield interaction does not auto bring up a keyboard on headset builds, use tmp.
-		public TMP_InputField inputFieldAddress;
+		[SerializeField] private Button localHostButton;
+		[SerializeField] private Button connectToServerButton;
 
 		private void Start()
 		{
-			//Make sure to attach these Buttons in the Inspector
-			buttonHost.onClick.AddListener(ButtonHost);
-			buttonServer.onClick.AddListener(ButtonServer);
-			buttonClient.onClick.AddListener(ButtonClient);
-			buttonStop.onClick.AddListener(ButtonStop);
-			buttonAuto.onClick.AddListener(ButtonAuto);
-
-			//Update the canvas text if you have manually changed network managers address from the game object before starting the game scene
-			inputFieldAddress.text = NetworkManager.singleton.networkAddress;
-
-			//Adds a listener to the input field and invokes a method when the value changes.
-			inputFieldAddress.onValueChanged.AddListener(delegate { OnValueChangedAddress(); });
-
-			if (networkDiscovery == null)
-			{ networkDiscovery = FindObjectOfType<XRNetworkDiscovery>(); }
-
-			if (networkDiscovery == null)
-			{ networkDiscovery = FindObjectOfType<XRNetworkDiscovery>(); }
-
-			// skips waiting for users to press ui button
-			if (alwaysAutoStart)
-			{
-				StartCoroutine(Waiter());
-			}
+			localHostButton.onClick.AddListener(OnLocalHostButtonPressed);
+			connectToServerButton.onClick.AddListener(OnConnectToServerButtonPressed);
 		}
 
-		public IEnumerator Waiter()
+		private void OnDestroy()
 		{
-			infoText.text = "Discovering servers..";
-			discoveredServers.Clear();
-			networkDiscovery.StartDiscovery();
-			// we have set this as 3.1 seconds, default discovery scan is 3 seconds, allows some time if host and client are started at same time
-			yield return new WaitForSeconds(3.1f);
-			if (discoveredServers == null || discoveredServers.Count <= 0)
-			{
-				infoText.text = "No Servers found, starting as Host.";
-				yield return new WaitForSeconds(1.0f);
-				discoveredServers.Clear();
-				// NetworkManager.singleton.onlineScene = SceneManager.GetActiveScene().name;
-				NetworkManager.singleton.StartHost();
-				networkDiscovery.AdvertiseServer();
-			}
+			localHostButton.onClick.RemoveListener(OnLocalHostButtonPressed);
+			connectToServerButton.onClick.RemoveListener(OnConnectToServerButtonPressed);
 		}
 
-		void Connect(ServerResponse info)
+		private void OnLocalHostButtonPressed()
 		{
-			infoText.text = "Connecting to: " + info.serverId;
-			networkDiscovery.StopDiscovery();
-			NetworkManager.singleton.StartClient(info.uri);
-		}
-
-		public void OnDiscoveredServer(ServerResponse info)
-		{
-			discoveredServers[info.serverId] = info;
-			Connect(info);
-		}
-
-		public void ButtonHost()
-		{
-			SetupInfoText("Starting as host");
-			discoveredServers.Clear();
-			//NetworkManager.singleton.onlineScene = SceneManager.GetActiveScene().name;
+			localHostButton.interactable = false;
+			connectToServerButton.interactable = false;
 			NetworkManager.singleton.StartHost();
-			networkDiscovery.AdvertiseServer();
-
 		}
 
-		public void ButtonServer()
+		private void OnConnectToServerButtonPressed()
 		{
-			SetupInfoText("Starting as server.");
-			discoveredServers.Clear();
-			// NetworkManager.singleton.onlineScene = SceneManager.GetActiveScene().name;
-			NetworkManager.singleton.StartServer();
-			networkDiscovery.AdvertiseServer();
+			Debug.Log("Attempting to connect to server at " + ipToConnectTo);
 
+			localHostButton.interactable = false;
+			connectToServerButton.interactable = false;
+			NetworkManager.singleton.networkAddress = ipToConnectTo;
+			NetworkManager.singleton.StartClient();
 		}
-
-		public void ButtonClient()
-		{
-			SetupInfoText("Starting as client.");
-			discoveredServers.Clear();
-			networkDiscovery.StartDiscovery();
-		}
-
-		public void ButtonStop()
-		{
-			SetupInfoText("Stopping.");
-			// stop host if host mode
-			if (NetworkServer.active && NetworkClient.isConnected)
-			{
-				NetworkManager.singleton.StopHost();
-			}
-			// stop client if client-only
-			else if (NetworkClient.isConnected)
-			{
-				NetworkManager.singleton.StopClient();
-			}
-			// stop server if server-only
-			else if (NetworkServer.active)
-			{
-				NetworkManager.singleton.StopServer();
-			}
-			networkDiscovery.StopDiscovery();
-			// we need to call setup canvas a second time in this function for it to update the abovee changes
-			SetupCanvas();
-		}
-
-		public void ButtonAuto()
-		{
-			SetupInfoText("Auto Starting.");
-			StartCoroutine(Waiter());
-		}
-
-		// manually call canvas changes for performance, can lazily be done via Update()
-		public void SetupCanvas()
-		{
-			// Here we will dump majority of the canvas UI
-
-			if (NetworkManager.singleton == null)
-			{
-				SetupInfoText("NetworkManager null");
-				return;
-			}
-
-			// check network status, and show required UI
-			if (!NetworkClient.isConnected && !NetworkServer.active)
-			{
-				if (NetworkClient.active)
-				{
-					PanelStart.SetActive(false);
-					PanelStop.SetActive(true);
-				}
-				else
-				{
-					PanelStart.SetActive(true);
-					PanelStop.SetActive(false);
-				}
-			}
-			else
-			{
-				PanelStart.SetActive(false);
-				PanelStop.SetActive(true);
-			}
-		}
-
-		// useful status info to display on screen
-		public void SetupInfoText(string _info)
-		{
-			infoText.text = _info;
-			SetupCanvas();
-		}
-
-		// Invoked when the value of the text field changes.
-		public void OnValueChangedAddress()
-		{
-			NetworkManager.singleton.networkAddress = inputFieldAddress.text;
-		}
-
-		// touchscreen keyboard can be weird, so we have an option to open it manually
-		public void ButtonKeyboard(int _status)
-		{
-			if (TouchScreenKeyboard.isSupported)
-			{
-				keyboardStatus = _status;
-				keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false, "", 15);
-				// Open(string text, TouchScreenKeyboardType keyboardType = TouchScreenKeyboardType.Default, bool autocorrection = true, bool multiline = false, bool secure = false, bool alert = false, string textPlaceholder = "", int characterLimit = 0);
-			}
-			else
-			{
-				Debug.Log("Touchscreen keyboard not supported.");
-			}
-		}
-
-		private void Update()
-		{
-			if (TouchScreenKeyboard.isSupported && keyboard != null && keyboard.active && keyboard.text != "")
-			{
-				if (keyboardStatus == 1)
-				{
-					inputFieldAddress.text = keyboard.text;
-				}
-			}
-		}
-
 
 	}
 }

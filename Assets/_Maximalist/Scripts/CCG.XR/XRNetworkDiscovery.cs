@@ -97,7 +97,6 @@ namespace CCG.XR
 			//OnServerFound.Invoke(response);
 			if (vrCanvasHUD == null)
 			{ vrCanvasHUD = FindObjectOfType<XRCanvasHUD>(); }
-			vrCanvasHUD.OnDiscoveredServer(response);
 		}
 
 		#endregion

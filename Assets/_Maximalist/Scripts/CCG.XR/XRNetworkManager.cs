@@ -150,7 +150,7 @@ namespace CCG.XR
 		/// <param name="conn">Connection from client.</param>
 		public override void OnServerConnect(NetworkConnectionToClient conn)
 		{
-
+			Debug.Log("Client Connected to Server");
 		}
 
 		/// <summary>
@@ -217,6 +217,7 @@ namespace CCG.XR
 		public override void OnClientConnect()
 		{
 			base.OnClientConnect();
+			Debug.Log("OnClientConnect");
 		}
 
 		/// <summary>
@@ -225,6 +226,7 @@ namespace CCG.XR
 		/// </summary>
 		public override void OnClientDisconnect()
 		{
+			Debug.Log("OnClientDisconnect");
 
 		}
 

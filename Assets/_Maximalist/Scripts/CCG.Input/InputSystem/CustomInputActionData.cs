@@ -32,9 +32,6 @@ namespace CCG.CustomInput
 
 		public void AddToInputActionReference(UnityAction actionToAdd)
 		{
-			DebugLogger.Log($"{name} AddToInputActionReference called");
-
-
 			if (inputActionReference == null || actionToAdd == null)
 				return;
 
@@ -94,7 +91,6 @@ namespace CCG.CustomInput
 			if (inputActionReference)
 			{
 				inputActionReference.action.Disable();
-				DebugLogger.Log($"{name} is Disabling this action");
 			}
 		}
 	}
