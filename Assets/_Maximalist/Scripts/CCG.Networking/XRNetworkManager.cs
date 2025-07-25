@@ -12,13 +12,14 @@ using UnityEngine;
 using Mirror;
 using System.Linq;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	public class XRNetworkManager : NetworkManager
 	{
 		// Overrides the base singleton so we don't
 		// have to cast to this type everywhere.
 		public static new XRNetworkManager singleton { get; private set; }
+		public static int playerCount = 0;
 
 		private NetworkIdentity[] copyOfOwnedObjects;
 
@@ -171,6 +172,8 @@ namespace CCG.XR
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
+			playerCount++;
+			ReportPlayerCount(playerCount);
 		}
 
 		/// <summary>
@@ -192,6 +195,20 @@ namespace CCG.XR
 			}
 
 			base.OnServerDisconnect(conn);
+			playerCount--;
+			ReportPlayerCount(playerCount);
+		}
+
+		private async void ReportPlayerCount(int count)
+		{
+			try
+			{
+				Debug.Log($"[Multiplay] Player count set to {count}");
+			}
+			catch (System.Exception e)
+			{
+				Debug.LogWarning($"[Multiplay] Failed to report player count: {e.Message}");
+			}
 		}
 
 		/// <summary>

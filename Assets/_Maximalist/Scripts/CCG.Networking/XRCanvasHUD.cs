@@ -12,7 +12,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	public class XRCanvasHUD : MonoBehaviour
 	{

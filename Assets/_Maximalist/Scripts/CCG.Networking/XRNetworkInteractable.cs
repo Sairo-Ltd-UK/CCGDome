@@ -11,7 +11,7 @@
 using UnityEngine;
 using Mirror;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	public class XRNetworkInteractable : NetworkBehaviour
 	{
@@ -31,7 +31,7 @@ namespace CCG.XR
 			//if (isOwned == false)
 			//{
 			ResetInteractableVelocity();
-			CmdPickup(XRStaticVariables.handValue);
+			CmdPickup();
 			//}
 		}
 
@@ -49,7 +49,7 @@ namespace CCG.XR
 		}
 
 		[Command(requiresAuthority = false)]
-		public void CmdPickup(int _hand, NetworkConnectionToClient sender = null)
+		public void CmdPickup(NetworkConnectionToClient sender = null)
 		{
 			//Debug.Log("Mirror CmdPickup owner set to: " + sender.identity);
 
@@ -64,7 +64,7 @@ namespace CCG.XR
 
 		///*
 		[Command(requiresAuthority = false)]
-		public void CmdDrop(int _hand, NetworkConnectionToClient sender = null) //Vector3 _velocity, Vector3 _angualarVelocity,
+		public void CmdDrop(NetworkConnectionToClient sender = null) //Vector3 _velocity, Vector3 _angualarVelocity,
 		{
 
 		}

@@ -10,32 +10,22 @@
 
 using UnityEngine;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	public class XRPlayerRig : MonoBehaviour
 	{
-		public Transform rHandTransform;
-		public Transform lHandTransform;
-		public Transform headTransform;
+		[Header("XRPlayerRig")]
+		[SerializeField] private Transform rHandTransform;
+		[SerializeField] private Transform lHandTransform;
+		[SerializeField] private Transform headTransform;
+		[Space]
+		[SerializeField] private Transform canvasUIPosition;
 
-		public Transform canvasUIPosition;
+		public Transform RHandTransform { get => rHandTransform; set => rHandTransform = value; }
+		public Transform LHandTransform { get => lHandTransform; set => lHandTransform = value; }
+		public Transform HeadTransform { get => headTransform; set => headTransform = value; }
 
-		public XRNetworkPlayerScript localVRNetworkPlayerScript;
-
-		// switch to Late/Fixed Update if weirdness happens
-		private void Update()
-		{
-			if (localVRNetworkPlayerScript)
-			{
-				// presuming you want a head object to sync, optional, same as hands.
-				localVRNetworkPlayerScript.headTransform.position = headTransform.position;
-				localVRNetworkPlayerScript.headTransform.rotation = headTransform.rotation;
-				localVRNetworkPlayerScript.rHandTransform.position = rHandTransform.position;
-				localVRNetworkPlayerScript.rHandTransform.rotation = rHandTransform.rotation;
-				localVRNetworkPlayerScript.lHandTransform.position = lHandTransform.position;
-				localVRNetworkPlayerScript.lHandTransform.rotation = lHandTransform.rotation;
-			}
-		}
+		public Transform CanvasUIPosition { get => canvasUIPosition; set => canvasUIPosition = value; }
 
 		// Simple movement for testing on PC/Editor/Controller joystick
 		// helps if you cannot use headset directly in Unity Editor  (W A S D)

@@ -2,38 +2,29 @@ using UnityEngine;
 
 namespace CCG.MiniGames
 {
-    public class MiniGameInteractionSwitch : MonoBehaviour
-    {
-        [Tooltip("Interactable instance of game to switch to")]
-        [SerializeField]
-        MiniGameInteractable targetInteractable;
-        private void OnTriggerEnter(Collider other)
-        {
+	public class MiniGameInteractionSwitch : MonoBehaviour
+	{
+		[Tooltip("Intractable instance of game to switch to")]
+		[SerializeField] private MiniGameInteractable targetInteractable;
 
-            if (!other.TryGetComponent<GenericMiniGameInteractor>(out GenericMiniGameInteractor interactor))
-            {
-                return;
-            }
+		private void OnTriggerEnter(Collider other)
+		{
+			Debug.Log("Name: " + other.name);
 
-            // if (!interactor.isLocalPlayer)
-            // {
-            //     return;
-            // }
+			if (!other.TryGetComponent(out GenericMiniGameInteractor interactor))
+				return;
 
-            interactor.SetCurrentMiniGame(targetInteractable);
-        }
+			interactor.SetCurrentMiniGame(targetInteractable);
+		}
 
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.TryGetComponent<GenericMiniGameInteractor>(out var interactor))
-            {
-                return;
-            }
-            
-            // if (!interactor.isLocalPlayer)
-            //     return;
+		private void OnTriggerExit(Collider other)
+		{
+			Debug.Log("Name: " + other.name);
 
-            interactor.ClearCurrentMiniGame(targetInteractable);
-        }
-    }
+			if (!other.TryGetComponent(out GenericMiniGameInteractor interactor))
+				return;
+
+			interactor.ClearCurrentMiniGame(targetInteractable);
+		}
+	}
 }

@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Mirror.Discovery;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	[DisallowMultipleComponent]
 	[AddComponentMenu("Network/Network Discovery")]

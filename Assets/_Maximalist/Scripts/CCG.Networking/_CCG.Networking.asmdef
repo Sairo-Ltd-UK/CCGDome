@@ -3,8 +3,10 @@
     "rootNamespace": "CCG.Networking",
     "references": [
         "GUID:30817c1a0e6d646d99c048fc403f5979",
+        "GUID:72872094b21c16e48b631b2224833d49",
         "GUID:fe25561d224ed4743af4c60938a59d0b",
-        "GUID:5540e30183c82e84b954c033c388e06c"
+        "GUID:5540e30183c82e84b954c033c388e06c",
+        "GUID:4fc462806a32aa245a7b28367381bf24"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

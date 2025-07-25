@@ -11,7 +11,7 @@ using System;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace CCG.Services
+namespace CCG.Networking
 {
 	public static class ServiceManager
 	{

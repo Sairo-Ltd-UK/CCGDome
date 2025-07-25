@@ -27,8 +27,12 @@ namespace CCG.MiniGames
 		{
 			base.OnStartLocalPlayer();
 
+			if(isClientOnly == false)
+				return;
+
 			if (fireRayAction != null)
 			{
+				Debug.Log("AddToInputActionReference");
 				fireRayAction.AddToInputActionReference(RequestRaycast);
 			}
 		}

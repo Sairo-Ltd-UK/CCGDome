@@ -35,14 +35,10 @@ namespace CCG.MiniGames.Chess
 			if(hit.collider == null) 
 				return;
 
-			Debug.Log($"NAME: {hit.collider.name}");
-
 			var tile = hit.collider.GetComponent<SingleTile>();
 
 			if (tile == null)
 				return;
-
-			Debug.Log($"Tile: {tile.name}");
 
 			int posX = tile.posX;
 			int posY = tile.posY;
