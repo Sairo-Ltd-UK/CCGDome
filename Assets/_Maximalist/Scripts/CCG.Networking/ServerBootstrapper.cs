@@ -15,22 +15,23 @@ namespace CCG.Networking
 {
 	public static class ServerBootstrapper
 	{
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-		private static void StartServerIfHeadless()
-		{
-#if UNITY_SERVER
-			Debug.Log("Running in headless server mode. Starting Mirror server...");
+		//Moved to the services manager for now.
+//		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+//		private static void StartServerIfHeadless()
+//		{
+//#if UNITY_SERVER
+//            Debug.Log("Running in headless server mode. Starting Mirror server...");
 
-			if (Application.isEditor)
-			{
-				Debug.Log("Application is editor, returning to allow debugging.");
-				return;
-			}
+//            if (Application.isEditor)
+//            {
+//                Debug.Log("Application is editor, returning to allow debugging.");
+//                return;
+//            }
 
-			NetworkManager.singleton.StartServer();
-#else
-			Debug.Log("Not a server build. ServerBootstrapper will do nothing.");
-#endif
-		}
-	}
+//            NetworkManager.singleton.StartServer();
+//#else
+//			Debug.Log("Not a server build. ServerBootstrapper will do nothing.");
+//#endif
+//        }
+    }
 }

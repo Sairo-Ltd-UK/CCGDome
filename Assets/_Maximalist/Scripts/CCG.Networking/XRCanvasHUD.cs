@@ -16,8 +16,6 @@ namespace CCG.Networking
 {
 	public class XRCanvasHUD : MonoBehaviour
 	{
-		private const string ipToConnectTo = "145.190.54.4";
-
 		[SerializeField] private Button localHostButton;
 		[SerializeField] private Button connectToServerButton;
 
@@ -42,11 +40,10 @@ namespace CCG.Networking
 
 		private void OnConnectToServerButtonPressed()
 		{
-			Debug.Log("Attempting to connect to server at " + ipToConnectTo);
+			Debug.Log("Attempting to connect to server");
 
 			localHostButton.interactable = false;
 			connectToServerButton.interactable = false;
-			NetworkManager.singleton.networkAddress = ipToConnectTo;
 			NetworkManager.singleton.StartClient();
 		}
 

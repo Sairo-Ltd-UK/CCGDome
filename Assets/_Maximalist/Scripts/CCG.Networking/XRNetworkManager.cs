@@ -11,50 +11,61 @@
 using UnityEngine;
 using Mirror;
 using System.Linq;
+using Unity.Services.Multiplay;
 
 namespace CCG.Networking
 {
 	public class XRNetworkManager : NetworkManager
 	{
-		// Overrides the base singleton so we don't
-		// have to cast to this type everywhere.
-		public static new XRNetworkManager singleton { get; private set; }
-		public static int playerCount = 0;
 
-		private NetworkIdentity[] copyOfOwnedObjects;
 
-		/// <summary>
-		/// Runs on both Server and Client
-		/// Networking is NOT initialized when this fires
-		/// </summary>
-		public override void Awake()
-		{
-			base.Awake();
-			singleton = this;
-		}
 
-		#region Unity Callbacks
+        // Overrides the base singleton so we don't
+        // have to cast to this type everywhere.
+        public static new XRNetworkManager singleton { get; private set; }
 
-		public override void OnValidate()
+
+        private NetworkIdentity[] copyOfOwnedObjects;
+
+        /// <summary>
+        /// Runs on both Server and Client
+        /// Networking is NOT initialized when this fires
+        /// </summary>
+        /// 
+
+        #region Unity Callbacks
+
+        public override void OnValidate()
 		{
 			base.OnValidate();
 		}
 
-		/// <summary>
-		/// Runs on both Server and Client
-		/// Networking is NOT initialized when this fires
-		/// </summary>
-		public override void Start()
+        public override void Awake()
+        {
+            base.Awake();
+            singleton = this;
+        }
+
+        /// <summary>
+        /// Runs on both Server and Client
+        /// Networking is NOT initialized when this fires
+        /// </summary>
+        public async override void Start()
 		{
 			base.Start();
-		}
+        }
 
-		/// <summary>
-		/// Runs on both Server and Client
-		/// </summary>
-		public override void LateUpdate()
+        /// <summary>
+        /// Runs on both Server and Client
+        /// </summary>
+        public override void LateUpdate()
 		{
 			base.LateUpdate();
+		}
+
+		public void FixedUpdate()
+		{
+			ServiceManager.HeartBeat();
 		}
 
 		/// <summary>
@@ -172,8 +183,8 @@ namespace CCG.Networking
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
-			playerCount++;
-			ReportPlayerCount(playerCount);
+            ServiceManager.currentPlayerCount++;
+            ServiceManager.PlayerCountChanged();
 		}
 
 		/// <summary>
@@ -195,20 +206,8 @@ namespace CCG.Networking
 			}
 
 			base.OnServerDisconnect(conn);
-			playerCount--;
-			ReportPlayerCount(playerCount);
-		}
-
-		private async void ReportPlayerCount(int count)
-		{
-			try
-			{
-				Debug.Log($"[Multiplay] Player count set to {count}");
-			}
-			catch (System.Exception e)
-			{
-				Debug.LogWarning($"[Multiplay] Failed to report player count: {e.Message}");
-			}
+            ServiceManager.currentPlayerCount--;
+            ServiceManager.PlayerCountChanged();
 		}
 
 		/// <summary>
