@@ -35,9 +35,10 @@ namespace CCG.Networking
             }
         }
 
-        private void OnAllocate(MultiplayAllocation allocation)
+        private async void OnAllocate(MultiplayAllocation allocation)
         {
             Debug.Log($"[Multiplay] Server allocated with ID: {allocation.AllocationId}");
+            await MultiplayService.Instance.ReadyServerForPlayersAsync();
             // You can parse payload or start gameplay logic here if needed.
         }
 
