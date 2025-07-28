@@ -32,8 +32,6 @@ namespace CCG.MiniGames.Chess
 		[Server]
 		private void TryMovePeice(RaycastHit hit)
 		{
-			return;
-
 			if(hit.collider == null) 
 				return;
 

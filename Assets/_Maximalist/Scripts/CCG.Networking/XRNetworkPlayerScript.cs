@@ -11,60 +11,76 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
+using CCG.XR;
 
 namespace CCG.Networking
 {
 	public class XRNetworkPlayerScript : NetworkBehaviour
 	{
-		public Transform rHandTransform;
-		public Transform lHandTransform;
-		public Transform headTransform;
-		public GameObject headModel;
-		public GameObject rHandModel;
-		public GameObject lHandModel;
-		[Space]
-		public XRPlayerRig xrPlayerRig;
+        public Transform rHandTransform;
+        public Transform lHandTransform;
+        public Transform headTransform;
+        public GameObject headModel;
+        public GameObject rHandModel;
+        public GameObject lHandModel;
 
-		//SyncVar(hook = nameof(OnRightObjectChangedHook))]
-		public NetworkIdentity rightHandObject;
+        public XRPlayerRig xrPlayerRig;
 
-		//[SyncVar(hook = nameof(OnLeftObjectChangedHook))]
-		public NetworkIdentity leftHandObject;
+        public override void OnStartLocalPlayer()
+        {
+            // create a link to local vr rig, so that rig can sync to our local network players transforms
+            xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
+            xrPlayerRig.localVRNetworkPlayerScript = this;
 
-		// switch to Late/Fixed Update if weirdness happens
-		private void Update()
-		{
-			if (xrPlayerRig == false)
-				return;
+            // we dont need to see our network representation of hands, or our own headset, it also covers camera without using layers or some repositioning
+            headModel.SetActive(false);
+            rHandModel.SetActive(false);
+            lHandModel.SetActive(false);
+        }
 
-			transform.position = xrPlayerRig.transform.position;
-			transform.rotation = xrPlayerRig.transform.rotation;
+        // a static global list of players that can be used for a variery of features, one being enemies
+        public readonly static List<XRNetworkPlayerScript> playersList = new List<XRNetworkPlayerScript>();
 
-			headTransform.position = xrPlayerRig.HeadTransform.position;
-			headTransform.rotation = xrPlayerRig.HeadTransform.rotation;
+        public override void OnStartServer()
+        {
+            playersList.Add(this);
+        }
 
-			rHandTransform.position = xrPlayerRig.RHandTransform.position;
-			rHandTransform.rotation = xrPlayerRig.RHandTransform.rotation;
-			lHandTransform.position = xrPlayerRig.LHandTransform.position;
-			lHandTransform.rotation = xrPlayerRig.LHandTransform.rotation;
-		}
+        public override void OnStopServer()
+        {
+            playersList.Remove(this);
+        }
 
-		public override void OnStartLocalPlayer()
-		{
-			// create a link to local vr rig, so that rig can sync to our local network players transforms
-			xrPlayerRig = FindObjectOfType<XRPlayerRig>();
 
-			// we dont need to see our network representation of hands, or our own headset, it also covers camera without using layers or some repositioning
-			headModel.SetActive(false);
-			rHandModel.SetActive(false);
-			lHandModel.SetActive(false);
-		}
-	
-		[Command]
-		public void CmdSetupPlayer()
-		{
-			//player info sent to server, then server updates sync vars which handles it on all clients
 
-		}
-	}
+        [SyncVar(hook = nameof(OnRightObjectChangedHook))]
+        public NetworkIdentity rightHandObject;
+
+        void OnRightObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
+        {
+            if (rightHandObject)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        [SyncVar(hook = nameof(OnLeftObjectChangedHook))]
+        public NetworkIdentity leftHandObject;
+
+        void OnLeftObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
+        {
+            if (leftHandObject)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+    }
 }

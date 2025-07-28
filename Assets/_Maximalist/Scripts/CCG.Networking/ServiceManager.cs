@@ -59,13 +59,11 @@ namespace CCG.Networking
                 }
 
                 Debug.Log("Running in headless server mode. Starting Mirror server...");
-
                 NetworkManager.singleton.StartServer();
                 await MultiplayService.Instance.ReadyServerForPlayersAsync();
 
                 LogServerConfig();
                 serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(defaultMaxPlayers, defaultServerName, defaultGameType, defaultBuildId, defaultMap);
-
  
 #else
 			Debug.Log("Not a server build. ServerBootstrapper will do nothing.");

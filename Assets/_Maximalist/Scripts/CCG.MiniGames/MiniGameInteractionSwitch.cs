@@ -9,7 +9,7 @@ namespace CCG.MiniGames
 
 		private void OnTriggerEnter(Collider other)
 		{
-			Debug.Log("Name: " + other.name);
+			//Debug.Log("Name: " + other.name);
 
 			if (!other.TryGetComponent(out GenericMiniGameInteractor interactor))
 				return;
@@ -19,7 +19,7 @@ namespace CCG.MiniGames
 
 		private void OnTriggerExit(Collider other)
 		{
-			Debug.Log("Name: " + other.name);
+			//Debug.Log("Name: " + other.name);
 
 			if (!other.TryGetComponent(out GenericMiniGameInteractor interactor))
 				return;
