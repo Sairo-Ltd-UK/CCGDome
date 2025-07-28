@@ -35,7 +35,7 @@ namespace CCG.Networking
             serverQueryHandler.BuildId = buildId;
         }
 
-        public static void PlayerCountChanged()
+        public static async void PlayerCountChanged()
         {
             serverQueryHandler.CurrentPlayers = currentPlayerCount;
         }
@@ -51,13 +51,6 @@ namespace CCG.Networking
                 IsInitialized = true;
 
 #if UNITY_SERVER
-                if (Application.isEditor)
-                    return;
-
-                serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(defaultMaxPlayers, defaultServerName, defaultGameType, defaultBuildId, defaultMap);
-                LogServerConfig();
-
-                Debug.Log("Running in headless server mode. Starting Mirror server...");
 
                 if (Application.isEditor)
                 {
@@ -65,8 +58,15 @@ namespace CCG.Networking
                     return;
                 }
 
+                Debug.Log("Running in headless server mode. Starting Mirror server...");
+
                 NetworkManager.singleton.StartServer();
                 await MultiplayService.Instance.ReadyServerForPlayersAsync();
+
+                LogServerConfig();
+                serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(defaultMaxPlayers, defaultServerName, defaultGameType, defaultBuildId, defaultMap);
+
+ 
 #else
 			Debug.Log("Not a server build. ServerBootstrapper will do nothing.");
 #endif
@@ -75,16 +75,19 @@ namespace CCG.Networking
 			{
 				Debug.LogException(e);
 			}
-
-
         }
 
-        public static void HeartBeat()
+        public static void UpdateServerQuery()
         {
+#if UNITY_SERVER
+            if (Application.isEditor)
+                return;
+
             if (IsInitialized == false)
                 return;
 
             serverQueryHandler.UpdateServerCheck();
+#endif
         }
 
         public static void LogServerConfig()

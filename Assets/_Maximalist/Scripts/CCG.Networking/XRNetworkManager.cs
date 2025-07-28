@@ -65,7 +65,7 @@ namespace CCG.Networking
 
 		public void FixedUpdate()
 		{
-			ServiceManager.HeartBeat();
+			ServiceManager.UpdateServerQuery();
 		}
 
 		/// <summary>
