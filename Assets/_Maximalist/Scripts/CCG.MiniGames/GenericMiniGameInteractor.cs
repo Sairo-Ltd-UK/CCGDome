@@ -27,12 +27,11 @@ namespace CCG.MiniGames
 		{
 			base.OnStartLocalPlayer();
 
-			if(isClientOnly == false)
+			if(isServerOnly == true)
 				return;
 
 			if (fireRayAction != null)
 			{
-				Debug.Log("AddToInputActionReference");
 				fireRayAction.AddToInputActionReference(RequestRaycast);
 			}
 		}
@@ -50,15 +49,15 @@ namespace CCG.MiniGames
 		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
 		{
 			//CW Placeholder, will later replace with a selector system. This will do for now.
-			if(currentMiniGame == null)
+			if (currentMiniGame == null)
 				currentMiniGame = FindObjectOfType<MiniGameInteractable>();
+
+			if (currentMiniGame == null)
+				return;
 
 			if (RayCastHitProvider.ProvideRaycastHit(out RaycastHit hit, interactableLayer, 500))
 			{
-				if (currentMiniGame != null)
-				{
-					currentMiniGame.OnReciveRaycastHit(hit);
-				}
+				currentMiniGame.OnReciveRaycastHit(hit);
 			}
 		}
 

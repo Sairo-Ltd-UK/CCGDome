@@ -1,5 +1,16 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     11/07/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
 using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 #if UNITY_SERVER
 using Unity.Services.Multiplay;
@@ -7,69 +18,62 @@ using Unity.Services.Multiplay;
 
 namespace CCG.Networking
 {
-    public class MultiplayServerEventHandler : MonoBehaviour
-    {
+	public static class MultiplayServerEventHandler
+	{
 #if UNITY_SERVER
 
-        private MultiplayEventCallbacks eventCallbacks;
-        private IServerEvents serverEvents;
+		private static MultiplayEventCallbacks eventCallbacks;
 
-        private async void Awake()
-        {
-            // We must first prepare our callbacks like so:
-            eventCallbacks = new MultiplayEventCallbacks();
-            eventCallbacks.Allocate += OnAllocate;
-            eventCallbacks.Deallocate += OnDeallocate;
-            eventCallbacks.Error += OnError;
-            eventCallbacks.SubscriptionStateChanged += OnSubscriptionStateChanged;
+		public static async Task Init()
+		{
+			// We must first prepare our callbacks like so:
+			eventCallbacks = new MultiplayEventCallbacks();
+			eventCallbacks.Allocate += OnAllocate;
+			eventCallbacks.Deallocate += OnDeallocate;
+			eventCallbacks.Error += OnError;
+			eventCallbacks.SubscriptionStateChanged += OnSubscriptionStateChanged;
 
-            try
-            {
-                // Subscribe to the Multiplay server events
-                serverEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(eventCallbacks);
-                Debug.Log("[Multiplay] Successfully subscribed to server events");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[Multiplay] Failed to subscribe to server events: {ex.Message}");
-            }
-        }
+			try
+			{
+				// Subscribe to the Multiplay server events
+				await MultiplayService.Instance.SubscribeToServerEventsAsync(eventCallbacks);
+				Debug.Log("[Multiplay] Successfully subscribed to server events");
+			}
+			catch (Exception ex)
+			{
+				Debug.LogError($"[Multiplay] Failed to subscribe to server events: {ex.Message}");
+			}
+		}
 
-        private async void OnAllocate(MultiplayAllocation allocation)
-        {
-            Debug.Log($"[Multiplay] Server allocated with ID: {allocation.AllocationId}");
-            await MultiplayService.Instance.ReadyServerForPlayersAsync();
-            // You can parse payload or start gameplay logic here if needed.
-        }
+		private static async void OnAllocate(MultiplayAllocation allocation)
+		{
+			// You can parse payload or start gameplay logic here if needed.
+			Debug.Log($"[Multiplay] Server allocated with ID: {allocation.AllocationId}");
+			await MultiplayService.Instance.ReadyServerForPlayersAsync();
+		}
 
-        private void OnDeallocate(MultiplayDeallocation deallocation)
-        {
-            Debug.Log("[Multiplay] Server deallocated – shutting down soon.");
-            // Clean up or save game state here if necessary.
-            Application.Quit();
-        }
+		private static void OnDeallocate(MultiplayDeallocation deallocation)
+		{
+			// Clean up or save game state here if necessary.
+			Debug.Log("[Multiplay] Server deallocated – shutting down soon.");
+			Application.Quit();
+		}
 
-        private void OnError(MultiplayError error)
-        {
-            Debug.LogError($"[Multiplay] Error received: {error.Reason}");
+		private static void OnError(MultiplayError error)
+		{
+			Debug.LogError($"[Multiplay] Error received: {error.Reason}");
 
-            if (!string.IsNullOrEmpty(error.Detail))
-            {
-                Debug.LogError($"[Multiplay] Error detail: {error.Detail}");
-            }
-        }
+			if (!string.IsNullOrEmpty(error.Detail))
+			{
+				Debug.LogError($"[Multiplay] Error detail: {error.Detail}");
+			}
+		}
 
-        private void OnSubscriptionStateChanged(MultiplayServerSubscriptionState state)
-        {
-            Debug.Log($"[Multiplay] Subscription state changed: {state}");
-        }
-
-        private void OnApplicationQuit()
-        {
-            // Optionally unsubscribe to free resources (not required, but good practice)
-            serverEvents.UnsubscribeAsync();
-        }
-    }
+		private static void OnSubscriptionStateChanged(MultiplayServerSubscriptionState state)
+		{
+			Debug.Log($"[Multiplay] Subscription state changed: {state}");
+		}
 
 #endif
+	}
 }

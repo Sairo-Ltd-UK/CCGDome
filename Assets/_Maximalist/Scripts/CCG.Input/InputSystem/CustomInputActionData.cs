@@ -42,7 +42,6 @@ namespace CCG.CustomInput
 
 			if (!inputAction.enabled)
 			{
-				DebugLogger.Log($"{name} is enabling this action");
 				inputAction.Enable();
 			}
 

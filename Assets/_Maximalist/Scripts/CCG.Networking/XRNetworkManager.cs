@@ -11,61 +11,58 @@
 using UnityEngine;
 using Mirror;
 using System.Linq;
-using Unity.Services.Multiplay;
 
 namespace CCG.Networking
 {
 	public class XRNetworkManager : NetworkManager
 	{
 
+		// Overrides the base singleton so we don't
+		// have to cast to this type everywhere.
+		public static new XRNetworkManager singleton { get; private set; }
 
 
-        // Overrides the base singleton so we don't
-        // have to cast to this type everywhere.
-        public static new XRNetworkManager singleton { get; private set; }
+		private NetworkIdentity[] copyOfOwnedObjects;
 
+		/// <summary>
+		/// Runs on both Server and Client
+		/// Networking is NOT initialized when this fires
+		/// </summary>
+		/// 
 
-        private NetworkIdentity[] copyOfOwnedObjects;
+		#region Unity Callbacks
 
-        /// <summary>
-        /// Runs on both Server and Client
-        /// Networking is NOT initialized when this fires
-        /// </summary>
-        /// 
-
-        #region Unity Callbacks
-
-        public override void OnValidate()
+		public override void OnValidate()
 		{
 			base.OnValidate();
 		}
 
-        public override void Awake()
-        {
-            base.Awake();
-            singleton = this;
-        }
+		public override void Awake()
+		{
+			base.Awake();
+			singleton = this;
+		}
 
-        /// <summary>
-        /// Runs on both Server and Client
-        /// Networking is NOT initialized when this fires
-        /// </summary>
-        public async override void Start()
+		/// <summary>
+		/// Runs on both Server and Client
+		/// Networking is NOT initialized when this fires
+		/// </summary>
+		public async override void Start()
 		{
 			base.Start();
-        }
+		}
 
-        /// <summary>
-        /// Runs on both Server and Client
-        /// </summary>
-        public override void LateUpdate()
+		/// <summary>
+		/// Runs on both Server and Client
+		/// </summary>
+		public override void LateUpdate()
 		{
 			base.LateUpdate();
 		}
 
 		public void FixedUpdate()
 		{
-			ServiceManager.UpdateServerQuery();
+			ServerQueryReporter.UpdateServerQuery();
 		}
 
 		/// <summary>
@@ -183,8 +180,7 @@ namespace CCG.Networking
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
-            ServiceManager.currentPlayerCount++;
-            ServiceManager.PlayerCountChanged();
+			ServerQueryReporter.OnPlayerJoined();
 		}
 
 		/// <summary>
@@ -206,8 +202,7 @@ namespace CCG.Networking
 			}
 
 			base.OnServerDisconnect(conn);
-            ServiceManager.currentPlayerCount--;
-            ServiceManager.PlayerCountChanged();
+			ServerQueryReporter.OnPlayerLeft();
 		}
 
 		/// <summary>
@@ -219,7 +214,7 @@ namespace CCG.Networking
 		/// <param name="message">String message of the error.</param>
 		public override void OnServerError(NetworkConnectionToClient conn, TransportError transportError, string message)
 		{
-			Debug.Log("OnServerError");
+			Debug.Log($"OnServerError: {message}");
 		}
 
 		#endregion

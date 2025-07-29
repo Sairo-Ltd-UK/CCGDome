@@ -5,8 +5,10 @@ using UnityEngine.Events;
 using Mirror.Discovery;
 
 
+    //[Serializable]
+    //public class ServerFoundUnityEvent<TResponseType> : UnityEvent<TResponseType> { };
 
-[DisallowMultipleComponent]
+    [DisallowMultipleComponent]
     [AddComponentMenu("Network/Network Discovery")]
     public class VRNetworkDiscovery : NetworkDiscoveryBase<ServerRequest, ServerResponse>
     {

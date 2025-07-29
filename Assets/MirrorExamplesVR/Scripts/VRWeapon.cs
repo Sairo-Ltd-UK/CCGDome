@@ -32,7 +32,7 @@ public class VRWeapon : NetworkBehaviour
     //void OnOwnerChangedHook(NetworkIdentity _old, NetworkIdentity _new)
     //{
     //    Debug.Log("OnOwnerChangedHook: " + objectOwner);
-    //    vrNetworkPlayerScript = objectOwner.GetComponent<XRNetworkPlayerScript>();
+    //    vrNetworkPlayerScript = objectOwner.GetComponent<VRNetworkPlayerScript>();
 
     //}
 
@@ -57,7 +57,7 @@ public class VRWeapon : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            //vrNetworkPlayerScript = vrNetworkPlayerScript.GetComponent<XRNetworkPlayerScript>();
+            //vrNetworkPlayerScript = vrNetworkPlayerScript.GetComponent<VRNetworkPlayerScript>();
             vrNetworkPlayerScript.rightHandObject = this.netIdentity;
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
