@@ -23,110 +23,208 @@ namespace CCG.MiniGames.Chess
 			game.Setup(transform.localScale.y);
 		}
 
+		public override void OnStartClient()
+		{
+			game.LoadListsToDictionarys();
+			game.Setup(transform.localScale.y);
+		}
+
 		[Server]
 		public override void OnReciveRaycastHit(RaycastHit hit)
 		{
+			Debug.Log("[CGMW] OnReciveRaycastHit");
 			TryMovePeice(hit);
 		}
 
 		[Server]
 		private void TryMovePeice(RaycastHit hit)
 		{
-			if(hit.collider == null) 
+			Debug.Log("[CGMW] TryMovePeice");
+
+			if (hit.collider == null) 
 				return;
+
+			Debug.Log("[CGMW] hit.collider != null");
 
 			var tile = hit.collider.GetComponent<SingleTile>();
 
 			if (tile == null)
 				return;
 
+			Debug.Log("[CGMW] tile != null");
+
 			int posX = tile.posX;
 			int posY = tile.posY;
 
 			if (game.selectedPiece == null)
 			{
-				game.selectedX = posX;
-				game.selectedY = posY;
-
-				var selected = game.boardPieceTwoDArrays[posX, posY];
-				if (selected == null) return;
-
-				game.selectedPiece = selected;
-				game.possibleMoves = selected.GetComponent<ChessPiece>().PossibleMoves(game, posX, posY);
-
-				if (game.WhiteTurn != selected.GetComponent<ChessPiece>().IsWhitePiece)
-				{
-					game.SetSelectedPiece(0);
-					return;
-				}
-
-				game.SetSelectedPiece(1);
+				Debug.Log("[CGMW] game.selectedPiece == null");
+				SelectPiece(posX, posY);
+				RpcSelectPiece(posX, posY);
 			}
 			else
 			{
-				game.currentX = posX;
-				game.currentY = posY;
+				Debug.Log("[CGMW] game.selectedPiece != null");
 
-				if (!game.possibleMoves[posX, posY]) return;
+				SetGameCurrentXY(posX, posY);
+				RpcSetGameCurrentXY(posX, posY);
+
+				if (game.possibleMoves[posX, posY] == false)
+					return;
 
 				var targetPiece = game.boardPieceTwoDArrays[posX, posY];
 
 				if (targetPiece != null)
 				{
+					Debug.Log("[CGMW] targetPiece != null");
+
 					bool isWhite = game.selectedPiece.GetComponent<ChessPiece>().IsWhitePiece;
 					bool isKing = targetPiece.GetComponent<ChessPiece>().IsKing;
 
 					if (isKing)
 					{
+						SomeoneWonGame(!isWhite);
 						RpcSomeoneWonGame(!isWhite);
+
+						ResetGame();
 						RpcResetGame();
 						return;
 					}
 					else
 					{
-						if (isWhite) ChessGameUIManager.p1PieceCount--;
-						else ChessGameUIManager.p2PieceCount--;
+						if (isWhite)
+							ChessGameUIManager.p1PieceCount--;
+						else
+							ChessGameUIManager.p2PieceCount--;
 					}
 
+					RemovePiece(posX, posY);
 					RpcRemovePiece(posX, posY);
 				}
 
+				SetBoardPiece(game.selectedX, game.selectedY, posX, posY);
 				RpcSetBoardPiece(game.selectedX, game.selectedY, posX, posY);
+
+				SwitchTurns();
 				RpcSwitchTurns();
 
-				game.SetSelectedPiece(0);
+				SetSelectedPiece();
+				RpcSetSelectedPiece();
 			}
+		}
+
+		[ClientRpc]
+		private void RpcSetGameCurrentXY(int posX, int posY)
+		{
+			game.currentX = posX;
+			game.currentY = posY;
+		}
+
+		private void SetGameCurrentXY(int posX, int posY)
+		{
+			game.currentX = posX;
+			game.currentY = posY;
+		}
+
+		[ClientRpc]
+		private void RpcSetSelectedPiece()
+		{
+			SetSelectedPiece();
+		}
+
+		private void SetSelectedPiece()
+		{
+			Debug.Log("[CGMW] SetSelectedPiece");
+			game.SetSelectedPiece(0);
+		}
+
+		[ClientRpc]
+		private void RpcSelectPiece(int posX, int posY)
+		{
+			SelectPiece(posX, posY);
+		}
+
+		private void SelectPiece(int posX, int posY)
+		{
+			Debug.Log("[CGMW] SelectPiece");
+
+			game.selectedX = posX;
+			game.selectedY = posY;
+
+			GameObject selected = game.boardPieceTwoDArrays[posX, posY];
+
+			if (selected == null)
+				return;
+
+			game.selectedPiece = selected;
+			game.possibleMoves = selected.GetComponent<ChessPiece>().PossibleMoves(game, posX, posY);
+
+			if (game.WhiteTurn != selected.GetComponent<ChessPiece>().IsWhitePiece)
+			{
+				game.SetSelectedPiece(0);
+				return;
+			}
+
+			game.SetSelectedPiece(1);
 		}
 
 		[ClientRpc]
 		private void RpcSetBoardPiece(int fromX, int fromY, int toX, int toY)
 		{
+			SetBoardPiece(fromX, fromY, toX, toY);
+		}
+
+		private void SetBoardPiece(int fromX, int fromY, int toX, int toY)
+		{
+			Debug.Log("SetBoardPiece");
 			game.SetBoardPiece(fromX, fromY, toX, toY);
 		}
 
 		[ClientRpc]
 		private void RpcRemovePiece(int x, int y)
 		{
+			RemovePiece(x, y);
+		}
+		
+		private void RemovePiece(int x, int y)
+		{
+			Debug.Log("RemovePiece");
 			game.RemovePiece(x, y);
 		}
 
 		[ClientRpc]
 		private void RpcSwitchTurns()
 		{
+			SwitchTurns();
+		}
+
+		private void SwitchTurns()
+		{
+			Debug.Log("SwitchTurns");
 			game.SwitchTurns();
 		}
 
 		[ClientRpc]
 		private void RpcResetGame()
 		{
+			ResetGame();
+		}
+
+		private void ResetGame()
+		{
+			Debug.Log("ResetGame");
 			game.ResetChessGame();
 		}
 
 		[ClientRpc]
 		private void RpcSomeoneWonGame(bool whiteWon)
 		{
-			game.SomeoneWonGame(whiteWon);
+			SomeoneWonGame(whiteWon);
 		}
 
+		private void SomeoneWonGame(bool whiteWon)
+		{
+			game.SomeoneWonGame(whiteWon);
+		}
 	}
 }

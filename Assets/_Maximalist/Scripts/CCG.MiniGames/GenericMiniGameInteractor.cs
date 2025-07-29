@@ -4,7 +4,7 @@
 //  Company:     Maximalist Ltd
 //  Created:     13/06/2025
 //
-//  Copyright � 2025 Maximalist Ltd. All rights reserved.
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
@@ -41,6 +41,7 @@ namespace CCG.MiniGames
 			if (isLocalPlayer == false)
 				return;
 
+			Debug.Log("[GMGI] RequestRaycast");
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			CmdRequestRaycast(ray.origin, ray.direction);
 		}
@@ -48,32 +49,66 @@ namespace CCG.MiniGames
 		[Command]
 		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
 		{
-			//CW Placeholder, will later replace with a selector system. This will do for now.
-			if (currentMiniGame == null)
-				currentMiniGame = FindObjectOfType<MiniGameInteractable>();
+			Debug.Log("[GMGI] CmdRequestRaycast");
 
 			if (currentMiniGame == null)
-				return;
-
-			if (RayCastHitProvider.ProvideRaycastHit(out RaycastHit hit, interactableLayer, 500))
 			{
+				Debug.Log("[GMGI] currentMiniGame is null");
+
+				return;
+			}
+
+			Debug.Log("[GMGI] currentMiniGame != null");
+
+			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
+			{
+				Debug.Log("[GMGI] ProvideRaycastHit");
 				currentMiniGame.OnReciveRaycastHit(hit);
+			}
+			else
+			{
+				Debug.Log("[GMGI] ProvideRaycastHit found nothing");
+
 			}
 		}
 
 		public void SetCurrentMiniGame(MiniGameInteractable newMiniGame)
 		{
-			if (newMiniGame != null)
-			{
-				currentMiniGame = newMiniGame;
-			}
+			if (newMiniGame == null)
+				return;
+
+			currentMiniGame = newMiniGame;
+			Debug.Log("[GMGI] currentMiniGame set");
+
+			if (!isLocalPlayer)
+				return;
+
+			CmdSetCurrentMiniGame(newMiniGame.netIdentity);
 		}
+
+		[Command]
+		public void CmdSetCurrentMiniGame(NetworkIdentity miniGameIdentity)
+		{
+			if (miniGameIdentity == null)
+				return;
+
+			currentMiniGame = miniGameIdentity.GetComponent<MiniGameInteractable>();
+			Debug.Log("[GMGI] currentMiniGame set");
+		}
+
 		public void ClearCurrentMiniGame(MiniGameInteractable newMiniGame)
 		{
-			if (currentMiniGame == newMiniGame)
-			{
-				currentMiniGame = null;
-			}
-		} 
+			if (currentMiniGame != newMiniGame)
+				return;
+			
+			currentMiniGame = null;
+			CmdClearCurrentMiniGame();
+		}
+
+		[Command]
+		public void CmdClearCurrentMiniGame()
+		{
+			currentMiniGame = null;
+		}
 	}
 }

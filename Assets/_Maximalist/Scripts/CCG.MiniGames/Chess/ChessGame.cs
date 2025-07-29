@@ -4,7 +4,7 @@
 //  Company:     Maximalist Ltd
 //  Created:     13/06/2025
 //
-//  Copyright � 2025 Maximalist Ltd. All rights reserved.
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
