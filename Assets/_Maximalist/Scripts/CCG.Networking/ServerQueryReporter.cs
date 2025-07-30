@@ -60,10 +60,12 @@ namespace CCG.Networking
 		public static void UpdateServerQuery()
 		{
 #if UNITY_SERVER
+
 			if (Application.isEditor)
 				return;
 
-			queryHandler.UpdateServerCheck();
+            if (queryHandler != null)
+                queryHandler.UpdateServerCheck();
 #endif
 		}
 	}
