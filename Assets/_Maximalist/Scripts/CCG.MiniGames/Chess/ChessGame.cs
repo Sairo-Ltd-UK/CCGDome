@@ -280,7 +280,10 @@ namespace CCG.MiniGames.Chess
 		{
 			foreach (GameObject tile in tilesTwoDArray)
 			{
-				tile.GetComponent<Renderer>().material = transparentMat;
+				if(tile == null)
+					continue;
+
+                tile.GetComponent<Renderer>().material = transparentMat;
 			}
 		}
 
