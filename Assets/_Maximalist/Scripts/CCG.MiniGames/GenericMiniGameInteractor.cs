@@ -20,9 +20,10 @@ namespace CCG.MiniGames
 		[SerializeField] private LayerMask interactableLayer;
 		[SerializeField] private CustomInputActionData fireRayAction;
 		[Space]
-		[Tooltip("Only needs setting client side on the local player")]
+		[SerializeField] private Transform raycastOrigin;
+        [Tooltip("Only needs setting client side on the local player")]
 		[SerializeField] private MiniGameInteractable currentMiniGame;
-
+		[SerializeField] private LineRenderer debugRayLineRenderer;
 		public override void OnStartLocalPlayer()
 		{
 			base.OnStartLocalPlayer();
@@ -34,7 +35,12 @@ namespace CCG.MiniGames
 			{
 				fireRayAction.AddToInputActionReference(RequestRaycast);
 			}
-		}
+
+            if (debugRayLineRenderer == null)
+                return;
+
+			debugRayLineRenderer.positionCount = 2;
+        }
 
 		private void RequestRaycast()
 		{
@@ -42,9 +48,15 @@ namespace CCG.MiniGames
 				return;
 
 			Debug.Log("[GMGI] RequestRaycast");
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			CmdRequestRaycast(ray.origin, ray.direction);
-		}
+	
+            CmdRequestRaycast(raycastOrigin.position, raycastOrigin.forward);
+
+			if (debugRayLineRenderer == null)
+				return;
+
+            debugRayLineRenderer.SetPosition(0, raycastOrigin.position);
+			debugRayLineRenderer.SetPosition(1, raycastOrigin.position + raycastOrigin.forward * 500f);
+        }
 
 		[Command]
 		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
