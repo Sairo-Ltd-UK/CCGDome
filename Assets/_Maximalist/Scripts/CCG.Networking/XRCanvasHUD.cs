@@ -31,6 +31,7 @@ namespace CCG.Networking
 			connectToServerButton.onClick.RemoveListener(OnConnectToServerButtonPressed);
 		}
 
+		[ContextMenu("OnLocalHostButtonPressed")]
 		private void OnLocalHostButtonPressed()
 		{
 			localHostButton.interactable = false;
@@ -38,6 +39,7 @@ namespace CCG.Networking
 			NetworkManager.singleton.StartHost();
 		}
 
+		[ContextMenu("OnConnectToServerButtonPressed")]
 		private void OnConnectToServerButtonPressed()
 		{
 			Debug.Log("Attempting to connect to server");

@@ -11,6 +11,7 @@
 using CCG.CustomInput;
 using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace CCG.MiniGames
 {
@@ -47,16 +48,30 @@ namespace CCG.MiniGames
 			if (isLocalPlayer == false)
 				return;
 
+			Vector3 rayOrigin;
+			Vector3 rayDirection;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+			// Mobile build – use raycast origin transform
+			rayOrigin = raycastOrigin.position;
+			rayDirection = raycastOrigin.forward;
+#else
+			Vector2 screenPosition = Mouse.current.position.ReadValue();
+			Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+
+			rayOrigin = ray.origin;
+			rayDirection = ray.direction;
+#endif
+
 			Debug.Log("[GMGI] RequestRaycast");
-	
-            CmdRequestRaycast(raycastOrigin.position, raycastOrigin.forward);
+			CmdRequestRaycast(rayOrigin, rayDirection);
 
 			if (debugRayLineRenderer == null)
 				return;
 
-            debugRayLineRenderer.SetPosition(0, raycastOrigin.position);
-			debugRayLineRenderer.SetPosition(1, raycastOrigin.position + raycastOrigin.forward * 500f);
-        }
+			debugRayLineRenderer.SetPosition(0, rayOrigin);
+			debugRayLineRenderer.SetPosition(1, rayOrigin + rayDirection * 500f);
+		}
 
 		[Command]
 		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)

@@ -899,17 +899,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "8e383b1a-270f-4c20-819b-89a59cffb498",
-                    "path": "<XRController>{LeftHand}/Primary2DAxis",
-                    "interactions": "",
-                    "processors": "StickDeadzone",
-                    "groups": "Continuous Move",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "2D Vector",
                     "id": "5972fa33-300f-4139-bcc1-a4bf7480d5c7",
                     "path": "2DVector",
@@ -926,7 +915,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -937,7 +926,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -948,7 +937,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Generic XR Controller",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -959,10 +948,21 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Generic XR Controller",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8e383b1a-270f-4c20-819b-89a59cffb498",
+                    "path": "<XRController>{LeftHand}/Primary2DAxis",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -1659,6 +1659,61 @@
                     "action": "Turn",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "ffd946c6-ebcb-4ab3-9480-f7dba2dc3d2a",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "a6bd398c-a27e-4e23-9292-2f69a6215bfb",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "427673bb-08d3-41ed-af60-da037c37f0b8",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "716d9d4b-37be-46ca-b06c-711ab01baefe",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "b57e77d0-5573-4c4e-b852-2f21606d9a2b",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",

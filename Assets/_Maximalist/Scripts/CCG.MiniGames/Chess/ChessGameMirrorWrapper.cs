@@ -17,12 +17,12 @@ namespace CCG.MiniGames.Chess
 	{
 		[SerializeField] private ChessGame game;
 
-        private void Start()
-        {
+		private void Start()
+		{
 			Debug.Log("[CGMW] Start");
-            game.LoadListsToDictionarys();
-            game.Setup(transform.localScale.y);
-        }
+			game.LoadListsToDictionarys();
+			game.Setup(transform.localScale.y);
+		}
 
 		[Server]
 		public override void OnReciveRaycastHit(RaycastHit hit)
@@ -52,70 +52,68 @@ namespace CCG.MiniGames.Chess
 			int posY = tile.posY;
 
 			if (game.selectedPiece == null)
-            {
-                Debug.Log("[CGMW] game.selectedPiece == null");
-                SelectPieceCommand(posX, posY);
-            }
-            else
-            {
-                Debug.Log("[CGMW] game.selectedPiece != null");
+			{
+				Debug.Log("[CGMW] game.selectedPiece == null");
+				SelectPieceServer(posX, posY);
+			}
+			else
+			{
+				Debug.Log("[CGMW] game.selectedPiece != null");
 
-                SetGameCurrentXYCommand(posX, posY);
+				SetGameCurrentXYServer(posX, posY);
 
-                if (game.possibleMoves[posX, posY] == false)
-                {
-                    SetSelectedPieceToNothingCommand();
-                    return;
-                }
+				if (game.possibleMoves[posX, posY] == false)
+				{
+					SetSelectedPieceToNothingServer();
+					return;
+				}
 
-                var targetPiece = game.boardPieceTwoDArrays[posX, posY];
+				var targetPiece = game.boardPieceTwoDArrays[posX, posY];
 
-                if (targetPiece != null)
-                {
-                    Debug.Log("[CGMW] targetPiece != null");
+				if (targetPiece != null)
+				{
+					Debug.Log("[CGMW] targetPiece != null");
 
-                    bool isWhite = game.selectedPiece.GetComponent<ChessPiece>().IsWhitePiece;
-                    bool isKing = targetPiece.GetComponent<ChessPiece>().IsKing;
+					bool isWhite = game.selectedPiece.GetComponent<ChessPiece>().IsWhitePiece;
+					bool isKing = targetPiece.GetComponent<ChessPiece>().IsKing;
 
-                    if (isKing)
-                    {
-                        SomeoneWonCommand(isWhite);
-                        ResetGameCommand();
-                        return;
-                    }
-                    else
-                    {
-                        if (isWhite)
-                            ChessGameUIManager.p1PieceCount--;
-                        else
-                            ChessGameUIManager.p2PieceCount--;
-                    }
+					if (isKing)
+					{
+						SomeoneWonServer(isWhite);
+						ResetGameServer();
+						return;
+					}
+					else
+					{
+						if (isWhite)
+							ChessGameUIManager.p1PieceCount--;
+						else
+							ChessGameUIManager.p2PieceCount--;
+					}
 
-                    RemovePieceCommand(posX, posY);
-                }
+					RemovePieceServer(posX, posY);
+				}
 
-                SetBoardPieceCommand(posX, posY);
+				SetBoardPieceServer(posX, posY);
+				SwitchTurnsServer();
+				SetSelectedPieceToNothingServer();
+			}
+		}
 
-                SwitchTurnsCommand();
-
-				SetSelectedPieceToNothingCommand();
-
-            }
-        }
-    
-        private void SetGameCurrentXYCommand(int posX, int posY)
-        {
+		[Server]
+		private void SetGameCurrentXYServer(int posX, int posY)
+		{
 			if(isClient == false)
 				SetGameCurrentXY(posX, posY);
 
-            RpcSetGameCurrentXY(posX, posY);
-        }
+			RpcSetGameCurrentXY(posX, posY);
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSetGameCurrentXY(int posX, int posY)
 		{
-            SetGameCurrentXY(posX, posY);
-        }
+			SetGameCurrentXY(posX, posY);
+		}
 
 		private void SetGameCurrentXY(int posX, int posY)
 		{
@@ -123,15 +121,16 @@ namespace CCG.MiniGames.Chess
 			game.currentY = posY;
 		}
 
-        private void SetSelectedPieceToNothingCommand()
-        {
-            if (isClient == false)
-                SetSelectedPieceToNothing();
+		[Server]
+		private void SetSelectedPieceToNothingServer()
+		{
+			if (isClient == false)
+				SetSelectedPieceToNothing();
 
-            RpcSetSelectedPieceToNothing();
-        }
+			RpcSetSelectedPieceToNothing();
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSetSelectedPieceToNothing()
 		{
 			SetSelectedPieceToNothing();
@@ -143,21 +142,22 @@ namespace CCG.MiniGames.Chess
 			game.SetSelectedPiece(0);
 		}
 
-        private void SelectPieceCommand(int posX, int posY)
-        {
-            if (isClient == false)
-                SelectPiece(posX, posY);
+		[Server]
+		private void SelectPieceServer(int posX, int posY)
+		{
+			if (isClient == false)
+				SelectPiece(posX, posY);
 
-            RpcSelectPiece(posX, posY);
-        }
+			RpcSelectPiece(posX, posY);
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSelectPiece(int posX, int posY)
 		{
 			SelectPiece(posX, posY);
 		}
 
-        private void SelectPiece(int posX, int posY)
+		private void SelectPiece(int posX, int posY)
 		{
 			Debug.Log("[CGMW] SelectPiece");
 
@@ -181,15 +181,16 @@ namespace CCG.MiniGames.Chess
 			game.SetSelectedPiece(1);
 		}
 
-        private void SetBoardPieceCommand(int posX, int posY)
-        {
-            if (isClient == false)
-                SetBoardPiece(game.selectedX, game.selectedY, posX, posY);
+		[Server]
+		private void SetBoardPieceServer(int posX, int posY)
+		{
+			if (isClient == false)
+				SetBoardPiece(game.selectedX, game.selectedY, posX, posY);
 
-            RpcSetBoardPiece(game.selectedX, game.selectedY, posX, posY);
-        }
+			RpcSetBoardPiece(game.selectedX, game.selectedY, posX, posY);
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSetBoardPiece(int fromX, int fromY, int toX, int toY)
 		{
 			SetBoardPiece(fromX, fromY, toX, toY);
@@ -201,15 +202,16 @@ namespace CCG.MiniGames.Chess
 			game.SetBoardPiece(fromX, fromY, toX, toY);
 		}
 
-        private void RemovePieceCommand(int posX, int posY)
-        {
-            if (isClient == false)
-                RemovePiece(posX, posY);
+		[Server]
+		private void RemovePieceServer(int posX, int posY)
+		{
+			if (isClient == false)
+				RemovePiece(posX, posY);
 
-            RpcRemovePiece(posX, posY);
-        }
+			RpcRemovePiece(posX, posY);
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcRemovePiece(int x, int y)
 		{
 			RemovePiece(x, y);
@@ -221,15 +223,16 @@ namespace CCG.MiniGames.Chess
 			game.RemovePiece(x, y);
 		}
 
-        private void SwitchTurnsCommand()
-        {
+		[Server]
+		private void SwitchTurnsServer()
+		{
 			if(isClient == false)
-                SwitchTurns();
+				SwitchTurns();
 
-            RpcSwitchTurns();
-        }
+			RpcSwitchTurns();
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSwitchTurns()
 		{
 			SwitchTurns();
@@ -241,15 +244,17 @@ namespace CCG.MiniGames.Chess
 			game.SwitchTurns();
 		}
 
-        private void ResetGameCommand()
-        {
-            if (isClient == false)
-                ResetGame();
+		[Server]
+		[ContextMenu("ResetGameServer")]
+		private void ResetGameServer()
+		{
+			if (isClient == false)
+				ResetGame();
 
-            RpcResetGame();
-        }
+			RpcResetGame();
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcResetGame()
 		{
 			ResetGame();
@@ -261,15 +266,16 @@ namespace CCG.MiniGames.Chess
 			game.ResetChessGame();
 		}
 
-        private void SomeoneWonCommand(bool isWhite)
-        {
-            if (isClient == false)
-                SomeoneWonGame(!isWhite);
+		[Server]
+		private void SomeoneWonServer(bool isWhite)
+		{
+			if (isClient == false)
+				SomeoneWonGame(!isWhite);
 
-            RpcSomeoneWonGame(!isWhite);
-        }
+			RpcSomeoneWonGame(!isWhite);
+		}
 
-        [ClientRpc]
+		[ClientRpc]
 		private void RpcSomeoneWonGame(bool whiteWon)
 		{
 			SomeoneWonGame(whiteWon);
