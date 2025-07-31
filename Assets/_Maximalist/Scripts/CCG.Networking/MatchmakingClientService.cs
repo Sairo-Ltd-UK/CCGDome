@@ -78,7 +78,7 @@ namespace CCG.Networking
 
 							case MultiplayAssignment.StatusOptions.Failed:
 								Debug.LogError($"Matchmaking {assignment.Status}");
-
+								Debug.LogError($"Matchmaking {assignment.Message}");
 								break;
 							case MultiplayAssignment.StatusOptions.Timeout:
 								throw new Exception($"Matchmaking {assignment.Status}");
