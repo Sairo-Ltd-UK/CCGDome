@@ -43,7 +43,11 @@ namespace CCG.Networking
 
 				NetworkManager.singleton.StartServer();
 				LogServerConfig();
+
+#elif !UNITY_SERVER
+				NetworkManager.singleton.StartClient();
 #endif
+
 			}
 			catch (Exception e)
 			{
