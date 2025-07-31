@@ -105,7 +105,6 @@ namespace CCG.MiniGames
 				return;
 
 			currentMiniGame = newMiniGame;
-			Debug.Log("[GMGI] currentMiniGame set");
 
 			if (!isLocalPlayer)
 				return;

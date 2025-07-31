@@ -45,7 +45,9 @@ namespace CCG.Networking
 				LogServerConfig();
 
 #elif !UNITY_SERVER
-				NetworkManager.singleton.StartClient();
+
+				await MatchmakingClient.RequestMatchAsync();
+
 #endif
 
 			}
