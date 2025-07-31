@@ -8,11 +8,12 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+
+
+#if UNITY_SERVER
 using System.Threading.Tasks;
 using UnityEngine;
 using System;
-
-#if UNITY_SERVER
 using Unity.Services.Multiplay;
 using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
@@ -31,15 +32,17 @@ namespace CCG.Networking
 		private static ushort currentPlayerCount = 0;
 
 #if UNITY_SERVER
+
 		private static IServerQueryHandler queryHandler;
-#endif
+
 		public static async Task Initialize()
 		{
-#if UNITY_SERVER
+
 			queryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(defaultMaxPlayers, defaultServerName, defaultGameType, defaultBuildId, defaultMap);
-#endif
+
 		}
 
+#endif
 		public static void OnPlayerJoined()
 		{
 #if UNITY_SERVER
@@ -79,9 +82,11 @@ namespace CCG.Networking
 #endif
 		}
 
+#if UNITY_SERVER
 
 		private static async Task AddPlayerToBackFill()
 		{
+
 			// pull the ticket ID from your allocation handler
 			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
@@ -97,10 +102,12 @@ namespace CCG.Networking
 			{
 				Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
 			}
+
 		}
 
 		private static async Task RemovePlayerFromBackFill()
 		{
+
 			// pull the ticket ID from your allocation handler
 			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
@@ -119,6 +126,8 @@ namespace CCG.Networking
 			{
 				Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
 			}
+
 		}
+#endif
 	}
 }
