@@ -13,7 +13,6 @@ namespace CCG.XR
 
 		public XRNetworkPlayerScript localVRNetworkPlayerScript;
 
-		// switch to Late/Fixed Update if weirdness happens
 		private void Update()
 		{
 			if (localVRNetworkPlayerScript == null)
@@ -28,23 +27,7 @@ namespace CCG.XR
 			localVRNetworkPlayerScript.rHandTransform.rotation = rHandTransform.rotation;
 			localVRNetworkPlayerScript.lHandTransform.position = lHandTransform.position;
 			localVRNetworkPlayerScript.lHandTransform.rotation = lHandTransform.rotation;
-
-        }
-		// Simple movement for testing on PC/Editor/Controller joystick
-		// helps if you cannot use headset directly in Unity Editor  (W A S D)
-		private void FixedUpdate()
-		{
-			HandleMovement();
 		}
-
-		private void HandleMovement()
-		{
-			//float moveX = Input.GetAxis("Horizontal") * Time.deltaTime * 100.0f;
-			//float moveZ = Input.GetAxis("Vertical") * Time.deltaTime * 4f;
-			//transform.Rotate(0, moveX, 0);
-			//transform.Translate(0, 0, moveZ);
-		}
-
 
 	}
 }
