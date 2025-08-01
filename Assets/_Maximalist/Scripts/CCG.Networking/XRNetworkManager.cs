@@ -71,6 +71,7 @@ namespace CCG.Networking
 		public override void OnDestroy()
 		{
 			base.OnDestroy();
+			ServiceManager.CloseServices();
 			//UnityEngine.Debug.Log("OnDestroy");
 		}
 

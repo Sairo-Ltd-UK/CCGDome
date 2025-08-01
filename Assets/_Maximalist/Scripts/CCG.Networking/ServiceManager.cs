@@ -22,7 +22,7 @@ namespace CCG.Networking
 	public static class ServiceManager
 	{
 		public static bool IsInitialized { get; private set; } = false;
-
+		public static bool IsShuttingDown { get; private set; } = false;
 		// Start is called once before the first execution of Update after the MonoBehaviour is created
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static async void InitializeServices()
@@ -55,6 +55,33 @@ namespace CCG.Networking
 			{
 				Debug.LogException(e);
 			}
+		}
+
+		public static async void CloseServices()
+		{
+			if (IsShuttingDown == true)
+				return;
+
+			IsShuttingDown = true;
+			Debug.Log(" CloseServices");
+
+#if UNITY_SERVER
+
+			await ServerQueryReporter.CloseServices();
+			await MultiplayServerEventHandler.CloseServices();
+
+			if(NetworkManager.singleton)
+				NetworkManager.singleton.StopServer();
+		
+			Application.Quit();
+
+#elif !UNITY_SERVER
+
+			await MatchmakingClient.CloseServices();
+
+			if(NetworkManager.singleton)
+				NetworkManager.singleton.StopClient();
+#endif
 		}
 
 #if UNITY_SERVER

@@ -1,21 +1,23 @@
-// ------------------------------------------------------------------------------
-//  Project:     CCG Dome
-//  Author:      Corrin Wilson
-//  Company:     Maximalist Ltd
-//  Created:     11/07/2025
-//
-//  Copyright © 2025 Maximalist Ltd. All rights reserved.
-//  This file is subject to the terms of the contract with the client.
-// ------------------------------------------------------------------------------
+ //------------------------------------------------------------------------------
+ // Project:     CCG Dome
+ // Author:      Corrin Wilson
+ // Company:     Maximalist Ltd
+ // Created:     11/07/2025
+
+ // Copyright © 2025 Maximalist Ltd. All rights reserved.
+ // This file is subject to the terms of the contract with the client.
+ //------------------------------------------------------------------------------
 
 #if UNITY_SERVER
 using System;
-using UnityEngine;
-using System.Threading.Tasks;
-using Unity.Services.Matchmaker.Models;
 using System.Threading;
-using Unity.Services.Multiplay;
+using System.Threading.Tasks;
 using Unity.Services.Matchmaker;
+using Unity.Services.Matchmaker.Models;
+using Unity.Services.Multiplay;
+using UnityEngine;
+using UnityEngine.UIElements;
+
 #endif
 
 namespace CCG.Networking
@@ -30,7 +32,6 @@ namespace CCG.Networking
 
 		public static async Task Init()
 		{
-			// We must first prepare our callbacks like so:
 			eventCallbacks = new MultiplayEventCallbacks();
 			eventCallbacks.Allocate += OnAllocate;
 			eventCallbacks.Deallocate += OnDeallocate;
@@ -39,7 +40,6 @@ namespace CCG.Networking
 
 			try
 			{
-				// Subscribe to the Multiplay server events
 				await MultiplayService.Instance.SubscribeToServerEventsAsync(eventCallbacks);
 				Debug.Log("[Multiplay] Successfully subscribed to server events");
 			}
@@ -51,23 +51,20 @@ namespace CCG.Networking
 
 		private static async void OnAllocate(MultiplayAllocation allocation)
 		{
-			CreateBackfillTicketOptions createBackfillTicketOptions = new CreateBackfillTicketOptions();
-			backfillTicketId = await MatchmakerService.Instance.CreateBackfillTicketAsync(createBackfillTicketOptions);
+			var payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<MatchmakingResults>();
+			backfillTicketId = payloadAllocation.BackfillTicketId;
 
-			// Start backfill approval loop
 			_backfillCts?.Cancel();
 			_backfillCts = new CancellationTokenSource();
 			_ = BackfillApprovalLoopAsync(backfillTicketId, _backfillCts.Token);
 
+			await MultiplayService.Instance.ReadyServerForPlayersAsync();
 		}
 
 		private static void OnDeallocate(MultiplayDeallocation deallocation)
 		{
-			// Clean up or save game state here if necessary.
 			Debug.Log("[Multiplay] Server deallocated – shutting down soon.");
-			_backfillCts?.Cancel();
-
-			Application.Quit();
+			ServiceManager.CloseServices();
 		}
 
 		private static void OnError(MultiplayError error)
@@ -85,9 +82,6 @@ namespace CCG.Networking
 			Debug.Log($"[Multiplay] Subscription state changed: {state}");
 		}
 
-		/// <summary>
-		/// Every second, approve the backfill ticket to keep it alive and pull in new players.
-		/// </summary>
 		private static async Task BackfillApprovalLoopAsync(string backfillTicketId, CancellationToken token)
 		{
 			const int intervalMs = 1000;
@@ -97,7 +91,6 @@ namespace CCG.Networking
 				{
 					try
 					{
-						// Approve the backfill ticket (same ID as allocation)
 						BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(backfillTicketId);
 					}
 					catch (Exception ex)
@@ -110,8 +103,21 @@ namespace CCG.Networking
 			}
 			catch (TaskCanceledException)
 			{
-				// Expected on shutdown
+				 //Expected on shutdown
 			}
+		}
+
+		internal static async Task CloseServices()
+		{
+			_backfillCts?.Cancel();
+
+			if(eventCallbacks == null)
+				return;
+
+			eventCallbacks.Allocate -= OnAllocate;
+			eventCallbacks.Deallocate -= OnDeallocate;
+			eventCallbacks.Error -= OnError;
+			eventCallbacks.SubscriptionStateChanged -= OnSubscriptionStateChanged;
 		}
 #endif
 	}

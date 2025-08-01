@@ -40,9 +40,7 @@ namespace CCG.Networking
 
 		public static async Task Initialize()
 		{
-
 			queryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(defaultMaxPlayers, defaultServerName, defaultGameType, defaultBuildId, defaultMap);
-
 		}
 
 #endif
@@ -69,6 +67,9 @@ namespace CCG.Networking
 #if UNITY_SERVER
 			if (queryHandler != null)
 				queryHandler.CurrentPlayers = currentPlayerCount;
+
+			if (currentPlayerCount == 0)
+				ServiceManager.CloseServices();
 #endif
 		}
 
@@ -84,31 +85,39 @@ namespace CCG.Networking
 #endif
 		}
 
+		internal static async Task CloseServices()
+		{
+#if UNITY_SERVER
+			if (queryHandler != null)
+				queryHandler.Dispose();
+#endif
+		}
+
 #if UNITY_SERVER
 
 		private static async Task UpdateBackfillAsync()
 		{
-			string ticketId = MultiplayServerEventHandler.backfillTicketId;
+			//string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
-			try
-			{
-				BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
+			//try
+			//{
+			//	BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
 
-				response.Properties.MatchProperties.Players.Clear();
+			//	response.Properties.MatchProperties.Players.Clear();
 
-				foreach (var conn in NetworkServer.connections.Values)
-				{
-					// You can use any unique ID you like here; using netId as an example
-					response.Properties.MatchProperties.Players.Add(new Player(conn.identity.netId.ToString()));
-				}
+			//	foreach (var conn in NetworkServer.connections.Values)
+			//	{
+			//		// You can use any unique ID you like here; using netId as an example
+			//		response.Properties.MatchProperties.Players.Add(new Player(conn.identity.netId.ToString()));
+			//	}
 
-				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
+			//	await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
 
-			}
-			catch (Exception ex)
-			{
-				Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
-			}
+			//}
+			//catch (Exception ex)
+			//{
+			//	Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
+			//}
 
 		}
 

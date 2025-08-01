@@ -24,6 +24,9 @@ namespace CCG.Networking
 	{
 		private const string QUEUE_NAME_KEY = "Default";
 		private static bool isInitialized = false;
+		private static bool isShuttingDown = false;
+
+		private const int maxAttempts = 60;
 
 		public static async Task InitializeAsync()
 		{
@@ -31,6 +34,7 @@ namespace CCG.Networking
 				return;
 
 			await UnityServices.InitializeAsync();
+
 			if (!AuthenticationService.Instance.IsSignedIn)
 				await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
@@ -52,12 +56,15 @@ namespace CCG.Networking
 				string ticketId = ticketResponse.Id;
 				Debug.Log($"[Matchmaker] Ticket created: {ticketId}");
 
-				const int maxAttempts = 30;
+	
 				for (int attempt = 0; attempt < maxAttempts; attempt++)
 				{
 					await Task.Delay(1000);
 
 					TicketStatusResponse statusResponse = await MatchmakerService.Instance.GetTicketAsync(ticketId);
+
+					if (isShuttingDown == true)
+						return;
 
 					if (statusResponse.Value is MultiplayAssignment assignment)
 					{
@@ -79,7 +86,8 @@ namespace CCG.Networking
 							case MultiplayAssignment.StatusOptions.Failed:
 								Debug.LogError($"Matchmaking {assignment.Status}");
 								Debug.LogError($"Matchmaking {assignment.Message}");
-								break;
+								return;
+
 							case MultiplayAssignment.StatusOptions.Timeout:
 								throw new Exception($"Matchmaking {assignment.Status}");
 						}
@@ -96,6 +104,11 @@ namespace CCG.Networking
 			{
 				Debug.LogError($"[Matchmaking] Error: {ex.Message}");
 			}
+		}
+
+		internal static async Task CloseServices()
+		{
+			isShuttingDown = true;
 		}
 	}
 }
