@@ -67,7 +67,7 @@ namespace CCG.Networking
 
 #if UNITY_SERVER
 
-			await ServerQueryReporter.CloseServices();
+			ServerQueryReporter.CloseServices();
 			await MultiplayServerEventHandler.CloseServices();
 
 			if(NetworkManager.singleton)

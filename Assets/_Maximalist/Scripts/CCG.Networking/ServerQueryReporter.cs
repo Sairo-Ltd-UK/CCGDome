@@ -8,9 +8,8 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-
-
 #if UNITY_SERVER
+
 using Mirror;
 using System;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
 using Unity.Services.Multiplay;
 using UnityEngine;
+using System.Linq;
 
 #endif
 
@@ -44,27 +44,32 @@ namespace CCG.Networking
 		}
 
 #endif
-		public static void OnPlayerJoined()
+		public static void OnPlayerJoined(int connectionID)
 		{
 #if UNITY_SERVER
+
 			currentPlayerCount++;
 			UpdatePlayerCount();
-			UpdateBackfillAsync();
+			OnPlayerJoinedBackfill(connectionID);
+
 #endif
 		}
 
-		public static void OnPlayerLeft()
+		public static void OnPlayerLeft(int connectionID)
 		{
 #if UNITY_SERVER
+
 			currentPlayerCount--;
 			UpdatePlayerCount();
-			UpdateBackfillAsync();
+			OnPlayerLeftBackfill(connectionID);
+
 #endif
 		}
 
 		public static void UpdatePlayerCount()
 		{
 #if UNITY_SERVER
+
 			if (queryHandler != null)
 				queryHandler.CurrentPlayers = currentPlayerCount;
 
@@ -88,37 +93,49 @@ namespace CCG.Networking
 		internal static void CloseServices()
 		{
 #if UNITY_SERVER
+
 			if (queryHandler != null)
 				queryHandler.Dispose();
+
 #endif
 		}
 
 #if UNITY_SERVER
 
-		private static async Task UpdateBackfillAsync()
+		public static async Task OnPlayerJoinedBackfill(int playerId)
 		{
-			//string ticketId = MultiplayServerEventHandler.backfillTicketId;
+			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
-			//try
-			//{
-			//	BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
+			try
+			{
+				BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
 
-			//	response.Properties.MatchProperties.Players.Clear();
+				response.Properties.MatchProperties.Players.Add(new Player(playerId.ToString(), null, null));
+				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
+			}
+			catch (Exception ex)
+			{
+				Debug.LogException(ex);
+			}
+		}
 
-			//	foreach (var conn in NetworkServer.connections.Values)
-			//	{
-			//		// You can use any unique ID you like here; using netId as an example
-			//		response.Properties.MatchProperties.Players.Add(new Player(conn.identity.netId.ToString()));
-			//	}
+		public static async Task OnPlayerLeftBackfill(int playerId)
+		{
+			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
-			//	await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
+			try
+			{
+				BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
 
-			//}
-			//catch (Exception ex)
-			//{
-			//	Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
-			//}
+				var playerToRemove = response.Properties.MatchProperties.Players.FirstOrDefault(p => p.Id.Equals(playerId));
+				response.Properties.MatchProperties.Players.Remove(playerToRemove);
 
+				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
+			}
+			catch (Exception ex)
+			{
+				Debug.LogException(ex);
+			}
 		}
 
 #endif

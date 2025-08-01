@@ -161,6 +161,7 @@ namespace CCG.Networking
 		public override void OnServerConnect(NetworkConnectionToClient conn)
 		{
 			Debug.Log("Client Connected to Server");
+
 		}
 
 		/// <summary>
@@ -181,7 +182,7 @@ namespace CCG.Networking
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
-			ServerQueryReporter.OnPlayerJoined();
+			ServerQueryReporter.OnPlayerJoined(conn.connectionId);
 		}
 
 		/// <summary>
@@ -203,7 +204,7 @@ namespace CCG.Networking
 			}
 
 			base.OnServerDisconnect(conn);
-			ServerQueryReporter.OnPlayerLeft();
+			ServerQueryReporter.OnPlayerLeft(conn.connectionId);
 		}
 
 		/// <summary>
