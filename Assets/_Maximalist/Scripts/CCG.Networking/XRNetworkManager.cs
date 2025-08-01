@@ -10,7 +10,6 @@
 
 using Mirror;
 using System.Linq;
-using Unity.Services.Authentication;
 using UnityEngine;
 
 namespace CCG.Networking

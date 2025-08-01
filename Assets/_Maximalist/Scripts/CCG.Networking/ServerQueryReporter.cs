@@ -55,7 +55,6 @@ namespace CCG.Networking
 
 			currentPlayerCount++;
 			UpdatePlayerCount();
-
 #endif
 		}
 
@@ -108,6 +107,8 @@ namespace CCG.Networking
 #if UNITY_SERVER
 
 			connectionToPlayerId[conn] = playerId;
+			_ = OnPlayerJoinedBackfill(playerId);
+
 #endif
 		}
 
@@ -131,19 +132,38 @@ namespace CCG.Networking
 
 			try
 			{
-				BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
+				// Approve existing ticket
+				var backfillTicket = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
 
-				response.Properties.MatchProperties.Players.Add(new Player(playerId.ToString(), null, null));
-				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
+				var newPlayer = new Player(
+					playerId,
+					new Dictionary<string, object> { { "Team", "Default" } }
+				);
+
+				// Add to Players list
+				backfillTicket.Properties.MatchProperties.Players.Add(newPlayer);
+
+				// Also update the team structure
+				var defaultTeam = backfillTicket.Properties.MatchProperties.Teams
+					.FirstOrDefault(t => t.TeamName == "Default");
+
+				if (defaultTeam != null && !defaultTeam.PlayerIds.Contains(playerId))
+				{
+					defaultTeam.PlayerIds.Add(playerId);
+				}
+
+				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, backfillTicket);
 			}
 			catch (Exception ex)
 			{
-				Debug.LogException(ex);
+				Debug.LogError($"[Backfill] Failed to update ticket: {ex.Message}");
 			}
 		}
 
 		public static async Task OnPlayerLeftBackfill(string playerId)
 		{
+			Debug.Log("OnPlayerLeftBackfill: " + playerId);
+
 			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
 			try

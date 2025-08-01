@@ -47,19 +47,6 @@ namespace CCG.Networking
 			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
 		}
 
-		public override void OnStopLocalPlayer()
-		{
-			base.OnStopLocalPlayer();
-			CmdUnregisterPlayer();
-		}
-
-		[Command]
-		public void CmdUnregisterPlayer()
-		{
-		}
-
-
-
 		// a static global list of players that can be used for a variery of features, one being enemies
 		public readonly static List<XRNetworkPlayerScript> playersList = new List<XRNetworkPlayerScript>();
 

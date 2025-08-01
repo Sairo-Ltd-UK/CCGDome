@@ -28,14 +28,7 @@ namespace CCG.Networking
 	public static class MultiplayServerEventHandler
 	{
 
-
-
-
 #if UNITY_SERVER
-
-
-
-
 
 		public static string backfillTicketId = "0";
 
