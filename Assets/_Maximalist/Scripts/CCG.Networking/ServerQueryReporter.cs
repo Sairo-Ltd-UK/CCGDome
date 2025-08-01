@@ -85,7 +85,7 @@ namespace CCG.Networking
 #endif
 		}
 
-		internal static async Task CloseServices()
+		internal static void CloseServices()
 		{
 #if UNITY_SERVER
 			if (queryHandler != null)
