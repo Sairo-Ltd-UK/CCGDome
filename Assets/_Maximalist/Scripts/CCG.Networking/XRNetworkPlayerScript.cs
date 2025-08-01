@@ -34,6 +34,8 @@ namespace CCG.Networking
 			xrPlayerRig.localVRNetworkPlayerScript = this;
 
 			headModel.SetActive(false);
+			rHandModel.SetActive(false);
+			lHandModel.SetActive(false);
 
 			CmdSendPlayerIdToServer(AuthenticationService.Instance.PlayerId);
 		}
