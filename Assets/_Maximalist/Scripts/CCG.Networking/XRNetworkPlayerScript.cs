@@ -10,6 +10,7 @@
 
 using CCG.XR;
 using Mirror;
+using System;
 using System.Collections.Generic;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -92,6 +93,17 @@ namespace CCG.Networking
 			}
 		}
 
+		[Command]
+		public void CmdTeleportToPosition(Vector3 targetPosition)
+		{
+			RpcTeleport(targetPosition);
+		}
 
+		[ClientRpc]
+		private void RpcTeleport(Vector3 targetPosition)
+		{
+			transform.position = targetPosition;
+			xrPlayerRig.transform.position = targetPosition;
+		}
 	}
 }
