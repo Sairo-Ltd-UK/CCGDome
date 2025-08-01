@@ -59,13 +59,13 @@ namespace CCG.Networking
 #endif
 		}
 
-		public static void OnPlayerLeft(int connectionID)
+		public static void OnPlayerLeft(NetworkConnectionToClient connectionID)
 		{
 #if UNITY_SERVER
 
 			currentPlayerCount--;
 			UpdatePlayerCount();
-
+			UnregisterPlayer(connectionID);
 #endif
 		}
 

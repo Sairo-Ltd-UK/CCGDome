@@ -205,7 +205,7 @@ namespace CCG.Networking
 			}
 
 			base.OnServerDisconnect(conn);
-			ServerQueryReporter.OnPlayerLeft(conn.connectionId);
+			ServerQueryReporter.OnPlayerLeft(conn);
 		}
 
 		/// <summary>

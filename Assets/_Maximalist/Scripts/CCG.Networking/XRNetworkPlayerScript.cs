@@ -41,6 +41,12 @@ namespace CCG.Networking
 			CmdSendPlayerIdToServer(AuthenticationService.Instance.PlayerId);
 		}
 
+		[Command]
+		public void CmdSendPlayerIdToServer(string playerId)
+		{
+			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
+		}
+
 		public override void OnStopLocalPlayer()
 		{
 			base.OnStopLocalPlayer();
@@ -48,15 +54,8 @@ namespace CCG.Networking
 		}
 
 		[Command]
-		public void CmdSendPlayerIdToServer(string playerId)
-		{
-			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
-		}
-
-		[Command]
 		public void CmdUnregisterPlayer()
 		{
-			ServerQueryReporter.UnregisterPlayer(connectionToClient);
 		}
 
 
