@@ -106,6 +106,8 @@ namespace CCG.Networking
 			}
 		}
 
+
+
 		internal static async Task CloseServices()
 		{
 			isShuttingDown = true;

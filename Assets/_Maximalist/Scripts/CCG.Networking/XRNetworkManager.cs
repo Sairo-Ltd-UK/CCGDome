@@ -8,9 +8,10 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using UnityEngine;
 using Mirror;
 using System.Linq;
+using Unity.Services.Authentication;
+using UnityEngine;
 
 namespace CCG.Networking
 {
@@ -227,11 +228,14 @@ namespace CCG.Networking
 		/// Called on the client when connected to a server.
 		/// <para>The default implementation of this function sets the client as ready and adds a player. Override the function to dictate what happens when the client connects.</para>
 		/// </summary>
+		/// 
 		public override void OnClientConnect()
 		{
 			base.OnClientConnect();
 			Debug.Log("OnClientConnect");
 		}
+
+	
 
 		/// <summary>
 		/// Called on clients when disconnected from a server.

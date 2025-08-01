@@ -22,10 +22,15 @@ using System.Linq;
 
 #endif
 
+using Mirror;
+using System.Collections.Generic;
+
 namespace CCG.Networking
 {
 	public static class ServerQueryReporter
 	{
+		private static readonly Dictionary<NetworkConnectionToClient, string> connectionToPlayerId = new();
+
 		private const ushort defaultMaxPlayers = 50;
 		private const string defaultServerName = "MyServerExample";
 		private const string defaultGameType = "MyGameType";
@@ -50,7 +55,6 @@ namespace CCG.Networking
 
 			currentPlayerCount++;
 			UpdatePlayerCount();
-			OnPlayerJoinedBackfill(connectionID);
 
 #endif
 		}
@@ -61,7 +65,6 @@ namespace CCG.Networking
 
 			currentPlayerCount--;
 			UpdatePlayerCount();
-			OnPlayerLeftBackfill(connectionID);
 
 #endif
 		}
@@ -100,9 +103,32 @@ namespace CCG.Networking
 #endif
 		}
 
+
+
+		public static void RegisterPlayerId(NetworkConnectionToClient conn, string playerId)
+		{
 #if UNITY_SERVER
 
-		public static async Task OnPlayerJoinedBackfill(int playerId)
+			connectionToPlayerId[conn] = playerId;
+			_ = OnPlayerJoinedBackfill(playerId);
+#endif
+		}
+
+		public static void UnregisterPlayer(NetworkConnectionToClient conn)
+		{
+#if UNITY_SERVER
+
+			if (connectionToPlayerId.TryGetValue(conn, out var playerId))
+			{
+				_ = OnPlayerLeftBackfill(playerId);
+				connectionToPlayerId.Remove(conn);
+			}
+#endif
+		}
+
+#if UNITY_SERVER
+
+		public static async Task OnPlayerJoinedBackfill(string playerId)
 		{
 			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 
@@ -119,7 +145,7 @@ namespace CCG.Networking
 			}
 		}
 
-		public static async Task OnPlayerLeftBackfill(int playerId)
+		public static async Task OnPlayerLeftBackfill(string playerId)
 		{
 			string ticketId = MultiplayServerEventHandler.backfillTicketId;
 

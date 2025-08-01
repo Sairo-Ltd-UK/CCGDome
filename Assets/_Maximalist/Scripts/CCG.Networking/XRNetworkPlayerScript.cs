@@ -8,10 +8,11 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using UnityEngine;
+using CCG.XR;
 using Mirror;
 using System.Collections.Generic;
-using CCG.XR;
+using Unity.Services.Authentication;
+using UnityEngine;
 
 namespace CCG.Networking
 {
@@ -36,7 +37,29 @@ namespace CCG.Networking
 			headModel.SetActive(false);
 			rHandModel.SetActive(false);
 			lHandModel.SetActive(false);
+
+			CmdSendPlayerIdToServer(AuthenticationService.Instance.PlayerId);
 		}
+
+		public override void OnStopLocalPlayer()
+		{
+			base.OnStopLocalPlayer();
+			CmdUnregisterPlayer();
+		}
+
+		[Command]
+		public void CmdSendPlayerIdToServer(string playerId)
+		{
+			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
+		}
+
+		[Command]
+		public void CmdUnregisterPlayer()
+		{
+			ServerQueryReporter.UnregisterPlayer(connectionToClient);
+		}
+
+
 
 		// a static global list of players that can be used for a variery of features, one being enemies
 		public readonly static List<XRNetworkPlayerScript> playersList = new List<XRNetworkPlayerScript>();
@@ -82,5 +105,7 @@ namespace CCG.Networking
 
 			}
 		}
+
+
 	}
 }
