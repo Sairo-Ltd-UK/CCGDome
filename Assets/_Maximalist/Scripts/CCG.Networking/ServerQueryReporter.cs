@@ -103,14 +103,11 @@ namespace CCG.Networking
 #endif
 		}
 
-
-
 		public static void RegisterPlayerId(NetworkConnectionToClient conn, string playerId)
 		{
 #if UNITY_SERVER
 
 			connectionToPlayerId[conn] = playerId;
-			_ = OnPlayerJoinedBackfill(playerId);
 #endif
 		}
 
