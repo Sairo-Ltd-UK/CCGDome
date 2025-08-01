@@ -12,10 +12,13 @@ namespace CCG.Networking
 			if (!other.CompareTag("Player"))
 				return;
 
-			if (other.TryGetComponent(out XRNetworkPlayerScript playerTeleport))
-			{
-				playerTeleport.CmdTeleportToPosition(teleportTargetLocation.position);
-			}
+			if (other.TryGetComponent(out XRNetworkPlayerScript networkPlayer) == false)
+				return;
+
+			if (networkPlayer.isLocalPlayer == false)
+				return;
+
+			networkPlayer.CmdTeleportToPosition(teleportTargetLocation.position);
 		}
 	}
 }

@@ -30,14 +30,10 @@ namespace CCG.Networking
 
 		public override void OnStartLocalPlayer()
 		{
-			// create a link to local vr rig, so that rig can sync to our local network players transforms
 			xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
 			xrPlayerRig.localVRNetworkPlayerScript = this;
 
-			// we dont need to see our network representation of hands, or our own headset, it also covers camera without using layers or some repositioning
 			headModel.SetActive(false);
-			rHandModel.SetActive(false);
-			lHandModel.SetActive(false);
 
 			CmdSendPlayerIdToServer(AuthenticationService.Instance.PlayerId);
 		}
@@ -48,62 +44,22 @@ namespace CCG.Networking
 			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
 		}
 
-		// a static global list of players that can be used for a variery of features, one being enemies
-		public readonly static List<XRNetworkPlayerScript> playersList = new List<XRNetworkPlayerScript>();
-
-		public override void OnStartServer()
-		{
-			playersList.Add(this);
-		}
-
-		public override void OnStopServer()
-		{
-			playersList.Remove(this);
-		}
-
-
-
-		[SyncVar(hook = nameof(OnRightObjectChangedHook))]
-		public NetworkIdentity rightHandObject;
-
-		void OnRightObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
-		{
-			if (rightHandObject)
-			{
-
-			}
-			else
-			{
-
-			}
-		}
-
-		[SyncVar(hook = nameof(OnLeftObjectChangedHook))]
-		public NetworkIdentity leftHandObject;
-
-		void OnLeftObjectChangedHook(NetworkIdentity _old, NetworkIdentity _new)
-		{
-			if (leftHandObject)
-			{
-
-			}
-			else
-			{
-
-			}
-		}
-
 		[Command]
 		public void CmdTeleportToPosition(Vector3 targetPosition)
 		{
-			RpcTeleport(targetPosition);
+			// 'connectionToClient' is the client's connection who called this command
+			TargetTeleport(connectionToClient, targetPosition);
 		}
 
-		[ClientRpc]
-		private void RpcTeleport(Vector3 targetPosition)
+		[TargetRpc]
+		private void TargetTeleport(NetworkConnection target, Vector3 targetPosition)
 		{
 			transform.position = targetPosition;
-			xrPlayerRig.transform.position = targetPosition;
+
+			if (xrPlayerRig != null)
+			{
+				xrPlayerRig.transform.position = targetPosition;
+			}
 		}
 	}
 }
