@@ -51,14 +51,13 @@ namespace CCG.Networking
 
 		private static async void OnAllocate(MultiplayAllocation allocation)
 		{
-			backfillTicketId = allocation.AllocationId;
-			var backfillTicket = await MatchmakerService.Instance.ApproveBackfillTicketAsync(backfillTicketId);
-
+			CreateBackfillTicketOptions createBackfillTicketOptions = new CreateBackfillTicketOptions();
+			backfillTicketId = await MatchmakerService.Instance.CreateBackfillTicketAsync(createBackfillTicketOptions);
 
 			// Start backfill approval loop
 			_backfillCts?.Cancel();
 			_backfillCts = new CancellationTokenSource();
-			_ = BackfillApprovalLoopAsync(allocation.AllocationId, _backfillCts.Token);
+			_ = BackfillApprovalLoopAsync(backfillTicketId, _backfillCts.Token);
 
 		}
 
