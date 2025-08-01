@@ -132,21 +132,22 @@ namespace CCG.Networking
 
 			try
 			{
-				// Approve existing ticket
 				var backfillTicket = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
+				var matchProps = backfillTicket.Properties.MatchProperties;
 
-				var newPlayer = new Player(
-					playerId,
-					new Dictionary<string, object> { { "Team", "Default" } }
-				);
+				// Check if player already exists
+				if (!matchProps.Players.Any(p => p.Id == playerId))
+				{
+					var newPlayer = new Player(
+						playerId,
+						new Dictionary<string, object> { { "Team", "Default" } }
+					);
 
-				// Add to Players list
-				backfillTicket.Properties.MatchProperties.Players.Add(newPlayer);
+					matchProps.Players.Add(newPlayer);
+				}
 
-				// Also update the team structure
-				var defaultTeam = backfillTicket.Properties.MatchProperties.Teams
-					.FirstOrDefault(t => t.TeamName == "Default");
-
+				// Also ensure they're on the team
+				var defaultTeam = matchProps.Teams.FirstOrDefault(t => t.TeamName == "Default");
 				if (defaultTeam != null && !defaultTeam.PlayerIds.Contains(playerId))
 				{
 					defaultTeam.PlayerIds.Add(playerId);
@@ -169,15 +170,24 @@ namespace CCG.Networking
 			try
 			{
 				BackfillTicket response = await MatchmakerService.Instance.ApproveBackfillTicketAsync(ticketId);
+				var matchProps = response.Properties.MatchProperties;
 
-				var playerToRemove = response.Properties.MatchProperties.Players.FirstOrDefault(p => p.Id.Equals(playerId));
-				response.Properties.MatchProperties.Players.Remove(playerToRemove);
+				// Remove player from the main player list
+				var playerToRemove = matchProps.Players.FirstOrDefault(p => p.Id == playerId);
+				if (playerToRemove != null)
+					matchProps.Players.Remove(playerToRemove);
+
+				// Remove player from any teams
+				foreach (var team in matchProps.Teams)
+				{
+					team.PlayerIds.RemoveAll(id => id == playerId);
+				}
 
 				await MatchmakerService.Instance.UpdateBackfillTicketAsync(ticketId, response);
 			}
 			catch (Exception ex)
 			{
-				Debug.LogException(ex);
+				Debug.LogError($"[Backfill] Failed to update ticket on player leave: {ex.Message}");
 			}
 		}
 
