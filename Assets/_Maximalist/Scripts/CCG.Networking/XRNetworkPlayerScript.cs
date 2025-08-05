@@ -8,7 +8,6 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using CCG.XR;
 using Mirror;
 using System;
 using System.Collections.Generic;

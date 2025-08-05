@@ -1,7 +1,7 @@
 using CCG.Networking;
 using UnityEngine;
 
-namespace CCG.XR
+namespace CCG.Networking
 {
 	public class XRPlayerRig : MonoBehaviour
 	{
