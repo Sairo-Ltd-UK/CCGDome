@@ -45,22 +45,6 @@ namespace CCG.Networking
 			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
 		}
 
-		[Command]
-		public void CmdTeleportToPosition(Vector3 targetPosition)
-		{
-			// 'connectionToClient' is the client's connection who called this command
-			TargetTeleport(connectionToClient, targetPosition);
-		}
 
-		[TargetRpc]
-		private void TargetTeleport(NetworkConnection target, Vector3 targetPosition)
-		{
-			transform.position = targetPosition;
-
-			if (xrPlayerRig != null)
-			{
-				xrPlayerRig.transform.position = targetPosition;
-			}
-		}
 	}
 }
