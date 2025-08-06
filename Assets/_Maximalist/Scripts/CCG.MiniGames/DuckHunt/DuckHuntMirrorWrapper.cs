@@ -17,7 +17,7 @@ namespace CCG.MiniGames.Duckhunt
 		[SerializeField] private float shootCooldown = 0.25f;
 		[SerializeField] private LayerMask duckLayer;
 
-		public override void OnReciveRaycastHit(RaycastHit hit, string ownerID)
+		public override void OnReciveRaycastHit(RaycastHit hit)
 		{
 			var duck = hit.collider.GetComponent<Duck>();
 

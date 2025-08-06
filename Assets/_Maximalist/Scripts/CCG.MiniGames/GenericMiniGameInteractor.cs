@@ -65,7 +65,7 @@ namespace CCG.MiniGames
 #endif
 
 			Debug.Log("[GMGI] RequestRaycast");
-			CmdRequestRaycast(rayOrigin, rayDirection, StaticLocalPlayerData.localPlayerID);
+			CmdRequestRaycast(rayOrigin, rayDirection);
 
 			if (debugRayLineRenderer == null)
 				return;
@@ -75,7 +75,7 @@ namespace CCG.MiniGames
 		}
 
 		[Command]
-		private void CmdRequestRaycast(Vector3 origin, Vector3 direction, string localPlayerID)
+		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
 		{
 			Debug.Log("[GMGI] CmdRequestRaycast");
 
@@ -91,7 +91,7 @@ namespace CCG.MiniGames
 			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
 			{
 				Debug.Log("[GMGI] ProvideRaycastHit");
-				currentMiniGame.OnReciveRaycastHit(hit, localPlayerID);
+				currentMiniGame.OnReciveRaycastHit(hit);
 			}
 			else
 			{

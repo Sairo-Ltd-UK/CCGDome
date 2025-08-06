@@ -25,7 +25,7 @@ namespace CCG.MiniGames.Chess
 		}
 
 		[Server]
-		public override void OnReciveRaycastHit(RaycastHit hit, string ownerID)
+		public override void OnReciveRaycastHit(RaycastHit hit)
 		{
 			Debug.Log("[CGMW] OnReciveRaycastHit");
 			TryMovePeice(hit);
