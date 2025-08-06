@@ -15,6 +15,6 @@ namespace CCG.MiniGames
 {
 	public abstract class MiniGameInteractable: NetworkBehaviour
 	{
-		public abstract void OnReciveRaycastHit(RaycastHit hit);
+		public abstract void OnReciveRaycastHit(RaycastHit hit, string ownerID);
 	}
 }

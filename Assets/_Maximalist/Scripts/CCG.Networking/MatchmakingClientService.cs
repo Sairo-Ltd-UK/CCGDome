@@ -28,28 +28,12 @@ namespace CCG.Networking
 
 		private const int maxAttempts = 60;
 
-		public static async Task InitializeAsync()
-		{
-			if (isInitialized)
-				return;
-
-			await UnityServices.InitializeAsync();
-
-			if (!AuthenticationService.Instance.IsSignedIn)
-				await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-			Debug.Log("[Matchmaking] Initialized");
-			isInitialized = true;
-		}
-
 		public static async Task RequestMatchAsync()
 		{
 			try
 			{
-				await InitializeAsync();
-
 				var ticketResponse = await MatchmakerService.Instance.CreateTicketAsync(
-					new List<Player> { new Player(AuthenticationService.Instance.PlayerId) },
+					new List<Player> { new Player(Unity.Services.Authentication.AuthenticationService.Instance.PlayerId) },
 					new CreateTicketOptions(QUEUE_NAME_KEY)
 				);
 

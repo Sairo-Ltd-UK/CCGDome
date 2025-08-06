@@ -38,14 +38,15 @@ namespace CCG.Networking
 
 				Debug.Log("Running in headless server mode. Starting Mirror server...");
 
-				await ServerQueryReporter.Initialize();
-				await MultiplayServerEventHandler.Init();
+				await ServerQueryReporterService.Initialize();
+				await MultiplayServerEventsService.Init();
 
 				NetworkManager.singleton.StartServer();
 				LogServerConfig();
 
 #elif !UNITY_SERVER
 
+				await AuthenticationService.InitializeAsync();
 				await MatchmakingClient.RequestMatchAsync();
 
 #endif
@@ -67,8 +68,8 @@ namespace CCG.Networking
 
 #if UNITY_SERVER
 
-			ServerQueryReporter.CloseServices();
-			await MultiplayServerEventHandler.CloseServices();
+			ServerQueryReporterService.CloseServices();
+			await MultiplayServerEventsService.CloseServices();
 
 			if(NetworkManager.singleton)
 				NetworkManager.singleton.StopServer();

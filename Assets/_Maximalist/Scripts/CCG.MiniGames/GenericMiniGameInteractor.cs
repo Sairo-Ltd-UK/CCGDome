@@ -8,6 +8,7 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+using CCG.Core;
 using CCG.CustomInput;
 using Mirror;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace CCG.MiniGames
 #endif
 
 			Debug.Log("[GMGI] RequestRaycast");
-			CmdRequestRaycast(rayOrigin, rayDirection);
+			CmdRequestRaycast(rayOrigin, rayDirection, StaticLocalPlayerData.localPlayerID);
 
 			if (debugRayLineRenderer == null)
 				return;
@@ -74,7 +75,7 @@ namespace CCG.MiniGames
 		}
 
 		[Command]
-		private void CmdRequestRaycast(Vector3 origin, Vector3 direction)
+		private void CmdRequestRaycast(Vector3 origin, Vector3 direction, string localPlayerID)
 		{
 			Debug.Log("[GMGI] CmdRequestRaycast");
 
@@ -90,7 +91,7 @@ namespace CCG.MiniGames
 			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
 			{
 				Debug.Log("[GMGI] ProvideRaycastHit");
-				currentMiniGame.OnReciveRaycastHit(hit);
+				currentMiniGame.OnReciveRaycastHit(hit, localPlayerID);
 			}
 			else
 			{

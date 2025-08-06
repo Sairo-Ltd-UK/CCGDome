@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace CCG.Networking
 {
-	public static class ServerQueryReporter
+	public static class ServerQueryReporterService
 	{
 		private static readonly Dictionary<NetworkConnectionToClient, string> connectionToPlayerId = new();
 
@@ -128,7 +128,7 @@ namespace CCG.Networking
 
 		public static async Task OnPlayerJoinedBackfill(string playerId)
 		{
-			string ticketId = MultiplayServerEventHandler.backfillTicketId;
+			string ticketId = MultiplayServerEventsService.backfillTicketId;
 
 			try
 			{
@@ -165,7 +165,7 @@ namespace CCG.Networking
 		{
 			Debug.Log("OnPlayerLeftBackfill: " + playerId);
 
-			string ticketId = MultiplayServerEventHandler.backfillTicketId;
+			string ticketId = MultiplayServerEventsService.backfillTicketId;
 
 			try
 			{

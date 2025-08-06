@@ -62,7 +62,7 @@ namespace CCG.Networking
 
 		public void FixedUpdate()
 		{
-			ServerQueryReporter.UpdateServerQuery();
+			ServerQueryReporterService.UpdateServerQuery();
 		}
 
 		/// <summary>
@@ -182,7 +182,7 @@ namespace CCG.Networking
 		public override void OnServerAddPlayer(NetworkConnectionToClient conn)
 		{
 			base.OnServerAddPlayer(conn);
-			ServerQueryReporter.OnPlayerJoined(conn.connectionId);
+			ServerQueryReporterService.OnPlayerJoined(conn.connectionId);
 		}
 
 		/// <summary>
@@ -204,7 +204,7 @@ namespace CCG.Networking
 			}
 
 			base.OnServerDisconnect(conn);
-			ServerQueryReporter.OnPlayerLeft(conn);
+			ServerQueryReporterService.OnPlayerLeft(conn);
 		}
 
 		/// <summary>
@@ -231,7 +231,7 @@ namespace CCG.Networking
 		public override void OnClientConnect()
 		{
 			base.OnClientConnect();
-			Debug.Log("OnClientConnect");
+			Debug.Log("[XRNetworkManager] OnClientConnect");
 		}
 
 	
@@ -242,7 +242,7 @@ namespace CCG.Networking
 		/// </summary>
 		public override void OnClientDisconnect()
 		{
-			Debug.Log("OnClientDisconnect");
+			Debug.Log("[XRNetworkManager] OnClientDisconnect");
 
 		}
 

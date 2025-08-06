@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace CCG.Networking
 {
-	public static class MultiplayServerEventHandler
+	public static class MultiplayServerEventsService
 	{
 
 #if UNITY_SERVER

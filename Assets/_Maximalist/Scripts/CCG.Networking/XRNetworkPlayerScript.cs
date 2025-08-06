@@ -36,13 +36,13 @@ namespace CCG.Networking
 			rHandModel.SetActive(false);
 			lHandModel.SetActive(false);
 
-			CmdSendPlayerIdToServer(AuthenticationService.Instance.PlayerId);
+            CmdSendPlayerIdToServer(Unity.Services.Authentication.AuthenticationService.Instance.PlayerId);
 		}
 
 		[Command]
 		public void CmdSendPlayerIdToServer(string playerId)
 		{
-			ServerQueryReporter.RegisterPlayerId(connectionToClient, playerId);
+			ServerQueryReporterService.RegisterPlayerId(connectionToClient, playerId);
 		}
 
 
