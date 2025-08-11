@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "856877021027",
+    "project_id": "ccgdome",
+    "storage_bucket": "ccgdome.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856877021027:android:12c172f948a012554f4556",
+        "android_client_info": {
+          "package_name": "com.Maximalist.CCGDome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApQ7FhaQW6bivaPMdGy2JtA-0X4zcgAc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
