@@ -9,10 +9,10 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 715df9372183c47e389bb6e19fbc3b52, type: 3}
   editorImportSettings:
-    generateSecondaryUVSet: 0
+    generateSecondaryUVSet: 1
   importSettings:
     nodeNameMethod: 1
-    animationMethod: 2
+    animationMethod: 0
     generateMipMaps: 1
     texturesReadable: 0
     defaultMinFilterMode: 9729
@@ -25,4 +25,8 @@ ScriptedImporter:
     lightIntensityFactor: 1
     sceneObjectCreation: 2
   assetDependencies: []
-  reportItems: []
+  reportItems:
+  - type: 2
+    code: 20
+    messages:
+    - KHR_materials_specular
