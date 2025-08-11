@@ -12,7 +12,6 @@ using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
@@ -22,9 +21,17 @@ namespace CCG.Networking
 {
 	public static class MatchmakingClient
 	{
-		private const string QUEUE_NAME_KEY = "Default";
-		private static bool isInitialized = false;
-		private static bool isShuttingDown = false;
+        private const string PROD_QUEUE_NAME = "Default";
+        private const string DEV_QUEUE_NAME = "DevDefault";
+
+#if PRODUCTION_BUILD
+		private static bool isProduction = true; // <-- Change via build config
+#else
+        private static bool isProduction = false; // <-- Change via build config
+
+#endif
+
+        private static bool isShuttingDown = false;
 
 		private const int maxAttempts = 60;
 
@@ -32,9 +39,13 @@ namespace CCG.Networking
 		{
 			try
 			{
-				var ticketResponse = await MatchmakerService.Instance.CreateTicketAsync(
+
+                string queueName = isProduction ? PROD_QUEUE_NAME : DEV_QUEUE_NAME;
+
+
+                var ticketResponse = await MatchmakerService.Instance.CreateTicketAsync(
 					new List<Player> { new Player(Unity.Services.Authentication.AuthenticationService.Instance.PlayerId) },
-					new CreateTicketOptions(QUEUE_NAME_KEY)
+					new CreateTicketOptions(queueName)
 				);
 
 				string ticketId = ticketResponse.Id;
@@ -89,8 +100,6 @@ namespace CCG.Networking
 				Debug.LogError($"[Matchmaking] Error: {ex.Message}");
 			}
 		}
-
-
 
 		internal static async Task CloseServices()
 		{

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 04feb80a7810c9743959e2514fe6311d
+guid: 4047b4b9edb01fc4baedbb9e9f2677b2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
-  spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -108,7 +108,117 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: IntroTutorialUI_0
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 2923
+        width: 1926
+        height: 1086
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cc4c4979235c994c8757f50a6f75de9
+      internalID: 371389604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IntroTutorialUI_1
+      rect:
+        serializedVersion: 2
+        x: 2139
+        y: 2923
+        width: 1924
+        height: 1086
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 739391ea3848e0b469b45c5f34857c09
+      internalID: -1814394395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IntroTutorialUI_2
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 1775
+        width: 1926
+        height: 1084
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e03f9755247af5345b266be6a87f4418
+      internalID: 1760265367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IntroTutorialUI_3
+      rect:
+        serializedVersion: 2
+        x: 2209
+        y: 2621
+        width: 786
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0242e024ee4171498ab4562d899830e
+      internalID: 311981603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IntroTutorialUI_4
+      rect:
+        serializedVersion: 2
+        x: 2211
+        y: 2299
+        width: 772
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b260190a35a11f044b1c52eb753c8a21
+      internalID: 130296911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -122,7 +232,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      IntroTutorialUI_0: 371389604
+      IntroTutorialUI_1: -1814394395
+      IntroTutorialUI_2: 1760265367
+      IntroTutorialUI_3: 311981603
+      IntroTutorialUI_4: 130296911
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
