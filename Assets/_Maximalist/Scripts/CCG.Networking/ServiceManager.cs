@@ -32,10 +32,11 @@ namespace CCG.Networking
 				await UnityServices.InitializeAsync();
 				IsInitialized = true;
 
-#if UNITY_SERVER
-				if (Application.isEditor)
-					return;
+#if UNITY_EDITOR
 
+                NetworkManager.singleton.StartHost();
+
+#elif UNITY_SERVER
 				Debug.Log("Running in headless server mode. Starting Mirror server...");
 
 				await ServerQueryReporterService.Initialize();
@@ -48,11 +49,10 @@ namespace CCG.Networking
 
 				await AuthenticationService.InitializeAsync();
 				await MatchmakingClient.RequestMatchAsync();
-
 #endif
 
-			}
-			catch (Exception e)
+            }
+            catch (Exception e)
 			{
 				Debug.LogException(e);
 			}

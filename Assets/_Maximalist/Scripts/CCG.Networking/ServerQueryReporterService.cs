@@ -10,7 +10,6 @@
 
 #if UNITY_SERVER
 
-using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -51,6 +50,8 @@ namespace CCG.Networking
 #endif
 		public static void OnPlayerJoined(int connectionID)
 		{
+
+
 #if UNITY_SERVER
 
 			currentPlayerCount++;
@@ -71,6 +72,9 @@ namespace CCG.Networking
 		public static void UpdatePlayerCount()
 		{
 #if UNITY_SERVER
+
+			if (Application.isEditor)
+				return;
 
 			if (queryHandler != null)
 				queryHandler.CurrentPlayers = currentPlayerCount;
@@ -106,7 +110,10 @@ namespace CCG.Networking
 		{
 #if UNITY_SERVER
 
-			connectionToPlayerId[conn] = playerId;
+            if (Application.isEditor)
+                return;
+
+            connectionToPlayerId[conn] = playerId;
 			_ = OnPlayerJoinedBackfill(playerId);
 
 #endif

@@ -13,21 +13,16 @@ using UnityEngine;
 
 namespace CCG.MiniGames.Duckhunt
 {
-    public class DuckHuntGameManager : MiniGameBase
-    {
-	    // Events, only currently the ui listents to these, used events to keep it decoupled
-	    public static event Action<bool> OnShowGameOver;
-	    public static event Action<float> OnTimerChange;
-	    public static event Action<int> OnShotsRemainingChanged;
-	    public static event Action<int> OnChangeDucksRemaining;
-	    
-	    
-	    
-		public static DuckHuntGameManager Instance { get; private set; }
+	public class DuckHuntGameManager : MiniGameBase
+	{
+		// Events, only currently the ui listents to these, used events to keep it decoupled
+		public static event Action<bool> OnShowGameOver;
+		public static event Action<float> OnTimerChange;
+		public static event Action<int> OnShotsRemainingChanged;
+		public static event Action<int> OnChangeDucksRemaining;
 		
 		[Tooltip("UsedToTrackTheScore")]
-		[SerializeField] DuckHuntScoreManager duckHuntScoreManager;
-		
+		[SerializeField] private DuckHuntScoreManager duckHuntScoreManager;
 		
 		// Timer related 
 		[Tooltip("Amount of time at start of each round")]
@@ -46,10 +41,13 @@ namespace CCG.MiniGames.Duckhunt
 		[Tooltip("Amount of Ammo at the end of each round")]
 		[SerializeField] private int maxShots;
 		private int currentShotsRemaining;
-
 		
 		// State
 		private bool roundOver;
+
+		[SerializeField] private Duck[] ducks;
+
+		public bool HasShotsRemaining { get { return currentShotsRemaining > 0; } }
 
 		private void OnEnable()
 		{
@@ -85,10 +83,12 @@ namespace CCG.MiniGames.Duckhunt
 		private void StartRound()
 		{
 			roundOver = false;
+
 			if (duckHuntScoreManager)
 			{
 				duckHuntScoreManager.ResetScore();
 			}
+
 			UpdateShotsRemaining(maxShots);
 			UpdateDucksRemaining(ducksPerRound);
 			UpdateTimer(startRoundTime);
@@ -105,11 +105,10 @@ namespace CCG.MiniGames.Duckhunt
 			// /* evaluate win/loss, prepare next */
 		}
 
-		private void HandleDuckDeath()
+		private void HandleDuckDeath(int scoreIncrease)
 		{
 			if (duckHuntScoreManager)
 			{
-				const int scoreIncrease = 1;
 				duckHuntScoreManager.AddScore(scoreIncrease);
 			}
 			
@@ -117,16 +116,35 @@ namespace CCG.MiniGames.Duckhunt
 			UpdateDucksRemaining(ducksRemainingInRound - ducksDecrease);
 		}
 
-		private void Fire()
+		public void Fire()
 		{
 			const int shotsDecrease = 1;
-			if (currentShotsRemaining > 0)
+
+			if (HasShotsRemaining == true)
 			{
 				UpdateShotsRemaining(currentShotsRemaining - shotsDecrease);
 			}
+
+			if (HasShotsRemaining == false)
+			{
+				ResetDucks();
+				StartRound();
+			}
 		}
-		
-		private void UpdateDucksRemaining(int newDucksRemaining)
+
+        private void ResetDucks()
+        {
+			if (ducks == null)
+				return;
+
+			for (int i = 0; i < ducks.Length; i++)
+			{
+				if(ducks[i])
+					ducks[i].ResetDuck();
+			}
+        }
+
+        private void UpdateDucksRemaining(int newDucksRemaining)
 		{
 			ducksRemainingInRound = newDucksRemaining;
 			const int zeroDucks = 0;
@@ -142,11 +160,13 @@ namespace CCG.MiniGames.Duckhunt
 		{
 			currentShotsRemaining = newShotsRemaining;
 			const int zeroShots = 0;
+
 			if (currentShotsRemaining <= zeroShots)
 			{
 				currentShotsRemaining = zeroShots;
 				if (!roundOver) EndRound();
 			}
+
 			OnShotsRemainingChanged?.Invoke(currentShotsRemaining);
 		}
 
@@ -154,6 +174,7 @@ namespace CCG.MiniGames.Duckhunt
 		{
 			currentRoundTime = newTime;
 			const float zeroTime = 0f;
+
 			if (currentRoundTime <= zeroTime)
 			{
 				currentRoundTime = zeroTime;
@@ -162,6 +183,6 @@ namespace CCG.MiniGames.Duckhunt
 
 			OnTimerChange?.Invoke(currentRoundTime);
 		}
-    }
+	}
 }
 

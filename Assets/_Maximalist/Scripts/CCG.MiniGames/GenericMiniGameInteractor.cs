@@ -26,9 +26,10 @@ namespace CCG.MiniGames
         [Tooltip("Only needs setting client side on the local player")]
 		[SerializeField] private MiniGameInteractable currentMiniGame;
 		[SerializeField] private LineRenderer debugRayLineRenderer;
+
 		public override void OnStartLocalPlayer()
 		{
-			base.OnStartLocalPlayer();
+            base.OnStartLocalPlayer();
 
 			if(isServerOnly == true)
 				return;
@@ -36,7 +37,7 @@ namespace CCG.MiniGames
 			if (fireRayAction != null)
 			{
 				fireRayAction.AddToInputActionReference(RequestRaycast);
-			}
+            }
 
             if (debugRayLineRenderer == null)
                 return;
@@ -49,7 +50,7 @@ namespace CCG.MiniGames
 			if (isLocalPlayer == false)
 				return;
 
-			Vector3 rayOrigin;
+            Vector3 rayOrigin;
 			Vector3 rayDirection;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -79,14 +80,15 @@ namespace CCG.MiniGames
 		{
 			Debug.Log("[GMGI] CmdRequestRaycast");
 
-			if (currentMiniGame == null)
-			{
-				Debug.Log("[GMGI] currentMiniGame is null");
+            if (currentMiniGame == null)
+            {
+                Debug.Log("[GMGI] currentMiniGame is null");
+                return;
+            }
 
-				return;
-			}
+			currentMiniGame.OnFireActionPressed();
 
-			Debug.Log("[GMGI] currentMiniGame != null");
+            Debug.Log("[GMGI] currentMiniGame != null");
 
 			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
 			{

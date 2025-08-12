@@ -2,7 +2,10 @@
     "name": "_CCG.Firebase",
     "rootNamespace": "CCG.Firebase",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

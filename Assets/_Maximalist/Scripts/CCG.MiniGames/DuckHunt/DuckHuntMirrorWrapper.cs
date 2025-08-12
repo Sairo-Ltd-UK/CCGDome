@@ -8,21 +8,52 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+using Mirror;
 using UnityEngine;
 
 namespace CCG.MiniGames.Duckhunt
 {
 	public class DuckHuntMirrorWrapper : MiniGameInteractable
 	{
-		[SerializeField] private float shootCooldown = 0.25f;
+        [SerializeField] private DuckHuntGameManager duckHuntGameManager;
 		[SerializeField] private LayerMask duckLayer;
+		[SerializeField] private Duck[] ducks;
 
-		public override void OnReciveRaycastHit(RaycastHit hit)
+        private void Start()
+        {
+			for (int i = 0; i < ducks.Length; i++)
+			{
+				ducks[i].Index = i;
+            }
+        }
+
+        public override void OnFireActionPressed() 
 		{
-			var duck = hit.collider.GetComponent<Duck>();
+			if(duckHuntGameManager == null)
+				return;
+
+			if (duckHuntGameManager.HasShotsRemaining == false)
+				return;
+
+			duckHuntGameManager.Fire();
+        }
+
+        public override void OnReciveRaycastHit(RaycastHit hit)
+		{
+            if (duckHuntGameManager.HasShotsRemaining == false)
+                return;
+
+            Duck duck = hit.collider.GetComponent<Duck>();
 
 			if (duck != null)
-				duck.OnHit();
-		}
+				HitDuckRpc(duck.Index);
+        }
+
+		[ClientRpc]
+		public void HitDuckRpc(int index)
+		{
+			if (ducks[index])
+				ducks[index].OnHit();
+        }
 	}
 }

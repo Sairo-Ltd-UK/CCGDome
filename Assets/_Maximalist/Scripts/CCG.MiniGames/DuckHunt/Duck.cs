@@ -10,32 +10,53 @@
 
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CCG.MiniGames.Duckhunt
 {
 	public class Duck : MonoBehaviour
 	{
-		public static event Action OnDuckDied;
-		
-		public float speed = 2f;
-		public bool isHit = false;
+		public static event Action<int> OnDuckDied;
+        [SerializeField] private int index;
+        [SerializeField] private int points = 2;
+        [SerializeField] private bool isHit = false;
 
-		private void Update() { Move(); }
+		[SerializeField] private MeshRenderer duckRenderer;
+		private Color startingColor;
 
-		private void Move() { }
+        public int Index { get => index; set => index = value; }
 
-		public void OnHit()
+        private void Start()
+        {
+			if(duckRenderer != null)
+				startingColor = duckRenderer.material.color;
+        }
+
+        public void OnHit()
 		{
-			if (isHit) return;
+			if (isHit)
+				return;
+
 			isHit = true;
 			Die();
-		}
 
-		private void Die()
+            if (duckRenderer != null)
+                duckRenderer.material.color = Color.blue;
+        }
+
+    
+        private void Die()
 		{
-			OnDuckDied?.Invoke(); /* animation + notify game manager */
+			OnDuckDied?.Invoke(points); /* animation + notify game manager */
 		}
-	}
 
+        public void ResetDuck()
+        {
+            isHit = false;
+
+            if (duckRenderer != null)
+                duckRenderer.material.color = startingColor;
+        }
+    }
 }
 

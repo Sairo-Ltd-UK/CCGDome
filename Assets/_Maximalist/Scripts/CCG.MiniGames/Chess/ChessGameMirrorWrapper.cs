@@ -285,5 +285,7 @@ namespace CCG.MiniGames.Chess
 		{
 			game.SomeoneWonGame(whiteWon);
 		}
-	}
+
+        public override void OnFireActionPressed() { }
+    }
 }
