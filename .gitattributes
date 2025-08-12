@@ -1,5 +1,13 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize text files to LF
+* text=auto eol=lf
+
+# Unity YAML-based files (kept as text, not in LFS)
+*.cs       text eol=lf
+*.meta     text eol=lf
+*.shader   text eol=lf
+*.cginc    text eol=lf
+
+# Git LFS for large/binary assets
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.fbx filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
@@ -8,12 +16,17 @@
 *.wav filter=lfs diff=lfs merge=lfs -text
 *.mp4 filter=lfs diff=lfs merge=lfs -text
 *.blend filter=lfs diff=lfs merge=lfs -text
+
+# Unity scene and asset files in LFS (if that’s intentional — you can switch these to text if you want diffable versions)
 *.unity filter=lfs diff=lfs merge=lfs -text
 *.prefab filter=lfs diff=lfs merge=lfs -text
 *.mat filter=lfs diff=lfs merge=lfs -text
 *.anim filter=lfs diff=lfs merge=lfs -text
 *.controller filter=lfs diff=lfs merge=lfs -text
+
+# Platform-specific binaries
 Assets/Firebbase/Plugins/x86_64/*.bundle filter=lfs diff=lfs merge=lfs -text
 Assets/Firebase/Plugins/x86_64/*.so filter=lfs diff=lfs merge=lfs -text
 *.bundle filter=lfs diff=lfs merge=lfs -text
 *.so filter=lfs diff=lfs merge=lfs -text
+
