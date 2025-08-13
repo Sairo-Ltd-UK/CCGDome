@@ -24,18 +24,21 @@ namespace CCG.MiniGames.Duckhunt
 			for (int i = 0; i < ducks.Length; i++)
 			{
 				ducks[i].Index = i;
-            }
-        }
+			}
+		}
 
-        public override void OnFireActionPressed() 
+		public override void OnFireActionPressed()
 		{
-			if(duckHuntGameManager == null)
+			if (duckHuntGameManager == null)
 				return;
 
 			if (duckHuntGameManager.HasShotsRemaining == false)
 				return;
 
 			duckHuntGameManager.Fire();
+
+			if (duckHuntGameManager.HasShotsRemaining == false)
+				ResetDucksRpc();
         }
 
         public override void OnReciveRaycastHit(RaycastHit hit)
@@ -57,5 +60,12 @@ namespace CCG.MiniGames.Duckhunt
 			if (ducks[index])
 				ducks[index].OnHit();
         }
-	}
+
+		[ClientRpc]
+		public void ResetDucksRpc()
+		{
+			duckHuntGameManager.ResetDucks();
+        }
+
+    }
 }

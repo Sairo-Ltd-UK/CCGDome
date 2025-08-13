@@ -10,6 +10,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CCG.MiniGames.Duckhunt
 {
@@ -124,15 +125,9 @@ namespace CCG.MiniGames.Duckhunt
 			{
 				UpdateShotsRemaining(currentShotsRemaining - shotsDecrease);
 			}
-
-			if (HasShotsRemaining == false)
-			{
-				ResetDucks();
-				StartRound();
-			}
 		}
 
-        private void ResetDucks()
+        public void ResetDucks()
         {
 			if (ducks == null)
 				return;
@@ -142,6 +137,8 @@ namespace CCG.MiniGames.Duckhunt
 				if(ducks[i])
 					ducks[i].ResetDuck();
 			}
+
+            StartRound();
         }
 
         private void UpdateDucksRemaining(int newDucksRemaining)
