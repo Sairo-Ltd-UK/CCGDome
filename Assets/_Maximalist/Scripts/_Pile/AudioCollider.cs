@@ -6,14 +6,19 @@ public class RoomMusicTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // if (!other.CompareTag("Player")) return;
+        if (other.CompareTag("LocalPlayer") == false)
+
+            return;
+
         if (musicClip != null)
             MusicManager.Instance.PlayMusic(musicClip);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // if (!other.CompareTag("Player")) return;
+        if (other.CompareTag("LocalPlayer") == false)
+            return;
+
         MusicManager.Instance.PlayMainRoomMusic();
     }
 }
