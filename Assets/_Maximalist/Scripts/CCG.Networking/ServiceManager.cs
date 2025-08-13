@@ -37,6 +37,7 @@ namespace CCG.Networking
                 NetworkManager.singleton.StartHost();
 
 #elif UNITY_SERVER
+
 				Debug.Log("Running in headless server mode. Starting Mirror server...");
 
 				await ServerQueryReporterService.Initialize();
