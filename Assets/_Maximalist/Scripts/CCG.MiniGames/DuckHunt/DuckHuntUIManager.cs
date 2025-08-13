@@ -60,6 +60,8 @@ namespace CCG.MiniGames
 
         private void HandleGameFinishMenu(bool showMenu)
         {
+            return;
+
             if (winScreen != null)
             {
                 winScreen.SetActive(showMenu);

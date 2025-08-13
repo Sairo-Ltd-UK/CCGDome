@@ -20,16 +20,14 @@ namespace CCG.MiniGames.Duckhunt
         [SerializeField] private int index;
         [SerializeField] private int points = 2;
         [SerializeField] private bool isHit = false;
-
-		[SerializeField] private MeshRenderer duckRenderer;
-		private Color startingColor;
+        [SerializeField] private Vector3 rotationOnHit = new Vector3(90, 0, 0);
+		private Quaternion startingRotation;
 
         public int Index { get => index; set => index = value; }
 
         private void Start()
         {
-			if(duckRenderer != null)
-				startingColor = duckRenderer.material.color;
+            startingRotation = transform.rotation;
         }
 
         public void OnHit()
@@ -40,22 +38,20 @@ namespace CCG.MiniGames.Duckhunt
 			isHit = true;
 			Die();
 
-            if (duckRenderer != null)
-                duckRenderer.material.color = Color.blue;
         }
 
     
         private void Die()
 		{
 			OnDuckDied?.Invoke(points); /* animation + notify game manager */
-		}
+            transform.localEulerAngles -= rotationOnHit;
+        }
 
         public void ResetDuck()
         {
             isHit = false;
 
-            if (duckRenderer != null)
-                duckRenderer.material.color = startingColor;
+            transform.rotation = startingRotation;
         }
     }
 }

@@ -92,7 +92,6 @@ namespace CCG.MiniGames
 
 			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
 			{
-				Debug.Log("[GMGI] ProvideRaycastHit");
 				currentMiniGame.OnReciveRaycastHit(hit);
 			}
 			else

@@ -23,6 +23,8 @@ namespace CCG.Networking
 
             UnequipItemInRightHand();
             itemToEquip.transform.SetParent(rightHandEquipmentSlot);
+            itemToEquip.transform.localPosition = Vector3.zero;
+            itemToEquip.transform.localRotation = Quaternion.identity;
         }
 
         public void UnequipItemInRightHand()

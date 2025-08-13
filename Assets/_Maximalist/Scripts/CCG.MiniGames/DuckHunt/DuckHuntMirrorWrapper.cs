@@ -52,6 +52,8 @@ namespace CCG.MiniGames.Duckhunt
 		[ClientRpc]
 		public void HitDuckRpc(int index)
 		{
+			Debug.Log("HitDuck");
+
 			if (ducks[index])
 				ducks[index].OnHit();
         }
