@@ -1,4 +1,3 @@
-using CCG.Networking;
 using UnityEngine;
 
 namespace CCG.Networking
