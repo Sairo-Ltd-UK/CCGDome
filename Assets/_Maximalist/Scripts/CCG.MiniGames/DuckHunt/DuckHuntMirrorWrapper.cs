@@ -17,55 +17,66 @@ namespace CCG.MiniGames.Duckhunt
 	{
         [SerializeField] private DuckHuntGameManager duckHuntGameManager;
 		[SerializeField] private LayerMask duckLayer;
-		[SerializeField] private Duck[] ducks;
-
-        private void Start()
+   
+        public override void OnFireActionPressed()
         {
-			for (int i = 0; i < ducks.Length; i++)
-			{
-				ducks[i].Index = i;
-			}
-		}
+            if (duckHuntGameManager == null)
+                return;
 
-		public override void OnFireActionPressed()
-		{
-			if (duckHuntGameManager == null)
-				return;
+            if (duckHuntGameManager.HasShotsRemaining == false)
+                return;
 
-			if (duckHuntGameManager.HasShotsRemaining == false)
-				return;
+            FireServer();
+        }
 
-			duckHuntGameManager.Fire();
+        private void FireServer()
+        {
+            if(isClient == false)
+                Fire();
 
-			if (duckHuntGameManager.HasShotsRemaining == false)
-				ResetDucksRpc();
+            FireServerRpc();
+        }
+
+        [ClientRpc]
+        private void FireServerRpc()
+        {
+            Fire();
+        }
+
+        private void Fire()
+        {
+            duckHuntGameManager.Fire();
         }
 
         public override void OnReciveRaycastHit(RaycastHit hit)
-		{
+        {
             if (duckHuntGameManager.HasShotsRemaining == false)
                 return;
 
             Duck duck = hit.collider.GetComponent<Duck>();
 
-			if (duck != null)
-				HitDuckRpc(duck.Index);
+            if (duck != null)
+                HitDuckServer(duck.Index);
+        }
+
+        public void HitDuckServer(int index)
+		{
+            if (isClient == false)
+                HitDuck(index);
+
+			HitDuckRpc(index);
         }
 
 		[ClientRpc]
 		public void HitDuckRpc(int index)
 		{
 			Debug.Log("HitDuck");
-
-			if (ducks[index])
-				ducks[index].OnHit();
+			HitDuck(index);
         }
 
-		[ClientRpc]
-		public void ResetDucksRpc()
+		public void HitDuck(int index)
 		{
-			duckHuntGameManager.ResetDucks();
+            duckHuntGameManager.HitDuck(index);
         }
-
     }
 }

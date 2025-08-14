@@ -10,7 +10,6 @@
 
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace CCG.MiniGames.Duckhunt
 {
@@ -30,6 +29,7 @@ namespace CCG.MiniGames.Duckhunt
             startingRotation = transform.rotation;
         }
 
+        [ContextMenu("OnHit")]
         public void OnHit()
 		{
 			if (isHit)
@@ -39,7 +39,6 @@ namespace CCG.MiniGames.Duckhunt
 			Die();
 
         }
-
     
         private void Die()
 		{
@@ -50,7 +49,6 @@ namespace CCG.MiniGames.Duckhunt
         public void ResetDuck()
         {
             isHit = false;
-
             transform.rotation = startingRotation;
         }
     }

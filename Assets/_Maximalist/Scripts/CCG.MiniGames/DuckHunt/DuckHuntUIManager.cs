@@ -8,23 +8,20 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using System;
-using CCG.MiniGames.Duckhunt;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace CCG.MiniGames
+namespace CCG.MiniGames.Duckhunt
 {
     public class DuckHuntUIManager : MonoBehaviour
     {
         [Header("DuckHuntGameUIManager")]
-        [SerializeField] private Text timerText;
-        [SerializeField] private Text scoreText;
-        [SerializeField] private Text shotsLeftText;
-        [SerializeField] private Text ducksLeftText;
+        [SerializeField] private TextMeshProUGUI timerText;
+        [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI shotsLeftText;
+        [SerializeField] private TextMeshProUGUI ducksLeftText;
         [Space]
         [SerializeField] private GameObject winScreen;
-
 
         private void OnEnable()
         {
@@ -46,7 +43,7 @@ namespace CCG.MiniGames
 
         private void UpdateTimer(float secondsCount)
         {
-            if (timerText)
+            if (timerText != null)
             {
                 timerText.text = (int)secondsCount + " sec";
             }
@@ -54,23 +51,27 @@ namespace CCG.MiniGames
 
         private void UpdateRemainingShots(int shotsLeft)
         {
-            if (shotsLeft >= 0 && shotsLeftText != null)
+            Debug.Log("[DHUI] UpdateRemainingShots");
+
+            if (shotsLeftText != null)
             {
-                shotsLeftText.text = shotsLeft.ToString();
+                shotsLeftText.text = $"Shots Left: {shotsLeft}";
             }
         }
 
         private void UpdateScore(int score)
         {
+            Debug.Log("[DHUI] UpdateScore");
+
             if (scoreText != null)
             {
-                scoreText.text = score.ToString();
+                scoreText.text = $"Score: {score}";
             }
         }
 
         private void HandleGameFinishMenu(bool showMenu)
         {
-            return;
+            Debug.Log("[DHUI] HandleGameFinishMenu");
 
             if (winScreen != null)
             {
@@ -80,9 +81,11 @@ namespace CCG.MiniGames
 
         private void UpdateDucksRemainingText(int ducksRemaining)
         {
+            Debug.Log("[DHUI] UpdateDucksRemainingText");
+
             if (ducksLeftText != null)
             {
-                ducksLeftText.text = ducksRemaining.ToString();
+                ducksLeftText.text = $"Ducks Remaning: {ducksRemaining}";
             }
         }
     }

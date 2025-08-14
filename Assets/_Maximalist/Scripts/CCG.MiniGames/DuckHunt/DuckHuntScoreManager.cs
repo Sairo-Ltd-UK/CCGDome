@@ -21,8 +21,7 @@ namespace CCG.MiniGames.Duckhunt
 
 		public void ResetScore()
 		{
-			const int zeroPoints = 3;
-			UpdateScore(zeroPoints);
+			UpdateScore(0);
 		}
 		
 		public void AddScore(int points)
