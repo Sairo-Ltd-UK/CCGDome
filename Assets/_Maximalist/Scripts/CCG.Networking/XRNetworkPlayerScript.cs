@@ -13,16 +13,16 @@ using UnityEngine;
 
 namespace CCG.Networking
 {
-	public class XRNetworkPlayerScript : NetworkBehaviour
-	{
-		public Transform rHandTransform;
-		public Transform lHandTransform;
-		public Transform headTransform;
-		public GameObject headModel;
-		public GameObject rHandModel;
-		public GameObject lHandModel;
+    public class XRNetworkPlayerScript : NetworkBehaviour
+    {
+        public Transform rHandTransform;
+        public Transform lHandTransform;
+        public Transform headTransform;
+        public GameObject headModel;
+        public GameObject rHandModel;
+        public GameObject lHandModel;
 
-		public XRPlayerRig xrPlayerRig;
+        public XRPlayerRig xrPlayerRig;
 
         [SerializeField] private AudioClip onConnectedToServer;
         [SerializeField] private AudioClip onDisconnectedFromServer;
@@ -30,46 +30,24 @@ namespace CCG.Networking
         [SerializeField] private Color[] generatedColours;
         [SerializeField] private MeshRenderer pillRenderer;
 
-        private int ownerConnectionId;
+        // Server picks this once — automatically syncs to all clients
+        [SyncVar(hook = nameof(OnColorIndexChanged))]
+        private int colorIndex;
 
-        [ContextMenu("Generate Colours")]
-        private void GenerateColours()
+        public override void OnStartServer()
         {
-            int count = 50;
-            generatedColours = new Color[count];
-
-            // Generate evenly spaced hues
-            for (int i = 0; i < count; i++)
-            {
-                float hue = (float)i / count; // evenly spaced around the color wheel
-                generatedColours[i] = Color.HSVToRGB(hue, 0.8f, 1f); // High saturation, full brightness
-            }
-
-            // Shuffle with Fisher-Yates
-            for (int i = generatedColours.Length - 1; i > 0; i--)
-            {
-                int swapIndex = Random.Range(0, i + 1);
-                Color temp = generatedColours[i];
-                generatedColours[i] = generatedColours[swapIndex];
-                generatedColours[swapIndex] = temp;
-            }
-
-            Debug.Log("Generated and shuffled 50 distinct colours.");
-        }
-
-        private void Start()
-        {
-            int ownerId = netIdentity.connectionToClient != null ? netIdentity.connectionToClient.connectionId : 0; // 0 for host/server objects
-            Color assignedColor = generatedColours[ownerId % generatedColours.Length];
-            ApplyColor(assignedColor);
+            base.OnStartServer();
+            // Assign a color index based on connection ID — wraps around list length
+            if (generatedColours != null && generatedColours.Length > 0)
+                colorIndex = connectionToClient.connectionId % generatedColours.Length;
         }
 
         public override void OnStartClient()
         {
             base.OnStartClient();
 
-            Color assignedColor = generatedColours[ownerConnectionId];
-            ApplyColor(assignedColor);
+            // Apply immediately for the initial state
+            ApplyColor(generatedColours[colorIndex]);
 
             if (onConnectedToServer)
                 AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
@@ -101,30 +79,17 @@ namespace CCG.Networking
             ServerQueryReporterService.RegisterPlayerId(connectionToClient, playerId);
         }
 
-        // Mirror lets you add extra spawn data sent to all clients
-        public override void OnSerialize(NetworkWriter writer, bool initialState)
-        {
-            if (initialState)
-            {
-                writer.WriteInt(ownerConnectionId);
-            }
-        }
-
-        public override void OnDeserialize(NetworkReader reader, bool initialState)
-        {
-            if (initialState)
-            {
-                ownerConnectionId = reader.ReadInt();
-            }
-        }
-
         private void ApplyColor(Color color)
         {
-            if (pillRenderer == null)
-                return;
-
-            pillRenderer.material.color = color;
+            if (pillRenderer != null)
+                pillRenderer.material.color = color;
         }
 
+        // Called automatically when colorIndex changes on any client
+        private void OnColorIndexChanged(int oldIndex, int newIndex)
+        {
+            if (generatedColours != null && generatedColours.Length > 0)
+                ApplyColor(generatedColours[newIndex]);
+        }
     }
 }
