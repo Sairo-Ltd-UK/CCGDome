@@ -34,39 +34,12 @@ namespace CCG.MiniGames.Duckhunt
         [SerializeField] private float maxQuackInterval = 8f;
 
         private Quaternion startingRotation;
-        private Coroutine quackRoutine;
 
         public int Index { get => index; set => index = value; }
 
         private void Start()
         {
             startingRotation = transform.rotation;
-
-            if (quackSounds != null && quackSounds.Length > 0 && duckAudioSource != null)
-            {
-                quackRoutine = StartCoroutine(RandomQuackLoop());
-            }
-        }
-
-        private IEnumerator RandomQuackLoop()
-        {
-            while (!isHit)
-            {
-                yield return new WaitForSeconds(UnityEngine.Random.Range(minQuackInterval, maxQuackInterval));
-
-                if (!isHit) // Check again to avoid quacking after death
-                {
-                    var clip = quackSounds[UnityEngine.Random.Range(0, quackSounds.Length)];
-
-                    if (clip == null)
-                        yield break;
-
-                    if (duckAudioSource == null)
-                        yield break;
-
-                    duckAudioSource.PlayOneShot(clip);
-                }
-            }
         }
 
         [ContextMenu("OnHit")]
@@ -76,12 +49,6 @@ namespace CCG.MiniGames.Duckhunt
                 return;
 
             isHit = true;
-
-            if (quackRoutine != null)
-            {
-                StopCoroutine(quackRoutine);
-            }
-
             Die();
         }
 
@@ -101,12 +68,6 @@ namespace CCG.MiniGames.Duckhunt
         {
             isHit = false;
             transform.rotation = startingRotation;
-
-            if (quackRoutine != null)
-                StopCoroutine(quackRoutine);
-
-            if (quackSounds != null && quackSounds.Length > 0 && duckAudioSource != null)
-                quackRoutine = StartCoroutine(RandomQuackLoop());
         }
     }
 }

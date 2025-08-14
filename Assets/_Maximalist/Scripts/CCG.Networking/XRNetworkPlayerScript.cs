@@ -1,8 +1,8 @@
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //  Project:     CCG Dome
 //  Author:      Corrin Wilson
 //  Company:     Maximalist Ltd
-//  Created:     11/07/2025
+//  Created:     11 / 07 / 2025
 //
 //  Copyright © 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
@@ -46,11 +46,12 @@ namespace CCG.Networking
         {
             base.OnStartClient();
 
-            // Apply immediately for the initial state
-            ApplyColor(generatedColours[colorIndex]);
 
             if (onConnectedToServer)
                 AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
+
+            // Apply immediately for the initial state
+            ApplyColor(generatedColours[colorIndex]);
         }
 
         public override void OnStopClient()
@@ -85,7 +86,7 @@ namespace CCG.Networking
                 pillRenderer.material.color = color;
         }
 
-        // Called automatically when colorIndex changes on any client
+        //Called automatically when colorIndex changes on any client
         private void OnColorIndexChanged(int oldIndex, int newIndex)
         {
             if (generatedColours != null && generatedColours.Length > 0)
