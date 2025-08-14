@@ -27,6 +27,9 @@ namespace CCG.Networking
 
 		public XRPlayerRig xrPlayerRig;
 
+		public AudioClip onConnectedToServer;
+		public AudioClip onDisconnectedFromServer;
+
 		public override void OnStartLocalPlayer()
 		{
 			xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
@@ -45,6 +48,25 @@ namespace CCG.Networking
 			ServerQueryReporterService.RegisterPlayerId(connectionToClient, playerId);
 		}
 
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
 
-	}
+			if(onConnectedToServer)
+				AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
+            // Called when the client connects
+        }
+
+        public override void OnStopClient()
+        {
+            base.OnStopClient();
+
+            if (onDisconnectedFromServer)
+                AudioSource.PlayClipAtPoint(onDisconnectedFromServer, transform.position);
+
+            // Called when the client disconnects
+        }
+
+
+    }
 }
