@@ -128,12 +128,13 @@ namespace CCG.MiniGames.Duckhunt
 		{
 			if (!roundOver)
 			{
-				roundOver = true;
-				roundStarted = false;
 				OnShowGameOver?.Invoke(roundOver);
 			}
 
-			await Task.Delay(2000);
+            roundOver = true;
+            roundStarted = false;
+
+            await Task.Delay(2000);
 
 			// /* evaluate win/loss, prepare next */
 			ResetDucks();
@@ -174,8 +175,6 @@ namespace CCG.MiniGames.Duckhunt
 				if(ducks[i])
 					ducks[i].ResetDuck();
 			}
-
-            StartRound();
         }
 
         private void UpdateDucksRemaining(int newDucksRemaining)
