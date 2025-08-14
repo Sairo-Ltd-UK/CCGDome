@@ -8,7 +8,6 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
-using CCG.Core;
 using CCG.CustomInput;
 using Mirror;
 using UnityEngine;
@@ -25,7 +24,6 @@ namespace CCG.MiniGames
 		[SerializeField] private Transform raycastOrigin;
         [Tooltip("Only needs setting client side on the local player")]
 		[SerializeField] private MiniGameInteractable currentMiniGame;
-		[SerializeField] private LineRenderer debugRayLineRenderer;
 
 		public override void OnStartLocalPlayer()
 		{
@@ -39,10 +37,6 @@ namespace CCG.MiniGames
 				fireRayAction.AddToInputActionReference(RequestRaycast);
             }
 
-            if (debugRayLineRenderer == null)
-                return;
-
-			debugRayLineRenderer.positionCount = 2;
         }
 
 		private void RequestRaycast()
@@ -67,12 +61,6 @@ namespace CCG.MiniGames
 
 			Debug.Log("[GMGI] RequestRaycast");
 			CmdRequestRaycast(rayOrigin, rayDirection);
-
-			if (debugRayLineRenderer == null)
-				return;
-
-			debugRayLineRenderer.SetPosition(0, rayOrigin);
-			debugRayLineRenderer.SetPosition(1, rayOrigin + rayDirection * 500f);
 		}
 
 		[Command]

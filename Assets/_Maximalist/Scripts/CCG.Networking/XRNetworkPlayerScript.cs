@@ -9,9 +9,6 @@
 // ------------------------------------------------------------------------------
 
 using Mirror;
-using System;
-using System.Collections.Generic;
-using Unity.Services.Authentication;
 using UnityEngine;
 
 namespace CCG.Networking
@@ -27,10 +24,53 @@ namespace CCG.Networking
 
 		public XRPlayerRig xrPlayerRig;
 
-		public AudioClip onConnectedToServer;
-		public AudioClip onDisconnectedFromServer;
+        [SerializeField] private AudioClip onConnectedToServer;
+        [SerializeField] private AudioClip onDisconnectedFromServer;
+        [Space]
+        [SerializeField] private Color[] generatedColours;
+        [SerializeField] private MeshRenderer pillRenderer;
 
-		public override void OnStartLocalPlayer()
+        [ContextMenu("Generate Colours")]
+        private void GenerateColours()
+        {
+            int count = 50;
+            generatedColours = new Color[count];
+
+            // Generate evenly spaced hues
+            for (int i = 0; i < count; i++)
+            {
+                float hue = (float)i / count; // evenly spaced around the color wheel
+                generatedColours[i] = Color.HSVToRGB(hue, 0.8f, 1f); // High saturation, full brightness
+            }
+
+            // Shuffle with Fisher-Yates
+            for (int i = generatedColours.Length - 1; i > 0; i--)
+            {
+                int swapIndex = Random.Range(0, i + 1);
+                Color temp = generatedColours[i];
+                generatedColours[i] = generatedColours[swapIndex];
+                generatedColours[swapIndex] = temp;
+            }
+
+            Debug.Log("Generated and shuffled 50 distinct colours.");
+        }
+
+        private void Start()
+        {
+            int ownerId = netIdentity.connectionToClient != null ? netIdentity.connectionToClient.connectionId : 0; // 0 for host/server objects
+            Color assignedColor = generatedColours[ownerId % generatedColours.Length];
+            ApplyColor(assignedColor);
+        }
+
+        private void ApplyColor(Color color)
+        {
+            if (pillRenderer == null)
+                return;
+
+            pillRenderer.material.color = color;
+        }
+
+        public override void OnStartLocalPlayer()
 		{
 			xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
 			xrPlayerRig.localVRNetworkPlayerScript = this;
@@ -51,10 +91,10 @@ namespace CCG.Networking
         public override void OnStartClient()
         {
             base.OnStartClient();
+            // Make sure the initial color is applied when the client starts
 
-			if(onConnectedToServer)
+            if (onConnectedToServer)
 				AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
-            // Called when the client connects
         }
 
         public override void OnStopClient()
@@ -63,10 +103,7 @@ namespace CCG.Networking
 
             if (onDisconnectedFromServer)
                 AudioSource.PlayClipAtPoint(onDisconnectedFromServer, transform.position);
-
-            // Called when the client disconnects
         }
-
 
     }
 }

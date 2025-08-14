@@ -10,16 +10,24 @@
 
 using UnityEngine;
 
-namespace CCG.Networking
+namespace CCG.MiniGames
 {
-    public class XRNetworkPlayerUnEquiper : MonoBehaviour
+    public class PlayerEquiper : MonoBehaviour
     {
-        private void OnTriggerExit(Collider other)
+        [SerializeField] private PlayerEquipment itemToEquip;
+
+        private void Start()
         {
-            if (!other.TryGetComponent(out XRNetworkPlayerEquipmentManager interactor))
+            if(itemToEquip)
+                itemToEquip.transform.SetParent(null);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.TryGetComponent(out PlayerEquipmentManager interactor))
                 return;
 
-            interactor.UnequipItemInRightHand();
+            interactor.EquipItemToRightHand(itemToEquip);
         }
     }
 }
