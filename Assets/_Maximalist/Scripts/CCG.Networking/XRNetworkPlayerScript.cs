@@ -30,6 +30,8 @@ namespace CCG.Networking
         [SerializeField] private Color[] generatedColours;
         [SerializeField] private MeshRenderer pillRenderer;
 
+        private int ownerConnectionId;
+
         [ContextMenu("Generate Colours")]
         private void GenerateColours()
         {
@@ -62,39 +64,15 @@ namespace CCG.Networking
             ApplyColor(assignedColor);
         }
 
-        private void ApplyColor(Color color)
-        {
-            if (pillRenderer == null)
-                return;
-
-            pillRenderer.material.color = color;
-        }
-
-        public override void OnStartLocalPlayer()
-		{
-			xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
-			xrPlayerRig.localVRNetworkPlayerScript = this;
-
-			headModel.SetActive(false);
-			rHandModel.SetActive(false);
-			lHandModel.SetActive(false);
-
-            CmdSendPlayerIdToServer(Unity.Services.Authentication.AuthenticationService.Instance.PlayerId);
-		}
-
-		[Command]
-		public void CmdSendPlayerIdToServer(string playerId)
-		{
-			ServerQueryReporterService.RegisterPlayerId(connectionToClient, playerId);
-		}
-
         public override void OnStartClient()
         {
             base.OnStartClient();
-            // Make sure the initial color is applied when the client starts
+
+            Color assignedColor = generatedColours[ownerConnectionId];
+            ApplyColor(assignedColor);
 
             if (onConnectedToServer)
-				AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
+                AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
         }
 
         public override void OnStopClient()
@@ -103,6 +81,49 @@ namespace CCG.Networking
 
             if (onDisconnectedFromServer)
                 AudioSource.PlayClipAtPoint(onDisconnectedFromServer, transform.position);
+        }
+
+        public override void OnStartLocalPlayer()
+        {
+            xrPlayerRig = GameObject.FindObjectOfType<XRPlayerRig>();
+            xrPlayerRig.localVRNetworkPlayerScript = this;
+
+            headModel.SetActive(false);
+            rHandModel.SetActive(false);
+            lHandModel.SetActive(false);
+
+            CmdSendPlayerIdToServer(Unity.Services.Authentication.AuthenticationService.Instance.PlayerId);
+        }
+
+        [Command]
+        public void CmdSendPlayerIdToServer(string playerId)
+        {
+            ServerQueryReporterService.RegisterPlayerId(connectionToClient, playerId);
+        }
+
+        // Mirror lets you add extra spawn data sent to all clients
+        public override void OnSerialize(NetworkWriter writer, bool initialState)
+        {
+            if (initialState)
+            {
+                writer.WriteInt(ownerConnectionId);
+            }
+        }
+
+        public override void OnDeserialize(NetworkReader reader, bool initialState)
+        {
+            if (initialState)
+            {
+                ownerConnectionId = reader.ReadInt();
+            }
+        }
+
+        private void ApplyColor(Color color)
+        {
+            if (pillRenderer == null)
+                return;
+
+            pillRenderer.material.color = color;
         }
 
     }
