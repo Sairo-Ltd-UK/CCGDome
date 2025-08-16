@@ -26,6 +26,8 @@ namespace CCG.Networking
 
         [SerializeField] private AudioClip onConnectedToServer;
         [SerializeField] private AudioClip onDisconnectedFromServer;
+        [SerializeField] private AudioSource playerAudioSource;
+
         [Space]
         [SerializeField] private Color[] generatedColours;
         [SerializeField] private MeshRenderer pillRenderer;
@@ -48,7 +50,11 @@ namespace CCG.Networking
             base.OnStartClient();
 
             if (onConnectedToServer)
-                AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
+            {
+                Debug.Log("OnStartClient");
+                playerAudioSource.clip = onConnectedToServer;
+                playerAudioSource.Play();
+            }
 
             // Apply immediately for the initial state
             ApplyColor(generatedColours[colorIndex]);
@@ -59,7 +65,11 @@ namespace CCG.Networking
             base.OnStopClient();
 
             if (onDisconnectedFromServer)
-                AudioSource.PlayClipAtPoint(onDisconnectedFromServer, transform.position);
+            {
+                Debug.Log("OnStopClient");
+                playerAudioSource.clip = onDisconnectedFromServer;
+                playerAudioSource.Play();
+            }
         }
 
         public override void OnStartLocalPlayer()
