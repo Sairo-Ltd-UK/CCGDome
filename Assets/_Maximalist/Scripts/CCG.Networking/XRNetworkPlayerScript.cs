@@ -37,6 +37,7 @@ namespace CCG.Networking
         public override void OnStartServer()
         {
             base.OnStartServer();
+
             // Assign a color index based on connection ID — wraps around list length
             if (generatedColours != null && generatedColours.Length > 0)
                 colorIndex = connectionToClient.connectionId % generatedColours.Length;
@@ -45,7 +46,6 @@ namespace CCG.Networking
         public override void OnStartClient()
         {
             base.OnStartClient();
-
 
             if (onConnectedToServer)
                 AudioSource.PlayClipAtPoint(onConnectedToServer, transform.position);
