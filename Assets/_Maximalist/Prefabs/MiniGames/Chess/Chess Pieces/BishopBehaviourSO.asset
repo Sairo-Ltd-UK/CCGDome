@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6ee4168c7b87743bd8feed47895ca1, type: 3}
   m_Name: BishopBehaviourSO
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4300000, guid: 8e406e8a50248f5499b007168c8d1ce1, type: 3}
-  isKing: 0
+  whiteMesh: {fileID: -1479655941226812890, guid: d92044fc374854f47bc72a9ae047b526, type: 3}
+  blackMesh: {fileID: -8270573447621015918, guid: be26c8915e8d021448edfdf6f73f38bf, type: 3}

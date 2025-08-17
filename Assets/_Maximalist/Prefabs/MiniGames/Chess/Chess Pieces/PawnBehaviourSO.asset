@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ba13f89be51504db52e5e973c4b3f7, type: 3}
   m_Name: PawnBehaviourSO
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4300002, guid: bcf49bd9de661ed44aab6cde0c2faba9, type: 3}
+  whiteMesh: {fileID: 3682094308894037137, guid: 5b11cb863bcf9fd409d8921fb3c5fdd6, type: 3}
+  blackMesh: {fileID: 7161544617349941501, guid: 82088ef83c50f5b43b96102e6965b685, type: 3}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b35f34cb4e5e6409ac60aa48026f99, type: 3}
   m_Name: KnightBehaviourSO
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4300000, guid: 37fa4b41bc7842542bb795f93ea1073b, type: 3}
-  isKing: 0
+  whiteMesh: {fileID: 9058454911766960817, guid: 828b5fff529ecd04da5b83079a061559, type: 3}
+  blackMesh: {fileID: 8967318098862194939, guid: 6d5e53e23c4814e419cccf1e0675c78a, type: 3}

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c02270ab9b43547ab7a5ef143f1876, type: 3}
   m_Name: KingBehaviourSO
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4300002, guid: 00af43d1e910b684286d43c9ca3daf2e, type: 3}
+  whiteMesh: {fileID: -6139712673331277534, guid: 0f301b79ff36a0c49b07c8b059f64bae, type: 3}
+  blackMesh: {fileID: -6722788408872337180, guid: 787ed00cf38b8924cabc587e4b6bf08a, type: 3}

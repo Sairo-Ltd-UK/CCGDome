@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88aeb2cf4850c1047b0c6ef11878b882, type: 3}
   m_Name: RookBehaviourSO
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4300000, guid: 5191956bd5bb6014999f81129cf153e3, type: 3}
+  whiteMesh: {fileID: -4092068362801550578, guid: bb35373b177d0fc43abc5917f4ebe5ce, type: 3}
+  blackMesh: {fileID: 4286959149315752534, guid: cb460eda8503e0c49be8460f49352610, type: 3}

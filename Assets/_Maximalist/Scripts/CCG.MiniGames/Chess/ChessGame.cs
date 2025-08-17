@@ -19,9 +19,9 @@ namespace CCG.MiniGames.Chess
 		private const int width = 8;
 		private const int height = 8;
 		private const int boardLength = 8;
-		private const float individualTileLength = 9;
+		private const float individualTileLength = 1f;
 
-		private static readonly Vector3 originOffset = new Vector3(-40.5299988f, 7.4000001f, -31.5f);
+		private static readonly Vector3 originOffset = new Vector3(-4.5f, 0, -3.5f);
 
 		[Header("Chess game")]
 		[SerializeField] private ChessGameUIManager chessGameUiManager;
@@ -76,6 +76,7 @@ namespace CCG.MiniGames.Chess
 			this.localScaleY = localScaley;
 		}
 
+
 		public void LoadListsToDictionarys()
 		{
 			tilesTwoDArray = new GameObject[width, height];
@@ -99,7 +100,24 @@ namespace CCG.MiniGames.Chess
 			}
 		}
 
-		[ContextMenu("GenerateBoard")]
+        public void SaveDictionarysToLists()
+        {
+            tiles = new GameObject[width * height];
+            boardPieces = new GameObject[width * height];
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int i = Index(x, y);
+
+                    tiles[i] = tilesTwoDArray[x, y];
+                    boardPieces[i] = boardPieceTwoDArrays[x, y];
+                }
+            }
+        }
+
+        [ContextMenu("GenerateBoard")]
 		private void GenerateBoard()
 		{
 			localScaleY = transform.localScale.y;
@@ -118,16 +136,16 @@ namespace CCG.MiniGames.Chess
 			tilesHolder.transform.parent = transform;
 			tilesHolder.transform.localPosition = Vector3.zero;
 
-			for (int x = 0; x < tilesTwoDArray.GetLength(0); x++)
+			for (int x = 0; x < width; x++)
 			{
-				for (int y = 0; y < tilesTwoDArray.GetLength(1); y++)
+				for (int y = 0; y < height; y++)
 				{
 					tilePrefab.name = "Tile[" + x + "," + y + "]";
 					tilePrefab.GetComponent<SingleTile>().posX = x;
 					tilePrefab.GetComponent<SingleTile>().posY = y;
 					tilesTwoDArray[x, y] = GameObject.Instantiate(tilePrefab, new Vector3(origin.x + IndividualTileLength, origin.y, origin.z), Quaternion.identity);
 					tilesTwoDArray[x, y].transform.SetParent(tilesHolder.transform);
-					tilesTwoDArray[x, y].transform.localScale = new Vector3(transform.localScale.x * 8, .5f, transform.localScale.y * 8);
+					tilesTwoDArray[x, y].transform.localScale = new Vector3(transform.localScale.x, .5f, transform.localScale.y);
 					origin = tilesTwoDArray[x, y].transform.position;
 				}
 
@@ -135,11 +153,13 @@ namespace CCG.MiniGames.Chess
 				origin = startOrigin;
 			}
 
-			// Load chess piecePrefab onto board
-			LoadPieces();
-		}
+            // Load chess piecePrefab onto board
+            LoadPieces();
 
-		[ContextMenu("LoadPieces")]
+            SaveDictionarysToLists();
+        }
+
+        [ContextMenu("LoadPieces")]
 		private void LoadPieces()
 		{
 			GameObject piecesHolder = new GameObject("piecesHolder");

@@ -10,8 +10,8 @@ namespace CCG.Video
         [SerializeField] private RenderTexture renderTexture;
 
         [Header("Loading UI")]
-        [SerializeField] private GameObject loadingSpinner; // Assign your sprite/anim in inspector
-        [SerializeField] private float spinSpeed = 180f; // Degrees per second
+        [SerializeField] private GameObject loadingSpinner; 
+        [SerializeField] private float spinSpeed = 180f; 
 
         private bool isPreparing = true;
 
@@ -19,17 +19,14 @@ namespace CCG.Video
         {
             renderTexture.anisoLevel = 0;
 
-            // Show loading spinner
             if (loadingSpinner != null)
                 loadingSpinner.SetActive(true);
 
             isPreparing = true;
 
-            // Hook events
             videoPlayer.prepareCompleted += OnVideoPrepared;
-            videoPlayer.loopPointReached += OnVideoEnded; // optional
+            videoPlayer.loopPointReached += OnVideoEnded;
 
-            // Start preparing
             videoPlayer.Prepare();
         }
 
