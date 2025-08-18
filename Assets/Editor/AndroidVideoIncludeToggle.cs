@@ -7,6 +7,15 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEngine;
 
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Jay Andrade Hunt
+//  Company:     Maximalist Ltd
+//  Created:     18/08/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the  client.
+// ------------------------------------------------------------------------------
 public class AndroidVideoIncludeToggle :
     IPreprocessBuildWithReport,
     IPostprocessBuildWithReport,
