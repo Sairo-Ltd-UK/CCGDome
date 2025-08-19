@@ -53,8 +53,8 @@ namespace CCG.Networking
 				await MatchmakingClient.RequestMatchAsync();
 #endif
 
-            }
-            catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				Debug.LogException(e);
 			}
