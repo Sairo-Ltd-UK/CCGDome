@@ -8,45 +8,73 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CCG.MiniGames
 {
-    public class PlayerEquipmentManager : MonoBehaviour
-    {
-        public Transform rightHandEquipmentSlot;
-        public PlayerEquipment rightHandEquipment;
+	public enum EquipmentSlotType
+	{
+		RightHand,
+		LeftHand,
+	}
 
-        public void EquipItemToRightHand(PlayerEquipment itemToEquip)
-        {
-            if (rightHandEquipmentSlot == null) 
-                return;
+	[Serializable]
+	public class EquipmentSlot
+	{
+		public EquipmentSlotType slotType;
+		public Transform slotTransform;
+		[HideInInspector] public PlayerEquipment equippedItem;
+	}
 
-            //CW I dont have a or key on this keyboard
-            if (itemToEquip == null)
-                return;
+	public class PlayerEquipmentManager : MonoBehaviour
+	{
+		[SerializeField] private EquipmentSlot[] slots;
 
-            UnequipItemInRightHand();
-            itemToEquip.transform.SetParent(rightHandEquipmentSlot);
-            itemToEquip.transform.localPosition = Vector3.zero;
-            itemToEquip.transform.localRotation = Quaternion.identity;
-            itemToEquip.OnEquiped();
+		private Dictionary<EquipmentSlotType, EquipmentSlot> slotLookup;
 
-            rightHandEquipment = itemToEquip;
-        }
+		private void Awake()
+		{
+			slotLookup = new Dictionary<EquipmentSlotType, EquipmentSlot>();
+			foreach (var slot in slots)
+				slotLookup[slot.slotType] = slot;
+		}
 
-        public void UnequipItemInRightHand()
-        {
-            if (rightHandEquipmentSlot == null)
-                return;
+		public void EquipItem(EquipmentSlotType slotType, PlayerEquipment itemToEquip)
+		{
+			if (!slotLookup.TryGetValue(slotType, out var slot))
+				return;
 
-            rightHandEquipmentSlot.DetachChildren();
+			if (slot.slotTransform == null || itemToEquip == null)
+				return;
 
-            if (rightHandEquipment == null)
-                return;
+			UnequipItem(slotType);
 
-            rightHandEquipment.OnUnEquiped();
-            rightHandEquipment = null;
-        }
-    }
+			itemToEquip.transform.SetParent(slot.slotTransform);
+			itemToEquip.transform.localPosition = Vector3.zero;
+			itemToEquip.transform.localRotation = Quaternion.identity;
+			itemToEquip.OnEquiped();
+
+			slot.equippedItem = itemToEquip;
+		}
+
+		public void UnequipItem(EquipmentSlotType slotType)
+		{
+			if (!slotLookup.TryGetValue(slotType, out var slot))
+				return;
+
+			if (slot.slotTransform == null)
+				return;
+
+			slot.slotTransform.DetachChildren();
+
+			if (slot.equippedItem == null)
+				return;
+
+			slot.equippedItem.OnUnEquiped();
+			slot.equippedItem = null;
+		}
+	}
 }
+

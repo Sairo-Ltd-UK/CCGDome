@@ -12,14 +12,15 @@ using UnityEngine;
 
 namespace CCG.MiniGames
 {
-    public class PlayerUnEquiper : MonoBehaviour
-    {
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.TryGetComponent(out PlayerEquipmentManager interactor))
-                return;
+	public class PlayerUnEquiper : MonoBehaviour
+	{
+		[SerializeField] private EquipmentSlotType slotType;
 
-            interactor.UnequipItemInRightHand();
-        }
-    }
+		private void OnTriggerExit(Collider other)
+		{
+			if (other.TryGetComponent(out PlayerEquipmentManager interactor))
+				interactor.UnequipItem(slotType);
+		}
+	}
+
 }

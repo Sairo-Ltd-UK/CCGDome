@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f2c02b2fabe1824fa4cdb7f6be10a58, type: 3}
-  m_Name: CustomInputActionData_FireRayAction
+  m_Name: CustomInputActionData_LeftFireRayAction
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  inputActionReference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   pc:
     inputActionTextName: 
     inputActionSprite: {fileID: 0}
