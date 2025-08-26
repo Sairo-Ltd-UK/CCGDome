@@ -11,34 +11,53 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CCG.Core.Debuging
 {
 	public class DebugConsole : MonoBehaviour
 	{
 		[SerializeField] private TextMeshProUGUI logText;
+		[SerializeField] private ScrollRect scrollRect;
 		[SerializeField] private int maxLines = 20;
 
 		private Queue<string> logQueue = new();
 
 		private void OnEnable()
 		{
-			DebugLogger.OnLog += HandleLog;
+			Application.logMessageReceived += HandleUnityLog;
 		}
 
 		private void OnDisable()
 		{
-			DebugLogger.OnLog -= HandleLog;
+			Application.logMessageReceived -= HandleUnityLog;
 		}
 
-		private void HandleLog(DebugLogger.LogMessage log)
+		private void HandleUnityLog(string message, string stackTrace, LogType type)
+		{
+			string prefix = type switch
+			{
+				LogType.Warning => "[Warning] ",
+				LogType.Error => "[Error] ",
+				LogType.Exception => "[Exception] ",
+				_ => ""
+			};
+
+			if (type == LogType.Warning)
+				return;
+
+			EnqueueLog(prefix + message);
+		}
+
+		private void EnqueueLog(string message)
 		{
 			if (logQueue.Count >= maxLines)
-			{
-				logQueue.Dequeue(); // Remove oldest log entry
-			}
+				logQueue.Dequeue(); // Remove oldest entry
 
-			logQueue.Enqueue($"{log.Message}");
+			var tempList = new List<string>(logQueue);
+			tempList.Insert(0, message);
+			logQueue = new Queue<string>(tempList); 
+			
 			UpdateLogText();
 		}
 

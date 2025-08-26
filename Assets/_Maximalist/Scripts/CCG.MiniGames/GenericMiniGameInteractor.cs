@@ -10,6 +10,7 @@
 
 using CCG.CustomInput;
 using Mirror;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,39 +20,81 @@ namespace CCG.MiniGames
 	{
 		[Header("Generic MiniGame Interactor")]
 		[SerializeField] private LayerMask interactableLayer;
-		[SerializeField] private CustomInputActionData fireRayAction;
+		[SerializeField] private CustomInputActionData rightFireAciton;
+		[SerializeField] private CustomInputActionData leftFireAciton;
 		[Space]
-		[SerializeField] private Transform raycastOrigin;
-        [Tooltip("Only needs setting client side on the local player")]
+		[SerializeField] private Transform rightRaycastOrigin;
+		[SerializeField] private Transform leftRaycastOrigin;
+		[Space]
+		[Tooltip("Only needs setting client side on the local player")]
 		[SerializeField] private MiniGameInteractable currentMiniGame;
+
+		private Transform rightRaycastOverride;
+		private Transform leftRaycastOverride;
+
+		public Transform RightRaycastOrigin
+		{
+			get
+			{
+				if (rightRaycastOverride)
+					return rightRaycastOverride;
+
+				return rightRaycastOrigin;
+			}
+		}
+
+		public Transform LeftRaycastOrigin
+		{
+			get
+			{
+				if (leftRaycastOverride)
+					return leftRaycastOverride;
+
+				return leftRaycastOrigin;
+			}
+		}
+
+		public Transform RightRaycastOverride { get => rightRaycastOverride; set => rightRaycastOverride = value; }
+		
+		public Transform LeftRaycastOverride { get => leftRaycastOverride; set => leftRaycastOverride = value; }
+
 
 		public override void OnStartLocalPlayer()
 		{
-            base.OnStartLocalPlayer();
+			base.OnStartLocalPlayer();
 
 			if(isServerOnly == true)
 				return;
 
-			if (fireRayAction != null)
+			if (rightFireAciton != null)
 			{
-				fireRayAction.AddToInputActionReference(RequestRaycast);
-            }
+				rightFireAciton.AddToInputActionReference(RequestRaycastLeftHand);
+			}
 
-        }
+			if (leftFireAciton != null)
+			{
+				leftFireAciton.AddToInputActionReference(RequestRaycastRightHand);
+			}
+		}
 
-		private void RequestRaycast()
+		private void RequestRaycastRightHand()
+		{
+			if (LeftRaycastOrigin)
+				RequestRaycast(RightRaycastOrigin.position, RightRaycastOrigin.forward);
+		}
+
+		private void RequestRaycastLeftHand()
+		{
+			if(LeftRaycastOrigin)
+				RequestRaycast(LeftRaycastOrigin.position, LeftRaycastOrigin.forward);
+		}
+
+		private void RequestRaycast(Vector3 rayOrigin, Vector3 rayDirection)
 		{
 			if (isLocalPlayer == false)
 				return;
 
-            Vector3 rayOrigin;
-			Vector3 rayDirection;
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-			// Mobile build – use raycast origin transform
-			rayOrigin = raycastOrigin.position;
-			rayDirection = raycastOrigin.forward;
-#else
+#if !UNITY_ANDROID || UNITY_EDITOR
 			Vector2 screenPosition = Mouse.current.position.ReadValue();
 			Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
@@ -68,15 +111,15 @@ namespace CCG.MiniGames
 		{
 			Debug.Log("[GMGI] CmdRequestRaycast");
 
-            if (currentMiniGame == null)
-            {
-                Debug.Log("[GMGI] currentMiniGame is null");
-                return;
-            }
+			if (currentMiniGame == null)
+			{
+				Debug.Log("[GMGI] currentMiniGame is null");
+				return;
+			}
 
 			currentMiniGame.OnFireActionPressed();
 
-            Debug.Log("[GMGI] currentMiniGame != null");
+			Debug.Log("[GMGI] currentMiniGame != null");
 
 			if (RayCastHitProvider.ProvideRaycastHit(origin, direction, out RaycastHit hit, interactableLayer, 500))
 			{

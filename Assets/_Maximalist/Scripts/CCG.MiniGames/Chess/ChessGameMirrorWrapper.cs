@@ -83,13 +83,6 @@ namespace CCG.MiniGames.Chess
 						ResetGameServer();
 						return;
 					}
-					else
-					{
-						if (isWhite)
-							ChessGameUIManager.p1PieceCount--;
-						else
-							ChessGameUIManager.p2PieceCount--;
-					}
 
 					RemovePieceServer(posX, posY);
 				}

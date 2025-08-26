@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1be6405224587c4999e44a5ee9ffd26, type: 3}
+  m_Name: BuildConfigSO
+  m_EditorClassIdentifier: 
+  versionAsset: {fileID: 11400000, guid: 0db956e2ddf59184c8aa8ab3c47f35af, type: 2}
+  configs:
+  - profileName: M_Android_Dev
+    buildType: 0
+    shouldBumpVersion: 1
+    appID: 
+    description: Auto-generated build
+    branchName: beta
+    contentRoot: content
+    buildOutput: build_output
+    depots: []
+  - profileName: M_Android_Prod
+    buildType: 0
+    shouldBumpVersion: 0
+    appID: 
+    description: Auto-generated build
+    branchName: beta
+    contentRoot: content
+    buildOutput: build_output
+    depots: []
+  - profileName: M_DedicatedServer_Dev
+    buildType: 0
+    shouldBumpVersion: 0
+    appID: 
+    description: Auto-generated build
+    branchName: beta
+    contentRoot: content
+    buildOutput: build_output
+    depots: []
+  - profileName: M_Windows_Dev
+    buildType: 0
+    shouldBumpVersion: 0
+    appID: 
+    description: Auto-generated build
+    branchName: beta
+    contentRoot: content
+    buildOutput: build_output
+    depots: []

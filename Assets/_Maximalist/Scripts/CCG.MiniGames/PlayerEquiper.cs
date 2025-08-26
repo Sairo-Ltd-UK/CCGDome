@@ -12,22 +12,21 @@ using UnityEngine;
 
 namespace CCG.MiniGames
 {
-    public class PlayerEquiper : MonoBehaviour
-    {
-        [SerializeField] private PlayerEquipment itemToEquip;
+	public class PlayerEquiper : MonoBehaviour
+	{
+		[SerializeField] private PlayerEquipment itemToEquip;
+		[SerializeField] private EquipmentSlotType slotType;
 
-        private void Start()
-        {
-            if(itemToEquip)
-                itemToEquip.transform.SetParent(null);
-        }
+		private void Start()
+		{
+			if (itemToEquip)
+				itemToEquip.transform.SetParent(null);
+		}
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.TryGetComponent(out PlayerEquipmentManager interactor))
-                return;
-
-            interactor.EquipItemToRightHand(itemToEquip);
-        }
-    }
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.TryGetComponent(out PlayerEquipmentManager interactor))
+				interactor.EquipItem(slotType, itemToEquip);
+		}
+	}
 }
