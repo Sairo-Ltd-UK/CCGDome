@@ -49,9 +49,9 @@ namespace CCG.Player.Prompt
 
 		private void EnableUI()
 		{
-			if (UICanvas == null || UICanvas.enabled == true) 
+			if (UICanvas == null || UICanvas.enabled == true || isActiveAndEnabled == false) 
 				return;
-
+		
 			UICanvas.enabled = true;
 
 			// Snap to target immediately

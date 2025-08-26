@@ -210,13 +210,13 @@ namespace CCG.MiniGames.Chess
 
 		public void SomeoneWonGame(bool playerOneWon)
 		{
-			if (chessGameUiManager == null)
-				return;
+			//if (chessGameUiManager == null)
+			//	return;
 
-			if (playerOneWon == true)
-				chessGameUiManager.PlayerOneWin();
-			else
-				chessGameUiManager.PlayerTwoWin();
+			//if (playerOneWon == true)
+			//	chessGameUiManager.PlayerOneWin();
+			//else
+			//	chessGameUiManager.PlayerTwoWin();
 		}
 
 		public void ResetChessGame()
