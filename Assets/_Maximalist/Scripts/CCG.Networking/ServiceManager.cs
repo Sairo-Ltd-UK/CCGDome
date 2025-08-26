@@ -34,8 +34,10 @@ namespace CCG.Networking
 
 #if UNITY_EDITOR
 
-				NetworkManager.singleton.StartHost();
+				//NetworkManager.singleton.StartHost();
 
+				await AuthenticationService.InitializeAsync();
+				await MatchmakingClient.RequestMatchAsync();
 
 #elif UNITY_SERVER
 
