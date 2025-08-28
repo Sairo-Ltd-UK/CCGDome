@@ -106,7 +106,6 @@ namespace CCG.Player.Prompt
 
 			while (elapsed < duration)
 			{
-				Debug.Log("Test");
 				elapsed += Time.deltaTime;
 				float scaleY = Mathf.Lerp(from, to, elapsed / duration);
 				UICanvasHolder.localScale = new Vector3(defaultScale.x, scaleY, defaultScale.z);

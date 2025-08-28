@@ -23,7 +23,7 @@ namespace CCG.MiniGames
 			{
 				PlayerEquipment equipment =	interactor.UnequipItem(slotType);
 
-				if (locationToReturnTo == null)
+				if (equipment == null || locationToReturnTo == null)
 					return;
 
 				equipment.transform.position = locationToReturnTo.position;

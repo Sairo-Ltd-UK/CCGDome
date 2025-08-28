@@ -75,7 +75,7 @@ namespace CCG.MiniGames
 			PlayerEquipment equippedItem = slot.equippedItem;
 
 			equippedItem.OnUnEquiped();
-			equippedItem = null;
+			slot.equippedItem = null;
 
 			return equippedItem;
 		}
