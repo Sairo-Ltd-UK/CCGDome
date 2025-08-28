@@ -14,60 +14,60 @@ using System.Collections;
 
 namespace CCG.MiniGames.Duckhunt
 {
-    public class Duck : MonoBehaviour
-    {
-        public static event Action<int> OnDuckDied;
+	public class Duck : MonoBehaviour
+	{
+		public static event Action<int> OnDuckDied;
 
-        [Header("Duck")]
-        [SerializeField] private int index;
-        [SerializeField] private int points = 2;
-        [SerializeField] private bool isHit = false;
-        [SerializeField] private Vector3 rotationOnHit = new Vector3(90, 0, 0);
+		[Header("Duck")]
+		[SerializeField] private int index;
+		[SerializeField] private int points = 2;
+		[SerializeField] private bool isHit = false;
+		[SerializeField] private Vector3 rotationOnHit = new Vector3(90, 0, 0);
 
-        [Space]
-        [SerializeField] private AudioSource duckAudioSource;
-        [SerializeField] private AudioClip duckHitSound;
+		[Space]
+		[SerializeField] private AudioSource duckAudioSource;
+		[SerializeField] private AudioClip duckHitSound;
 
-        [Header("Random Quacking")]
-        [SerializeField] private AudioClip[] quackSounds;
-        [SerializeField] private float minQuackInterval = 3f;
-        [SerializeField] private float maxQuackInterval = 8f;
+		[Header("Random Quacking")]
+		[SerializeField] private AudioClip[] quackSounds;
+		[SerializeField] private float minQuackInterval = 3f;
+		[SerializeField] private float maxQuackInterval = 8f;
 
-        private Quaternion startingRotation;
+		private Quaternion startingRotation;
 
-        public int Index { get => index; set => index = value; }
+		public int Index { get => index; set => index = value; }
 
-        private void Start()
-        {
-            startingRotation = transform.rotation;
-        }
+		private void Start()
+		{
+			startingRotation = transform.rotation;
+		}
 
-        [ContextMenu("OnHit")]
-        public void OnHit()
-        {
-            if (isHit)
-                return;
+		[ContextMenu("OnHit")]
+		public void OnHit()
+		{
+			if (isHit)
+				return;
 
-            isHit = true;
-            Die();
-        }
+			isHit = true;
+			Die();
+		}
 
-        private void Die()
-        {
-            OnDuckDied?.Invoke(points); /* animation + notify game manager */
-            transform.localEulerAngles -= rotationOnHit;
+		private void Die()
+		{
+			OnDuckDied?.Invoke(points); /* animation + notify game manager */
+			transform.localEulerAngles -= rotationOnHit;
 
-            if (duckAudioSource != null && duckHitSound != null)
-            {
-                duckAudioSource.clip = duckHitSound;
-                duckAudioSource.Play();
-            }
-        }
+			if (duckAudioSource != null && duckHitSound != null)
+			{
+				duckAudioSource.clip = duckHitSound;
+				duckAudioSource.Play();
+			}
+		}
 
-        public void ResetDuck()
-        {
-            isHit = false;
-            transform.rotation = startingRotation;
-        }
-    }
+		public void ResetDuck()
+		{
+			isHit = false;
+			transform.rotation = startingRotation;
+		}
+	}
 }
