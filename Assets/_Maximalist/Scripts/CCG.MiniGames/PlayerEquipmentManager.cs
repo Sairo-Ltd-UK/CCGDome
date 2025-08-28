@@ -59,21 +59,25 @@ namespace CCG.MiniGames
 			slot.equippedItem = itemToEquip;
 		}
 
-		public void UnequipItem(EquipmentSlotType slotType)
+		public PlayerEquipment UnequipItem(EquipmentSlotType slotType)
 		{
 			if (!slotLookup.TryGetValue(slotType, out var slot))
-				return;
+				return null;
 
 			if (slot.slotTransform == null)
-				return;
+				return null;
 
 			slot.slotTransform.DetachChildren();
 
 			if (slot.equippedItem == null)
-				return;
+				return null;
 
-			slot.equippedItem.OnUnEquiped();
-			slot.equippedItem = null;
+			PlayerEquipment equippedItem = slot.equippedItem;
+
+			equippedItem.OnUnEquiped();
+			equippedItem = null;
+
+			return equippedItem;
 		}
 	}
 }

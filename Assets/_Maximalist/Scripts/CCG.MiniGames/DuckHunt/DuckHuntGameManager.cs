@@ -22,13 +22,14 @@ namespace CCG.MiniGames.Duckhunt
 		public static event Action<float> OnTimerChange;
 		public static event Action<int> OnShotsRemainingChanged;
 		public static event Action<int> OnChangeDucksRemaining;
-		
+		public static event Action OnReset;
+
 		[Tooltip("UsedToTrackTheScore")]
 		[SerializeField] private DuckHuntScoreManager duckHuntScoreManager;
 		[SerializeField] private Duck[] ducks;
 
-        // Timer related 
-        [Tooltip("Amount of time at start of each round")]
+		// Timer related 
+		[Tooltip("Amount of time at start of each round")]
 		[SerializeField] private float roundDuration = 30;
 
 		// Ammo
@@ -39,28 +40,30 @@ namespace CCG.MiniGames.Duckhunt
 		private bool roundOver = false;
 		private bool roundStarted = false;
 
-        // Score
-        private int score = 0;
+		// Score
+		private int score = 0;
 
-        private int ducksRemainingInRound = 0;
-        private int currentShotsRemaining;
+		private int ducksRemainingInRound = 0;
+		private int currentShotsRemaining;
 
-        private float currentRoundTime = 0;
-        private float timerCooldown = 1f;
+		private float currentRoundTime = 0;
+		private float timerCooldown = 1f;
 
-        public bool HasShotsRemaining { get { return currentShotsRemaining > 0; } }
+		public bool HasShotsRemaining { get { return currentShotsRemaining > 0; } }
 
-        private void Start()
-        {
-            for (int i = 0; i < ducks.Length; i++)
-            {
-                ducks[i].Index = i;
-            }
+		private void Start()
+		{
+			for (int i = 0; i < ducks.Length; i++)
+			{
+				ducks[i].Index = i;
+			}
 
-            ResetDuckhuntGameManager();
-        }
+			ResetDuckhuntGameManager();
 
-        private void OnEnable()
+			OnReset += ResetGame;
+		}
+
+		private void OnEnable()
 		{
 			Duck.OnDuckDied += HandleDuckDeath;
 		}
@@ -78,15 +81,15 @@ namespace CCG.MiniGames.Duckhunt
 			}
 		}
 
-        private void FixedUpdate()
-        {
+		private void FixedUpdate()
+		{
 			UpdateTimer();
-        }
+		}
 
-        private void UpdateTimer() //CW We want to minimise Ui updates
-        {
-            if (roundOver || !roundStarted)
-                return;
+		private void UpdateTimer() //CW We want to minimise Ui updates
+		{
+			if (roundOver || !roundStarted)
+				return;
 
 			if (currentRoundTime < 0)
 			{
@@ -94,52 +97,72 @@ namespace CCG.MiniGames.Duckhunt
 				return;
 			}
 
-            // Countdown until we hit 1 second
-            timerCooldown -= Time.deltaTime;
+			// Countdown until we hit 1 second
+			timerCooldown -= Time.deltaTime;
 
-            if (timerCooldown <= 0f)
-            {
-                // Perform the timer update
-                UpdateTimer(currentRoundTime - 1f); // reduce by 1 second
-                timerCooldown = 1f; // reset cooldown
-            }
+			if (timerCooldown <= 0f)
+			{
+				// Perform the timer update
+				UpdateTimer(currentRoundTime - 1f); // reduce by 1 second
+				timerCooldown = 1f; // reset cooldown
+			}
 			
-        }
-        private void StartRound()
-        {
-            roundStarted = true;
-        }
+		}
+		private void StartRound()
+		{
+			roundStarted = true;
+		}
 
-        private void ResetDuckhuntGameManager()
-        {
-            if (duckHuntScoreManager)
-            {
-                duckHuntScoreManager.ResetScore();
-            }
-
-            UpdateShotsRemaining(maxShots);
-            UpdateDucksRemaining(ducks.Length);
-            UpdateTimer(roundDuration);
-			roundOver = false;
-            OnShowGameOver?.Invoke(roundOver);
-        }
-
-        private async void EndRound()
+		private async void EndRound()
 		{
 			if (!roundOver)
 			{
 				OnShowGameOver?.Invoke(roundOver);
 			}
 
-            roundOver = true;
-            roundStarted = false;
+			roundOver = true;
+			roundStarted = false;
 
-            await Task.Delay(2000);
+			await Task.Delay(2000);
 
 			// /* evaluate win/loss, prepare next */
-			ResetDucks();
-            ResetDuckhuntGameManager();
+			ResetGame();
 		}
+
+		private void ResetGame()
+		{
+			ResetDucks();
+			ResetDuckhuntGameManager();
+		}
+
+		public void ResetDucks()
+		{
+			if (ducks == null)
+				return;
+
+			for (int i = 0; i < ducks.Length; i++)
+			{
+				if (ducks[i])
+					ducks[i].ResetDuck();
+			}
+		}
+
+		private void ResetDuckhuntGameManager()
+		{
+			if (duckHuntScoreManager)
+			{
+				duckHuntScoreManager.ResetScore();
+			}
+
+			UpdateShotsRemaining(maxShots);
+			UpdateDucksRemaining(ducks.Length);
+			UpdateTimer(roundDuration);
+			roundOver = false;
+			roundStarted = false;
+
+			OnShowGameOver?.Invoke(roundOver);
+		}
+
 
 		private void HandleDuckDeath(int scoreIncrease)
 		{
@@ -165,19 +188,8 @@ namespace CCG.MiniGames.Duckhunt
 			}
 		}
 
-        public void ResetDucks()
-        {
-			if (ducks == null)
-				return;
 
-			for (int i = 0; i < ducks.Length; i++)
-			{
-				if(ducks[i])
-					ducks[i].ResetDuck();
-			}
-        }
-
-        private void UpdateDucksRemaining(int newDucksRemaining)
+		private void UpdateDucksRemaining(int newDucksRemaining)
 		{
 			ducksRemainingInRound = newDucksRemaining;
 			
@@ -216,14 +228,19 @@ namespace CCG.MiniGames.Duckhunt
 			OnTimerChange?.Invoke(currentRoundTime);
 		}
 
-        internal void HitDuck(int index)
-        {
+		internal void HitDuck(int index)
+		{
 			if(score == 0) //Start the round when the first duck is hit.
-                StartRound();
+				StartRound();
 
-            ducks[index].OnHit();
+			ducks[index].OnHit();
 
-        }
-    }
+		}
+
+		internal static void Reset()
+		{
+			
+		}
+	}
 }
 

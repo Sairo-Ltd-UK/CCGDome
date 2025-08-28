@@ -1,3 +1,15 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     25/08/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
+using UnityEngine.Events;
+
 namespace CCG.Player.Prompt
 {
 	[System.Serializable]
@@ -5,6 +17,7 @@ namespace CCG.Player.Prompt
 	{
 		public string Message;
 		public CompletionCondition Condition;
+		public UnityEvent onCompleteEvent;
 
 		public void Begin()
 		{
@@ -14,6 +27,12 @@ namespace CCG.Player.Prompt
 		public bool IsComplete()
 		{
 			return Condition != null && Condition.CheckComplete();
+		}
+
+		public void OnCompleted()
+		{ 
+			if( onCompleteEvent != null )
+				onCompleteEvent.Invoke();
 		}
 	}
 }

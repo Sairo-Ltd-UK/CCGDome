@@ -15,11 +15,20 @@ namespace CCG.MiniGames
 	public class PlayerUnEquiper : MonoBehaviour
 	{
 		[SerializeField] private EquipmentSlotType slotType;
+		[SerializeField] private Transform locationToReturnTo;
 
 		private void OnTriggerExit(Collider other)
 		{
 			if (other.TryGetComponent(out PlayerEquipmentManager interactor))
-				interactor.UnequipItem(slotType);
+			{
+				PlayerEquipment equipment =	interactor.UnequipItem(slotType);
+
+				if (locationToReturnTo == null)
+					return;
+
+				equipment.transform.position = locationToReturnTo.position;
+				equipment.transform.rotation = locationToReturnTo.rotation;
+			}
 		}
 	}
 

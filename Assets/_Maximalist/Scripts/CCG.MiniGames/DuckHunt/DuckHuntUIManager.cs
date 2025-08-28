@@ -8,85 +8,117 @@
 //  This file is subject to the terms of the contract with the client.
 // ------------------------------------------------------------------------------
 
+using Mirror;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CCG.MiniGames.Duckhunt
 {
-    public class DuckHuntUIManager : MonoBehaviour
-    {
-        [Header("DuckHuntGameUIManager")]
-        [SerializeField] private TextMeshProUGUI timerText;
-        [SerializeField] private TextMeshProUGUI scoreText;
-        [SerializeField] private TextMeshProUGUI shotsLeftText;
-        [SerializeField] private TextMeshProUGUI ducksLeftText;
-        [Space]
-        [SerializeField] private GameObject winScreen;
+	public class DuckHuntUIManager : NetworkBehaviour
+	{
+		[Header("DuckHuntGameUIManager")]
+		[SerializeField] private TextMeshProUGUI timerText;
+		[SerializeField] private TextMeshProUGUI scoreText;
+		[SerializeField] private TextMeshProUGUI shotsLeftText;
+		[SerializeField] private TextMeshProUGUI ducksLeftText;
+		[Space]
+		[SerializeField] private GameObject winScreen;
+		[Space]
+		[SerializeField] private Button resetDuckhuntButton;
 
-        private void OnEnable()
-        {
-            DuckHuntScoreManager.OnScoreChanged += UpdateScore;
-            DuckHuntGameManager.OnTimerChange += UpdateTimer;
-            DuckHuntGameManager.OnShotsRemainingChanged += UpdateRemainingShots;
-            DuckHuntGameManager.OnShowGameOver += HandleGameFinishMenu;
-            DuckHuntGameManager.OnChangeDucksRemaining += UpdateDucksRemainingText;
-        }
+		private void OnEnable()
+		{
+			DuckHuntScoreManager.OnScoreChanged += UpdateScore;
+			DuckHuntGameManager.OnTimerChange += UpdateTimer;
+			DuckHuntGameManager.OnShotsRemainingChanged += UpdateRemainingShots;
+			DuckHuntGameManager.OnShowGameOver += HandleGameFinishMenu;
+			DuckHuntGameManager.OnChangeDucksRemaining += UpdateDucksRemainingText;
 
-        private void OnDisable()
-        {
-            DuckHuntScoreManager.OnScoreChanged -= UpdateScore;
-            DuckHuntGameManager.OnTimerChange -= UpdateTimer;
-            DuckHuntGameManager.OnShotsRemainingChanged -= UpdateRemainingShots;
-            DuckHuntGameManager.OnShowGameOver -= HandleGameFinishMenu;
-            DuckHuntGameManager.OnChangeDucksRemaining -= UpdateDucksRemainingText;
-        }
+		}
 
-        private void UpdateTimer(float secondsCount)
-        {
-            if (timerText != null)
-            {
-                timerText.text = (int)secondsCount + " sec";
-            }
-        }
+		private void OnDisable()
+		{
+			DuckHuntScoreManager.OnScoreChanged -= UpdateScore;
+			DuckHuntGameManager.OnTimerChange -= UpdateTimer;
+			DuckHuntGameManager.OnShotsRemainingChanged -= UpdateRemainingShots;
+			DuckHuntGameManager.OnShowGameOver -= HandleGameFinishMenu;
+			DuckHuntGameManager.OnChangeDucksRemaining -= UpdateDucksRemainingText;
+		}
 
-        private void UpdateRemainingShots(int shotsLeft)
-        {
-            Debug.Log("[DHUI] UpdateRemainingShots");
+		private void UpdateTimer(float secondsCount)
+		{
+			if (timerText != null)
+			{
+				timerText.text = (int)secondsCount + " sec";
+			}
+		}
 
-            if (shotsLeftText != null)
-            {
-                shotsLeftText.text = $"Shots Left: {shotsLeft}";
-            }
-        }
+		private void UpdateRemainingShots(int shotsLeft)
+		{
+			Debug.Log("[DHUI] UpdateRemainingShots");
 
-        private void UpdateScore(int score)
-        {
-            Debug.Log("[DHUI] UpdateScore");
+			if (shotsLeftText != null)
+			{
+				shotsLeftText.text = $"Shots Left: {shotsLeft}";
+			}
+		}
 
-            if (scoreText != null)
-            {
-                scoreText.text = $"Score: {score}";
-            }
-        }
+		private void UpdateScore(int score)
+		{
+			Debug.Log("[DHUI] UpdateScore");
 
-        private void HandleGameFinishMenu(bool showMenu)
-        {
-            Debug.Log("[DHUI] HandleGameFinishMenu");
+			if (scoreText != null)
+			{
+				scoreText.text = $"Score: {score}";
+			}
+		}
 
-            if (winScreen != null)
-            {
-                winScreen.SetActive(showMenu);
-            }
-        }
+		private void HandleGameFinishMenu(bool showMenu)
+		{
+			Debug.Log("[DHUI] HandleGameFinishMenu");
 
-        private void UpdateDucksRemainingText(int ducksRemaining)
-        {
-            Debug.Log("[DHUI] UpdateDucksRemainingText");
+			if (winScreen != null)
+			{
+				winScreen.SetActive(showMenu);
+			}
+		}
 
-            if (ducksLeftText != null)
-            {
-                ducksLeftText.text = $"Ducks Remaning: {ducksRemaining}";
-            }
-        }
-    }
+		private void UpdateDucksRemainingText(int ducksRemaining)
+		{
+			Debug.Log("[DHUI] UpdateDucksRemainingText");
+
+			if (ducksLeftText != null)
+			{
+				ducksLeftText.text = $"Ducks Remaning: {ducksRemaining}";
+			}
+		}
+
+
+		[ContextMenu("OnResetButtonPressed")]
+		private void OnResetButtonPressed()
+		{
+			CmdRequestReset();
+		}
+
+		[Command(requiresAuthority = false)]
+		private void CmdRequestReset()
+		{
+			RpcDoReset();
+
+			if (isServerOnly)
+				DoReset();
+		}
+
+		[ClientRpc]
+		private void RpcDoReset()
+		{
+			DoReset();
+		}
+
+		private void DoReset()
+		{
+			DuckHuntGameManager.Reset();
+		}
+	}
 }

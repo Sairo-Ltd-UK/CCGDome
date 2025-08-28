@@ -1,3 +1,13 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     25/08/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -13,7 +23,8 @@ namespace CCG.Player.Prompt
 		[Space]
 		[SerializeField] private float startTolerance = 0.1f;
 		[SerializeField] private float stopTolerance = 0.01f;
-		[SerializeField] private float scaleDuration = 0.25f; 
+		[SerializeField] private float scaleDuration = 0.25f;
+		[SerializeField] private float maxSnapDistance = 2.0f;
 		[Space]
 		[SerializeField] private TextMeshProUGUI messageText;
 		[Space]
@@ -27,7 +38,6 @@ namespace CCG.Player.Prompt
 
 		public Transform TargetUIPosition { get => targetUIPosition; set => targetUIPosition = value; }
 		public Transform MainCameraTransform { get => mainCameraTransform; set => mainCameraTransform = value; }
-
 
 		private void Awake()
 		{
@@ -122,6 +132,13 @@ namespace CCG.Player.Prompt
 				transform.rotation = Quaternion.LookRotation(transform.position - MainCameraTransform.position);
 
 			float distance = Vector3.Distance(UICanvasHolder.position, targetUIPosition.position);
+
+			if (distance > maxSnapDistance)
+			{
+				isMoving = false;
+				UICanvasHolder.position = targetUIPosition.position;
+				return;
+			}
 
 			if (!isMoving && distance > startTolerance)
 			{

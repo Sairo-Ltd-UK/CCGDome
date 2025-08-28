@@ -2,7 +2,7 @@
 //  Project:     CCG Dome
 //  Author:      Corrin Wilson
 //  Company:     Maximalist Ltd
-//  Created:     13/06/2025
+//  Created:     25/08/2025
 //
 //  Copyright © 2025 Maximalist Ltd. All rights reserved.
 //  This file is subject to the terms of the contract with the client.
@@ -10,7 +10,6 @@
 
 using CCG.CustomInput;
 using Mirror;
-using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,6 +27,8 @@ namespace CCG.MiniGames
 		[Space]
 		[Tooltip("Only needs setting client side on the local player")]
 		[SerializeField] private MiniGameInteractable currentMiniGame;
+		[Space]
+		[SerializeField] private LineRenderer debugLine;
 
 		private Transform rightRaycastOverride;
 		private Transform leftRaycastOverride;
@@ -68,18 +69,18 @@ namespace CCG.MiniGames
 
 			if (rightFireAciton != null)
 			{
-				rightFireAciton.AddToInputActionReference(RequestRaycastLeftHand);
+				rightFireAciton.AddToInputActionReference(RequestRaycastRightHand);
 			}
 
 			if (leftFireAciton != null)
 			{
-				leftFireAciton.AddToInputActionReference(RequestRaycastRightHand);
+				leftFireAciton.AddToInputActionReference(RequestRaycastLeftHand);
 			}
 		}
 
 		private void RequestRaycastRightHand()
 		{
-			if (LeftRaycastOrigin)
+			if (RightRaycastOrigin)
 				RequestRaycast(RightRaycastOrigin.position, RightRaycastOrigin.forward);
 		}
 
@@ -94,6 +95,8 @@ namespace CCG.MiniGames
 			if (isLocalPlayer == false)
 				return;
 
+			DrawDebugLine(rayOrigin, rayDirection);
+
 #if !UNITY_ANDROID || UNITY_EDITOR
 			Vector2 screenPosition = Mouse.current.position.ReadValue();
 			Ray ray = Camera.main.ScreenPointToRay(screenPosition);
@@ -104,6 +107,15 @@ namespace CCG.MiniGames
 
 			Debug.Log("[GMGI] RequestRaycast");
 			CmdRequestRaycast(rayOrigin, rayDirection);
+		}
+
+		private void DrawDebugLine(Vector3 rayOrigin, Vector3 rayDirection)
+		{
+			if (debugLine == null)
+				return;
+
+			debugLine.SetPosition(0, rayOrigin);
+			debugLine.SetPosition(1, rayOrigin + rayDirection * 10);
 		}
 
 		[Command]

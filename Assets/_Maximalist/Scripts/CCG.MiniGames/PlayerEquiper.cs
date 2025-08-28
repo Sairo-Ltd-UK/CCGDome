@@ -25,6 +25,9 @@ namespace CCG.MiniGames
 
 		private void OnTriggerEnter(Collider other)
 		{
+			if (itemToEquip.transform.parent != null) //Item is already equipped by someone else.
+				return;
+
 			if (other.TryGetComponent(out PlayerEquipmentManager interactor))
 				interactor.EquipItem(slotType, itemToEquip);
 		}

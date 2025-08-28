@@ -1,3 +1,13 @@
+// ------------------------------------------------------------------------------
+//  Project:     CCG Dome
+//  Author:      Corrin Wilson
+//  Company:     Maximalist Ltd
+//  Created:     25/08/2025
+//
+//  Copyright © 2025 Maximalist Ltd. All rights reserved.
+//  This file is subject to the terms of the contract with the client.
+// ------------------------------------------------------------------------------
+
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
@@ -37,7 +47,6 @@ namespace CCG.Player.Prompt
 		{
 			teleported = true;
 		}
-
 
 		public override bool CheckComplete()
 		{

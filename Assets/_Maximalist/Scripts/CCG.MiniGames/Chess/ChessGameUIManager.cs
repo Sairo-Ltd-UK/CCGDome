@@ -46,11 +46,19 @@ namespace CCG.MiniGames.Chess
 		private void CmdRequestReset()
 		{
 			RpcDoReset();
+
+			if(isServerOnly)
+				DoReset();
 		}
 
 
 		[ClientRpc]
 		private void RpcDoReset()
+		{
+			DoReset();
+		}
+
+		private void DoReset()
 		{
 			if (game != null)
 				game.ResetChessGame();
