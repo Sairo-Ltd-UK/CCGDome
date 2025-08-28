@@ -109,10 +109,10 @@ namespace CCG.Networking
 		{
 #if UNITY_SERVER
 
-            if (Application.isEditor)
-                return;
+			if (Application.isEditor)
+				return;
 
-            connectionToPlayerId[conn] = playerId;
+			connectionToPlayerId[conn] = playerId;
 			_ = OnPlayerJoinedBackfill(playerId);
 
 #endif

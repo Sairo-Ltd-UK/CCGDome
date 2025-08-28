@@ -12,9 +12,9 @@ using UnityEngine;
 
 namespace CCG.Core
 {
-    public static class StaticLocalPlayerData
-    {
-        public static string localPlayerID = "0";
-        
-    }
+	public static class StaticLocalPlayerData
+	{
+		public static string localPlayerID = "0";
+		
+	}
 }

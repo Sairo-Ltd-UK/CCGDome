@@ -76,7 +76,6 @@ namespace CCG.MiniGames.Chess
 			this.localScaleY = localScaley;
 		}
 
-
 		public void LoadListsToDictionarys()
 		{
 			tilesTwoDArray = new GameObject[width, height];
@@ -100,24 +99,24 @@ namespace CCG.MiniGames.Chess
 			}
 		}
 
-        public void SaveDictionarysToLists()
-        {
-            tiles = new GameObject[width * height];
-            boardPieces = new GameObject[width * height];
+		public void SaveDictionarysToLists()
+		{
+			tiles = new GameObject[width * height];
+			boardPieces = new GameObject[width * height];
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    int i = Index(x, y);
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					int i = Index(x, y);
 
-                    tiles[i] = tilesTwoDArray[x, y];
-                    boardPieces[i] = boardPieceTwoDArrays[x, y];
-                }
-            }
-        }
+					tiles[i] = tilesTwoDArray[x, y];
+					boardPieces[i] = boardPieceTwoDArrays[x, y];
+				}
+			}
+		}
 
-        [ContextMenu("GenerateBoard")]
+		[ContextMenu("GenerateBoard")]
 		private void GenerateBoard()
 		{
 			localScaleY = transform.localScale.y;
@@ -153,13 +152,13 @@ namespace CCG.MiniGames.Chess
 				origin = startOrigin;
 			}
 
-            // Load chess piecePrefab onto board
-            LoadPieces();
+			// Load chess piecePrefab onto board
+			LoadPieces();
 
-            SaveDictionarysToLists();
-        }
+			SaveDictionarysToLists();
+		}
 
-        [ContextMenu("LoadPieces")]
+		[ContextMenu("LoadPieces")]
 		private void LoadPieces()
 		{
 			GameObject piecesHolder = new GameObject("piecesHolder");
@@ -222,6 +221,7 @@ namespace CCG.MiniGames.Chess
 		public void ResetChessGame()
 		{
 			SetSelectedPiece(0);
+			whiteTurn = true;
 
 			for (int x = 0; x < boardLength; x++)
 			{
@@ -306,7 +306,7 @@ namespace CCG.MiniGames.Chess
 				if(tile == null)
 					continue;
 
-                tile.GetComponent<Renderer>().material = transparentMat;
+				tile.GetComponent<Renderer>().material = transparentMat;
 			}
 		}
 

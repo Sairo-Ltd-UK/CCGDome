@@ -17,7 +17,7 @@ using UnityEngine.UI;
 namespace CCG.CustomInput
 {
 	public class CustomActionButton : MonoBehaviour
-    {
+	{
 		[SerializeField] private CustomInputActionData actionData;
 		[SerializeField] private UnityEvent onActionPressed;
 		[Space]

@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace CCG.MiniGames
 {
-    public class GenericPlayerSlot : MonoBehaviour
-    {
+	public class GenericPlayerSlot : MonoBehaviour
+	{
 
-    }
+	}
 }

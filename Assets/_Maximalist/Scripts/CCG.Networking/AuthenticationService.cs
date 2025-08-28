@@ -15,29 +15,29 @@ using CCG.Core;
 
 namespace CCG.Networking
 {
-    public static class AuthenticationService
-    {
-        private static bool isInitialized = false;
+	public static class AuthenticationService
+	{
+		private static bool isInitialized = false;
 
-        public static async Task InitializeAsync()
-        {
-            if (isInitialized)
-                return;
+		public static async Task InitializeAsync()
+		{
+			if (isInitialized)
+				return;
 
-            await UnityServices.InitializeAsync();
+			await UnityServices.InitializeAsync();
 
-            if (!Unity.Services.Authentication.AuthenticationService.Instance.IsSignedIn)
-            {
-                await Unity.Services.Authentication.AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log($"[Auth] Signed in as {Unity.Services.Authentication.AuthenticationService.Instance.PlayerId}");
-            }
-            else
-            {
-                Debug.Log($"[Auth] Already signed in as {Unity.Services.Authentication.AuthenticationService.Instance.PlayerId}");
-            }
+			if (!Unity.Services.Authentication.AuthenticationService.Instance.IsSignedIn)
+			{
+				await Unity.Services.Authentication.AuthenticationService.Instance.SignInAnonymouslyAsync();
+				Debug.Log($"[Auth] Signed in as {Unity.Services.Authentication.AuthenticationService.Instance.PlayerId}");
+			}
+			else
+			{
+				Debug.Log($"[Auth] Already signed in as {Unity.Services.Authentication.AuthenticationService.Instance.PlayerId}");
+			}
 
-            StaticLocalPlayerData.localPlayerID = Unity.Services.Authentication.AuthenticationService.Instance.PlayerId;
-            isInitialized = true;
-        }
-    }
+			StaticLocalPlayerData.localPlayerID = Unity.Services.Authentication.AuthenticationService.Instance.PlayerId;
+			isInitialized = true;
+		}
+	}
 }

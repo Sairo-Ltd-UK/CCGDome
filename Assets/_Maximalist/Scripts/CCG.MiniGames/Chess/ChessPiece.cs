@@ -15,8 +15,8 @@ namespace CCG.MiniGames.Chess
 {
 	public abstract class PieceBehaviourSO : ScriptableObject
 	{
-        public Mesh whiteMesh; // assign the visual mesh asset in inspector
-        public Mesh blackMesh; // assign the visual mesh asset in inspector
+		public Mesh whiteMesh; // assign the visual mesh asset in inspector
+		public Mesh blackMesh; // assign the visual mesh asset in inspector
 
 		public abstract bool[,] PossibleMoves(ChessGame chessGame, int x, int y, bool isWhitePiece);
 

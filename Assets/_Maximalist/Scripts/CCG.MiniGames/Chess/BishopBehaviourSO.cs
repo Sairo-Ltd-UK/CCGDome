@@ -26,7 +26,5 @@ namespace CCG.MiniGames.Chess
 
 			return possibleMoves;
 		}
-
-
 	}
 }
