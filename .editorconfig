@@ -1,0 +1,9 @@
+# Top-most EditorConfig file
+root = true
+
+# Applies to all C# files
+[*.cs]
+indent_style = tab
+indent_size = tab
+end_of_line = crlf
+insert_final_newline = true
