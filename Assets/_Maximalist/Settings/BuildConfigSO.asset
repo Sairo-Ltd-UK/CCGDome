@@ -17,36 +17,12 @@ MonoBehaviour:
   - profileName: M_Android_Dev
     buildType: 0
     shouldBumpVersion: 1
-    appID: 
-    description: Auto-generated build
-    branchName: beta
-    contentRoot: content
-    buildOutput: build_output
-    depots: []
   - profileName: M_Android_Prod
-    buildType: 0
+    buildType: 1
     shouldBumpVersion: 0
-    appID: 
-    description: Auto-generated build
-    branchName: beta
-    contentRoot: content
-    buildOutput: build_output
-    depots: []
   - profileName: M_DedicatedServer_Dev
     buildType: 0
     shouldBumpVersion: 0
-    appID: 
-    description: Auto-generated build
-    branchName: beta
-    contentRoot: content
-    buildOutput: build_output
-    depots: []
   - profileName: M_Windows_Dev
     buildType: 0
     shouldBumpVersion: 0
-    appID: 
-    description: Auto-generated build
-    branchName: beta
-    contentRoot: content
-    buildOutput: build_output
-    depots: []
