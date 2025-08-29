@@ -5,7 +5,7 @@
 *.cs       text eol=CRLF
 *.meta     text eol=CRLF
 *.shader   text eol=CRLF
-*.cginc    text eolCRLF
+*.cginc    text eol=CRLF
 
 # Git LFS for large/binary assets
 *.psd filter=lfs diff=lfs merge=lfs -text
