@@ -2785,8 +2785,12 @@ PrefabInstance:
       value: mesh_waterfall_2
       objectReference: {fileID: 0}
     - target: {fileID: 7651035187109683805, guid: 3b033a9fc211e974ebf1de94979e22ae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651035187109683805, guid: 3b033a9fc211e974ebf1de94979e22ae, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.49999934
+      value: 0.9914448
       objectReference: {fileID: 0}
     - target: {fileID: 7651035187109683805, guid: 3b033a9fc211e974ebf1de94979e22ae, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2794,11 +2798,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651035187109683805, guid: 3b033a9fc211e974ebf1de94979e22ae, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8660258
+      value: -0.1305271
       objectReference: {fileID: 0}
     - target: {fileID: 7651035187109683805, guid: 3b033a9fc211e974ebf1de94979e22ae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 600
+      value: 705
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5743,11 +5747,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3641486701110721717, guid: 907da2f2e6486614eb1be0a07eb2f7ae, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.04797336
+      value: 0.07199164
       objectReference: {fileID: 0}
     - target: {fileID: 3641486701110721717, guid: 907da2f2e6486614eb1be0a07eb2f7ae, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0056762695
+      value: -0.0007324219
       objectReference: {fileID: 0}
     - target: {fileID: 4470922527985839534, guid: 907da2f2e6486614eb1be0a07eb2f7ae, type: 3}
       propertyPath: m_AnchorMax.x
