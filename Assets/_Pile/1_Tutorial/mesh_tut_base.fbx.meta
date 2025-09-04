@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 85dd8aafe0de64d5aa87499f88a60650
+guid: 7a72cc31f8be743c2aa26f3b0b3e9cee
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_concrete_repeat
+    second: {fileID: 2100000, guid: 09df7077ff58f164fb26f64ffd4e6dd3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
