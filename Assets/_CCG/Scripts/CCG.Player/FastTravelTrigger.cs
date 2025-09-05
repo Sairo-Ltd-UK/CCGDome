@@ -25,15 +25,18 @@ namespace CCG.Player
 		private static Color[] teleporterColours = new Color[]
 		{
 			Color.yellow,
-			Color.green,
+			Color.green, //Tutorial
+			new Color(0.247f, 0.553f, 0.757f), // Communal
+			new Color(0.918f, 0.506f, 0.212f), // Educational
+			new Color(0.439f, 0.667f, 0.341f), // Health
+			new Color(0.773f, 0.169f, 0.420f), // Nostalgia
+			Color.red,
+			Color.black,
 			Color.blue,
 			Color.cyan,
-			new Color(1f, 0.5f, 0f),   // orange
 			Color.magenta,
-			Color.red,
-			new Color(0.5f, 0f, 1f),   // purple
-			new Color(0.3f, 0.8f, 0.3f), // lime
-			new Color(0.8f, 0.8f, 0.8f)  // grey
+			Color.grey,
+
 		};
 
 		public int Id { get => id; }

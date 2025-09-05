@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4086845151652606459, guid: 0014c58abc64cd94196eaabd441556a7, type: 3}
       propertyPath: destinationName
-      value: Comunal Dome
+      value: Communal Dome
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
