@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 468ba76d8a6604a149d4533ff0778162
+guid: 3b4f1b19f298d4f299e0fd87cbf34b04
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,33 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: 80's room tex 1
-    second: {fileID: 2100000, guid: 3a764f23dfc415945851f7ea7363afab, type: 2}
+      name: mat_nos_floor_1
+    second: {fileID: 2100000, guid: eb404660ee91e4129b77564b7fb13d0b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_60_room_1
-    second: {fileID: 2100000, guid: 2a8eb96d5dc7c204a92f302309c79d82, type: 2}
+      name: mat_nos_floor_2
+    second: {fileID: 2100000, guid: e357a63de373a41988f2ef68d427f6de, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_70_room_2
-    second: {fileID: 2100000, guid: fa32b67782006f140a3b7ddefd0750cf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_80_room_1
-    second: {fileID: 2100000, guid: eb6606e2b4796a14597881d6b6ba7e2a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_80_room_2
-    second: {fileID: 2100000, guid: 6e08186443bd38e4dbfb1069c64c6986, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_armchair
-    second: {fileID: 2100000, guid: b9d51f59b383f79409f75cf8460dcafc, type: 2}
+      name: mat_nos_floor_3
+    second: {fileID: 2100000, guid: 6952dfc3746b245518129a5ed412f22e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

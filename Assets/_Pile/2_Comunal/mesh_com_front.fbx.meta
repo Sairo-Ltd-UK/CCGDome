@@ -3,7 +3,42 @@ guid: 495092f4115b84b7da442a49ec9c2a8d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_60_room_1
+    second: {fileID: 2100000, guid: 2a8eb96d5dc7c204a92f302309c79d82, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_70_room_1
+    second: {fileID: 2100000, guid: 248b99df93d577f46aacb470f7cb7ea2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_70_room_2
+    second: {fileID: 2100000, guid: fa32b67782006f140a3b7ddefd0750cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_80_room_1
+    second: {fileID: 2100000, guid: eb6606e2b4796a14597881d6b6ba7e2a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_80_room_2
+    second: {fileID: 2100000, guid: 6e08186443bd38e4dbfb1069c64c6986, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_armchair
+    second: {fileID: 2100000, guid: b9d51f59b383f79409f75cf8460dcafc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_couch
+    second: {fileID: 2100000, guid: a290ae7276c7bb043a1bf93f746eb6d2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

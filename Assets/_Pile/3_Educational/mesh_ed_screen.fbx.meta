@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mat_signage_banner
-    second: {fileID: 2100000, guid: f969f87b388b97049964b6863b4c820a, type: 2}
+    second: {fileID: 2100000, guid: 46b9129b9ff990643b28cacbfbb86a43, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

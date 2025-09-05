@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 081566cc9a3bd48ccb6d0b11b36fd89e
+guid: 842286b0d0d3c40b4bc2ab62dd15017c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,23 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_60_room_1
-    second: {fileID: 2100000, guid: 2a8eb96d5dc7c204a92f302309c79d82, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_70_room_1
-    second: {fileID: 2100000, guid: 248b99df93d577f46aacb470f7cb7ea2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_70_room_2
-    second: {fileID: 2100000, guid: fa32b67782006f140a3b7ddefd0750cf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_couch
-    second: {fileID: 2100000, guid: a290ae7276c7bb043a1bf93f746eb6d2, type: 2}
+      name: mat_com_props
+    second: {fileID: 2100000, guid: 26e3bc93beb27464bb6df65da9f9781a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
