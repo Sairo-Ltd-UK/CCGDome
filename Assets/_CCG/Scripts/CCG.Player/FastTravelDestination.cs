@@ -16,6 +16,12 @@ namespace CCG.Player
 	{
 		[SerializeField] private AudioSource fastTravelAudioSource;
 		[SerializeField] private AudioClip fastTravelSoundEffect;
+		[Space]
+		[SerializeField] private int id = 0;
+		[SerializeField] private string destinationName;
+
+		public string DestinationName { get => destinationName; }
+		public int Id { get => id;}
 
 		public void PlaySound()
 		{

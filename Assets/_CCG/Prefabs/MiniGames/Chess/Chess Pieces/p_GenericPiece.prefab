@@ -49,8 +49,8 @@ MonoBehaviour:
   isWhitePiece: 1
   meshFilter: {fileID: 318832198622240925}
   meshRenderer: {fileID: 6173202638184849324}
-  whiteMat: {fileID: 2100000, guid: f82c338be4fe7834c8cae4fa6a63d186, type: 2}
-  blackMat: {fileID: 2100000, guid: 3053f78a27fb202428cb6f6fec0aeea2, type: 2}
+  whiteMat: {fileID: 2100000, guid: 6e5ce32153d4aed4f8ec5e4f0ea92f8b, type: 2}
+  blackMat: {fileID: 2100000, guid: 6e5ce32153d4aed4f8ec5e4f0ea92f8b, type: 2}
 --- !u!1 &7056658747975458898
 GameObject:
   m_ObjectHideFlags: 0
