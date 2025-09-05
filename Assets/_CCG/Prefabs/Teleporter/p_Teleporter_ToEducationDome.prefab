@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8007156873199845692, guid: d4e0a6994146ac64faeeba40094d33ee, type: 3}
       propertyPath: m_Name
-      value: p_Teleporter_ToEducationDome Variant
+      value: p_Teleporter_ToEducationDome
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

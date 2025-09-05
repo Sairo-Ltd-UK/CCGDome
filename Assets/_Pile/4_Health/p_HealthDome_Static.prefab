@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Colliders:
   - {fileID: 1614904245938610172}
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 2147483648
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_FocusMode: 1
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_TeleportationProvider: {fileID: 0}
   m_MatchOrientation: 0
-  m_MatchDirectionalInput: 0
+  m_MatchDirectionalInput: 1
   m_TeleportTrigger: 0
   m_FilterSelectionByHitNormal: 0
   m_UpNormalToleranceDegrees: 30
@@ -696,6 +696,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6979e5cfe12b34cddad276493a3bd5a6, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8949622394625508000, guid: 6979e5cfe12b34cddad276493a3bd5a6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -1318332903734466681, guid: 6979e5cfe12b34cddad276493a3bd5a6, type: 3}

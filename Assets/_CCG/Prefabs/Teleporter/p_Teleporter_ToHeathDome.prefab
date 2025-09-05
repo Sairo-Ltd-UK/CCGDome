@@ -98,10 +98,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8007156873199845692, guid: d4e0a6994146ac64faeeba40094d33ee, type: 3}
       propertyPath: m_Name
-      value: p_Teleporter_ToHeathDome Variant
+      value: p_Teleporter_ToHeathDome
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 919132149604823334, guid: d4e0a6994146ac64faeeba40094d33ee, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4e0a6994146ac64faeeba40094d33ee, type: 3}
