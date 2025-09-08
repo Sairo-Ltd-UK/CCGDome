@@ -385,7 +385,6 @@ GameObject:
   - component: {fileID: 2481589997733005882}
   - component: {fileID: 531112004353300793}
   - component: {fileID: 8230948859272587271}
-  - component: {fileID: 4173631972615736191}
   m_Layer: 0
   m_Name: mesh_com_ds_water_1
   m_TagString: Untagged
@@ -461,28 +460,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4173631972615736191
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6860567817654142147}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 8057666856764898100, guid: 45bbea680f9237847bccfa0b22779d28, type: 3}
 --- !u!1 &7494100478951076858
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +471,6 @@ GameObject:
   - component: {fileID: 7783990326066873098}
   - component: {fileID: 4288878997594907984}
   - component: {fileID: 5679214282203174607}
-  - component: {fileID: 6114109659916631097}
   m_Layer: 0
   m_Name: mesh_com_ds_water_3
   m_TagString: Untagged
@@ -570,28 +546,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6114109659916631097
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494100478951076858}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7090271432723334922, guid: 45bbea680f9237847bccfa0b22779d28, type: 3}
 --- !u!1 &8051892258167212937
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,7 +950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4477169992507176074, guid: 9089c1d6e1b1dbe4c8a9c259de96d141, type: 3}
       propertyPath: _assetId
-      value: 2367827892
+      value: 1400774513
       objectReference: {fileID: 0}
     - target: {fileID: 5706974109335931694, guid: 9089c1d6e1b1dbe4c8a9c259de96d141, type: 3}
       propertyPath: duckHuntGameManager
@@ -2974,7 +2928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794135126417973151, guid: 8b2eb1e395634a349aac682ea1fdc05d, type: 3}
       propertyPath: _assetId
-      value: 2367827892
+      value: 2998039995
       objectReference: {fileID: 0}
     - target: {fileID: 3119769943581966873, guid: 8b2eb1e395634a349aac682ea1fdc05d, type: 3}
       propertyPath: m_Pivot.x
