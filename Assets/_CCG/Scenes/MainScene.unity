@@ -1435,6 +1435,15 @@ PrefabInstance:
       propertyPath: promptUI
       value: 
       objectReference: {fileID: 1925488518}
+    - target: {fileID: 7299468053197449217, guid: 907da2f2e6486614eb1be0a07eb2f7ae, type: 3}
+      propertyPath: initialPrompts.Array.data[0].Message
+      value: "Use your preferred Joystick to teleport. Push the Joystick up. \u2191 "
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299468053197449217, guid: 907da2f2e6486614eb1be0a07eb2f7ae, type: 3}
+      propertyPath: initialPrompts.Array.data[1].Message
+      value: "Use your preferred Joystick to rotate. Push the Joystick left and right.
+        \u2190 \u2192 "
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1505,6 +1514,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 539104336921284599, guid: b1e456c226039604882a91a45e3c6d79, type: 3}
+      propertyPath: m_text
+      value: 'Step into the glowing ring to teleport to a different dome.
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 2513396998676803117, guid: b1e456c226039604882a91a45e3c6d79, type: 3}
       propertyPath: m_Name
       value: p_TutorialDome_Dynamic
@@ -1636,6 +1651,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 53729828}
+  - {fileID: 685137268}
   - {fileID: 1496895638}
   - {fileID: 508965778}
   - {fileID: 1842710791015354062}
@@ -1651,4 +1667,3 @@ SceneRoots:
   - {fileID: 1797884964}
   - {fileID: 1724361159}
   - {fileID: 6181925439269922702}
-  - {fileID: 685137268}
