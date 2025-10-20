@@ -1,4 +1,4 @@
-# Normalize text files to LF
+# Normalize text files to CRLF
 * text=auto eol=crlf
 
 # Unity YAML-based files (kept as text, not in LFS)
@@ -21,7 +21,6 @@
 *.wav     filter=lfs diff=lfs merge=lfs -text
 *.mp4     filter=lfs diff=lfs merge=lfs -text
 *.blend   filter=lfs diff=lfs merge=lfs -text
-
 
 # Platform-specific binaries
 Assets/Firebbase/Plugins/x86_64/*.bundle filter=lfs diff=lfs merge=lfs -text

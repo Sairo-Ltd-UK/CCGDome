@@ -218,6 +218,8 @@ MonoBehaviour:
   m_EnableXRInput: 1
   m_EnableMouseInput: 1
   m_EnableTouchInput: 1
+  m_EnableGamepadInput: 1
+  m_EnableJoystickInput: 1
   m_PointAction: {fileID: 2869410428622933342, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_LeftClickAction: {fileID: 1855836014308820768, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_MiddleClickAction: {fileID: -6289560987278519447, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -227,8 +229,6 @@ MonoBehaviour:
   m_SubmitAction: {fileID: 3994978066732806534, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_CancelAction: {fileID: 2387711382375263438, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_EnableBuiltinActionsAsFallback: 1
-  m_EnableGamepadInput: 1
-  m_EnableJoystickInput: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -393,17 +393,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!108 &685137267
 Light:
   m_ObjectHideFlags: 0
@@ -1409,6 +1415,71 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 84d35ec79e6440842abcc1988ca366d5, type: 3}
+--- !u!1001 &2054251316
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1855160720117747385, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_Name
+      value: p_VideoPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 48.661
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -43.033
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.96081823
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.27717936
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 32.184
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811441395231162894, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9145230782568492563, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: fecd014a3cdfda24fb0914caf46595c9, type: 3}
+    - target: {fileID: 9145230782568492563, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
+      propertyPath: m_DataSource
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7c9e626f48f205047b4e52d1473991b0, type: 3}
 --- !u!1001 &2087416127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1959,3 +2030,4 @@ SceneRoots:
   - {fileID: 1797884964}
   - {fileID: 1724361159}
   - {fileID: 6181925439269922702}
+  - {fileID: 2054251316}
