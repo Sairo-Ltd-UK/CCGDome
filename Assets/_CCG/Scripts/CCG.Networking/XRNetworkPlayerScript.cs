@@ -9,7 +9,6 @@
 // ------------------------------------------------------------------------------
 
 using Mirror;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CCG.Networking
@@ -37,48 +36,48 @@ namespace CCG.Networking
 		[SyncVar(hook = nameof(OnColorIndexChanged))]
 		private int colorIndex;
 
-		[ContextMenu("GenerateColorPalette")]
-		public void GenerateColorPalette()
-		{
-			List<Color> colors = new List<Color>(50);
+		//[ContextMenu("GenerateColorPalette")]
+		//public void GenerateColorPalette()
+		//{
+		//	List<Color> colors = new List<Color>(50);
 
-			int totalColors = 50;
-			int satSteps = 5; // 5 saturation levels
-			int valSteps = 2; // 2 brightness levels
-			float goldenRatio = 0.61803398875f; // fraction of hue per step
+		//	int totalColors = 50;
+		//	int satSteps = 5; // 5 saturation levels
+		//	int valSteps = 2; // 2 brightness levels
+		//	float goldenRatio = 0.61803398875f; // fraction of hue per step
 
-			int index = 0;
+		//	int index = 0;
 
-			for (int i = 0; i < totalColors; i++)
-			{
-				// Step hue using golden ratio to maximize distance
-				float baseHue = (i * goldenRatio) % 1f;
+		//	for (int i = 0; i < totalColors; i++)
+		//	{
+		//		// Step hue using golden ratio to maximize distance
+		//		float baseHue = (i * goldenRatio) % 1f;
 
-				// Alternate saturation and brightness to add contrast
-				int satIndex = i % satSteps;
-				int valIndex = i % valSteps;
+		//		// Alternate saturation and brightness to add contrast
+		//		int satIndex = i % satSteps;
+		//		int valIndex = i % valSteps;
 
-				float sat = Mathf.Lerp(0.6f, 1.0f, (float)satIndex / (satSteps - 1));
-				float val = Mathf.Lerp(0.8f, 1.0f, (float)valIndex / (valSteps - 1));
+		//		float sat = Mathf.Lerp(0.6f, 1.0f, (float)satIndex / (satSteps - 1));
+		//		float val = Mathf.Lerp(0.8f, 1.0f, (float)valIndex / (valSteps - 1));
 
-				// Add small jitter for natural variation
-				float hue = Mathf.Clamp01(baseHue + Random.Range(-0.2f, 0.2f));
-				sat = Mathf.Clamp01(sat + Random.Range(-0.05f, 0.05f));
-				val = Mathf.Clamp01(val + Random.Range(-0.05f, 0.05f));
+		//		// Add small jitter for natural variation
+		//		float hue = Mathf.Clamp01(baseHue + Random.Range(-0.2f, 0.2f));
+		//		sat = Mathf.Clamp01(sat + Random.Range(-0.05f, 0.05f));
+		//		val = Mathf.Clamp01(val + Random.Range(-0.05f, 0.05f));
 
-				colors.Add(Color.HSVToRGB(hue, sat, val));
-				index++;
-			}
+		//		colors.Add(Color.HSVToRGB(hue, sat, val));
+		//		index++;
+		//	}
 
-			// Shuffle list so consecutive colours aren’t predictable
-			for (int i = colors.Count - 1; i > 0; i--)
-			{
-				int j = Random.Range(0, i + 1);
-				(colors[i], colors[j]) = (colors[j], colors[i]);
-			}
+		//	// Shuffle list so consecutive colours aren’t predictable
+		//	for (int i = colors.Count - 1; i > 0; i--)
+		//	{
+		//		int j = Random.Range(0, i + 1);
+		//		(colors[i], colors[j]) = (colors[j], colors[i]);
+		//	}
 
-			generatedColours = colors.ToArray();
-		}
+		//	generatedColours = colors.ToArray();
+		//}
 
 		public override void OnStartServer()
 		{
@@ -99,6 +98,12 @@ namespace CCG.Networking
 				playerAudioSource.clip = onConnectedToServer;
 				playerAudioSource.Play();
 			}
+
+			if(generatedColours == null)
+				return;
+
+			if (colorIndex >= generatedColours.Length || colorIndex < 0)
+				colorIndex = 0;
 
 			// Apply immediately for the initial state
 			ApplyColor(generatedColours[colorIndex]);

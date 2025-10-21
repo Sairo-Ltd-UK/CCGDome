@@ -355,6 +355,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -103.084
       objectReference: {fileID: 0}
+    - target: {fileID: 8837043234126666358, guid: 36736a7134322f64a91dd6724eab1c4c, type: 3}
+      propertyPath: destinationName
+      value: Education & Events Dome
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1190,6 +1194,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4039726541427380491, guid: 05d956167c92aa24ebf91d357d1121be, type: 3}
+      propertyPath: destinationName
+      value: Cultural Dome
+      objectReference: {fileID: 0}
     - target: {fileID: 5959235495837694176, guid: 05d956167c92aa24ebf91d357d1121be, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1339,6 +1347,10 @@ PrefabInstance:
     - target: {fileID: 8486960857333730544, guid: 7beebfc46207d7c43b69a484b1f83566, type: 3}
       propertyPath: m_Name
       value: p_HealthDome_Static
+      objectReference: {fileID: 0}
+    - target: {fileID: 8866251078873614431, guid: 7beebfc46207d7c43b69a484b1f83566, type: 3}
+      propertyPath: destinationName
+      value: Health & Fitness Dome
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1497,6 +1509,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 322633722725242309, guid: 2aef652286f4d2d409d0ce6aa4e631e3, type: 3}
+      propertyPath: destinationName
+      value: Community Dome
+      objectReference: {fileID: 0}
     - target: {fileID: 1358092543610463388, guid: 2aef652286f4d2d409d0ce6aa4e631e3, type: 3}
       propertyPath: m_LocalScale.z
       value: 28.548187

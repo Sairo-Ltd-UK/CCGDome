@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bed7d01d60b22d42915e9bdef49577c, type: 3}
-  m_Name: BuildVersionSO
-  m_EditorClassIdentifier: 
-  majorVersion: 1
-  minorVersion: 0
-  buildVersion: 69
-  buildType: 0
+  m_Script: {fileID: 11500000, guid: 8dedd8068bb3463f97d10eaff64ed5f3, type: 3}
+  m_Name: MultiplayerWidgetsSettings
+  m_EditorClassIdentifier: Unity.Multiplayer.Widgets.Core::Unity.Multiplayer.Widgets.MultiplayerWidgetsSettings
+  m_UseCustomServiceInitialization: 0
