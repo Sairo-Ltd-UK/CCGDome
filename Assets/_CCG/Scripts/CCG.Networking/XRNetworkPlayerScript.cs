@@ -34,58 +34,14 @@ namespace CCG.Networking
 
 		// Server picks this once — automatically syncs to all clients
 		[SyncVar(hook = nameof(OnColorIndexChanged))]
-		private int colorIndex;
-
-		//[ContextMenu("GenerateColorPalette")]
-		//public void GenerateColorPalette()
-		//{
-		//	List<Color> colors = new List<Color>(50);
-
-		//	int totalColors = 50;
-		//	int satSteps = 5; // 5 saturation levels
-		//	int valSteps = 2; // 2 brightness levels
-		//	float goldenRatio = 0.61803398875f; // fraction of hue per step
-
-		//	int index = 0;
-
-		//	for (int i = 0; i < totalColors; i++)
-		//	{
-		//		// Step hue using golden ratio to maximize distance
-		//		float baseHue = (i * goldenRatio) % 1f;
-
-		//		// Alternate saturation and brightness to add contrast
-		//		int satIndex = i % satSteps;
-		//		int valIndex = i % valSteps;
-
-		//		float sat = Mathf.Lerp(0.6f, 1.0f, (float)satIndex / (satSteps - 1));
-		//		float val = Mathf.Lerp(0.8f, 1.0f, (float)valIndex / (valSteps - 1));
-
-		//		// Add small jitter for natural variation
-		//		float hue = Mathf.Clamp01(baseHue + Random.Range(-0.2f, 0.2f));
-		//		sat = Mathf.Clamp01(sat + Random.Range(-0.05f, 0.05f));
-		//		val = Mathf.Clamp01(val + Random.Range(-0.05f, 0.05f));
-
-		//		colors.Add(Color.HSVToRGB(hue, sat, val));
-		//		index++;
-		//	}
-
-		//	// Shuffle list so consecutive colours aren’t predictable
-		//	for (int i = colors.Count - 1; i > 0; i--)
-		//	{
-		//		int j = Random.Range(0, i + 1);
-		//		(colors[i], colors[j]) = (colors[j], colors[i]);
-		//	}
-
-		//	generatedColours = colors.ToArray();
-		//}
+		private int colorIndex = 0;
 
 		public override void OnStartServer()
 		{
 			base.OnStartServer();
 
 			// Assign a color index based on connection ID — wraps around list length
-			if (generatedColours != null && generatedColours.Length > 0)
-				colorIndex = connectionToClient.connectionId % generatedColours.Length;
+			colorIndex = connectionToClient.connectionId % 50; //CW num needs to match generated colours length but for some reason the list is stripped server side.
 		}
 
 		public override void OnStartClient()
@@ -141,6 +97,9 @@ namespace CCG.Networking
 
 		private void ApplyColor(Color color)
 		{
+			if(isServer)
+				return;
+
 			if (pillRenderer != null)
 				pillRenderer.material.color = color;
 		}
@@ -148,8 +107,17 @@ namespace CCG.Networking
 		//Called automatically when colorIndex changes on any client
 		private void OnColorIndexChanged(int oldIndex, int newIndex)
 		{
-			if (generatedColours != null && generatedColours.Length > 0)
-				ApplyColor(generatedColours[newIndex]);
+			Debug.Log($"Color index changed: old={oldIndex}, new={newIndex}, arrayLen={generatedColours?.Length}");
+
+			if (isServer == true || generatedColours == null || generatedColours.Length == 0)
+				return;
+
+			colorIndex = ((newIndex % generatedColours.Length) + generatedColours.Length) % generatedColours.Length;
+
+			if (colorIndex < 0 || colorIndex >= generatedColours.Length)
+				colorIndex = 0;
+
+			ApplyColor(generatedColours[colorIndex]);
 		}
 	}
 }

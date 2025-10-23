@@ -18,11 +18,11 @@ namespace CCG.Audio
 		public static MusicManager Instance;
 
 		[Header("Default Track")]
-		public AudioClip mainRoomClip;
-		public float fadeDuration = 1.5f;
-
-		private AudioSource activeSource;
-		private AudioSource inactiveSource;
+		[SerializeField] private AudioClip mainRoomClip;
+		[SerializeField] private float fadeDuration = 1.5f;
+		[Space]
+		[SerializeField] private AudioSource activeSource;
+		[SerializeField] private AudioSource inactiveSource;
 		private Coroutine fadeCoroutine;
 
 		private void Awake()
@@ -37,16 +37,6 @@ namespace CCG.Audio
 			}
 			Instance = this;
 			DontDestroyOnLoad(gameObject);
-
-			activeSource = gameObject.AddComponent<AudioSource>();
-			inactiveSource = gameObject.AddComponent<AudioSource>();
-
-			foreach (var s in new[] { activeSource, inactiveSource })
-			{
-				s.loop = true;
-				s.playOnAwake = false;
-				s.volume = 0f;
-			}
 		}
 
 		private void Start()
